@@ -1,0 +1,108 @@
+package com.aerospike.core.model;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.viewers.Viewer;
+
+import com.aerospike.core.CoreActivator;
+
+public class AsCluster implements IAsEntity{
+	private IProject project = null;
+	//NodeFolder 	nodes;
+	Map<String, AsNode> nodes;
+	NsFolder 	namespaces;
+	PackageFolder packages;
+	private Viewer viewer;
+	public AsCluster(IProject project){
+		this.project = project;
+		this.namespaces = new NsFolder(this);
+		// this.nodes = new NodeFolder(this);
+		this.nodes = new HashMap<String, AsNode>();
+		this.packages = new PackageFolder(this);
+	}
+	public AsCluster(IProject project, Viewer viewer) {
+		this(project);
+		this.viewer = viewer;
+	}
+	public Object[] getChildren(){
+		int nodeSize = this.nodes.size();
+		Object[] kids = new Object[nodeSize + 1];
+		System.arraycopy(this.nodes.values().toArray(), 0, kids, 0, nodeSize);
+		kids[nodeSize] = this.packages;
+		return kids;
+	}
+	public boolean hasChildren(){
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Cluster";
+	}
+	@Override
+	public String getName() {
+		return toString();
+	}
+	public IProject getProject() {
+		return this.project;
+	}
+	//	public NodeFolder getNodes() {
+	//		return nodes;
+	//	}
+	public Map<String, AsNode> getNodes() {
+		return nodes;
+	}
+	public NsFolder getNamespaces() {
+		return namespaces;
+	}
+	public PackageFolder getPackages() {
+		return packages;
+	}
+	@Override
+	public Object getParent() {
+		return this.project;
+	}
+
+	public String getSeedHost(){
+		String seedHost = null;
+		try {
+			if (project!=null)
+				seedHost = project.getPersistentProperty(CoreActivator.SEED_NODE_PROPERTY);
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting SEED_NODE_PROPERTY", e);
+		}
+		return seedHost;
+	}
+
+	public int getPort(){
+		int port = 3000;
+		String portString;
+		try {
+			portString = project.getPersistentProperty(CoreActivator.PORT_PROPERTY);
+			port = Integer.parseInt(portString);
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting PORT_PROPERTY", e);
+		}
+		return port;
+	}
+
+	public Viewer getViewer(){
+		return this.viewer;
+	}
+
+	public AsNode addNode(String nodesString) {
+		AsNode newNode = new AsNode(this,nodesString);
+		AsNode existingNode = this.nodes.get(newNode.getName());
+		if (existingNode == null){
+			this.nodes.put(newNode.getName(), newNode);
+			return newNode;
+		} else {
+			return existingNode;
+		}
+	}
+}

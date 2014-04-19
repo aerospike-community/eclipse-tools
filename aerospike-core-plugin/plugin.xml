@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            name="Aerospike"
+            icon="icons/aerospike.logo.png"
+            class="com.aerospike.core.properties.ClusterPropertyPage"
+            id="com.aerospike.properties.clusterPropertyPage.project">
+         <enabledWhen>
+             <and>
+                <instanceof
+                      value="org.eclipse.core.resources.IProject">
+                </instanceof>
+                <test
+                      value="com.aerospike.core.AerospikeNature"
+                      property="org.eclipse.core.resources.projectNature">
+                </test>
+             </and>
+         </enabledWhen>
+      </page>
+   </extension>
+  <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.aerospike.core.preferences.AerospikePreferencePage"
+            id="aerospike.core.plugin.preferences.AerospikePreferencePage"
+            name="Aerospike">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.aerospike.core.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+
+
+<!--
+Aerospike Nature
+-->
+   <extension
+         id="com.aerospike.core.AerospikeNature"
+         name="Aerospike Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="com.aerospike.core.nature.AerospikeNature"/>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/small/Aerospike.png"
+            natureId="com.aerospike.core.AerospikeNature"
+            id="com.aerospike.core.AerospikeNatureImage">
+      </image>
+   </extension>
+   
+<!-- old style -->   
+   <extension
+         point="org.eclipse.ui.popupMenus">
+	   <objectContribution adaptable="true"
+	        id="com.aerospike.projectMenu.add"
+	        nameFilter="*"
+	        objectClass="org.eclipse.core.resources.IProject">
+        <visibility>
+           <not>
+              <objectState name="nature"
+                    value="com.aerospike.core.AerospikeNature">
+              </objectState>
+           </not>
+         </visibility>
+	     <action
+	           class="com.aerospike.core.nature.AddRemoveAerospikeNatureHandler"
+	           enablesFor="+"
+	           id="com.aerospike.core.addNatureAction"
+	           label="Convert to Aerospike Project"
+	           icon="icons/aerospike.logo.png"
+	           menubarPath="org.eclipse.ui.projectConfigure/additions">
+	     </action>
+	   </objectContribution>
+	   <objectContribution adaptable="true"
+	        id="com.aerospike.projectMenu.remove"
+	        nameFilter="*"
+	        objectClass="org.eclipse.core.resources.IProject">
+        <visibility>
+              <objectState name="nature"
+                    value="com.aerospike.core.AerospikeNature">
+              </objectState>
+         </visibility>
+	     <action
+	           class="com.aerospike.core.nature.AddRemoveAerospikeNatureHandler"
+	           enablesFor="+"
+	           id="com.aerospike.core.addNatureAction"
+	           label="Remove Aerospike Nature"
+	           icon="icons/aerospike.logo.png"
+	           menubarPath="org.eclipse.ui.projectConfigure/additions">
+	     </action>
+	   </objectContribution>
+	   
+	   <objectContribution adaptable="true"
+	        id="com.aerospike.projectMenu.refresh"
+	        objectClass="com.aerospike.core.model.IAsEntity">
+	     <action
+	           class="com.aerospike.core.navigator.RefreshCluster"
+	           enablesFor="+"
+	           id="com.aerospike.core.navigator.refreshAction"
+	           label="Refresh Aerospike"
+	           icon="icons/refresh_nav_enabled.gif"
+	           menubarPath="additions">
+	     </action>
+	   </objectContribution>
+   </extension>
+	
+<!--
+ProjectExplorer extension 
+-->   
+   
+	<extension
+	      point="org.eclipse.ui.navigator.navigatorContent">
+	   <navigatorContent
+	         id="com.aerospike.navigator.core.clusterContent"
+	         name="Aerospike cluster content"
+	         contentProvider="com.aerospike.core.navigator.ClusterContentProvider"
+	         labelProvider="com.aerospike.core.navigator.ClusterLabelProvider"
+	         icon="icons/small/Cluster.png"
+	         activeByDefault="true"
+	         priority="high">
+	       <triggerPoints>
+			   <or> 
+                     <and>
+                        <instanceof
+                              value="org.eclipse.core.resources.IProject">
+                        </instanceof>
+                        <test
+                              value="com.aerospike.core.AerospikeNature"
+                              property="org.eclipse.core.resources.projectNature">
+                        </test>
+                     </and>
+			    	<instanceof value="com.aerospike.core.model.IAsEntity" />
+			   </or>
+			</triggerPoints>
+			<possibleChildren>
+		    	<instanceof value="com.aerospike.core.model.IAsEntity" />
+			</possibleChildren>
+	   </navigatorContent>
+	</extension>
+
+	
+	<extension
+	      point="org.eclipse.ui.navigator.viewer">
+	   <viewerContentBinding 
+	   		viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+	      <includes>
+         	<contentExtension pattern="com.aerospike.navigator.core.clusterContent"/>
+	      </includes>
+	   </viewerContentBinding>
+	   <viewerActionBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <actionExtension
+                  pattern="com.aerospike.core.navigator.ClusterRefreshAction">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
+	</extension>
+	
+ <extension
+       point="org.eclipse.ui.console.consoleFactories">
+ </extension>
+<!--
+AQL Builder
+-->
+   <extension
+         id="com.aerospike.aql.plugin.builder.AQLBuilder"
+         name="AQL Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="false">
+         <run
+               class="com.aerospike.aql.plugin.builder.AQLBuilder">
+         </run>
+      </builder>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="AQL Builder commands"
+            id="com.aerospike.aql.plugin.builder.category">
+      </category>
+      <command
+            name="Add/Remove AQL Builder"
+            defaultHandler="com.aerospike.aql.plugin.actions.AddRemoveAQLBuilder"
+            categoryId="com.aerospike.aql.plugin.builder.category"
+            id="com.aerospike.aql.plugin.AddRemoveBuilder.command">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               commandId="com.aerospike.aql.plugin.AddRemoveBuilder.command"
+               label="Remove AQL Builder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <and>
+                        <instanceof
+                              value="org.eclipse.core.resources.IProject">
+                        </instanceof>
+                        <test
+                              value="com.aerospike.core.AerospikeNature"
+                              property="org.eclipse.core.resources.projectNature">
+                        </test>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.aerospike.aql.plugin.AddRemoveBuilder.command"
+               label="Add AQL Builder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <and>
+                        <instanceof
+                              value="org.eclipse.core.resources.IProject">
+                        </instanceof>
+                        <not>
+                           <test
+                                 value="com.aerospike.core.AerospikeNature"
+                                 property="org.eclipse.core.resources.projectNature">
+                           </test>
+                        </not>
+                     </and>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+	</extension>
+
+<!--
+UDF Problem
+-->   
+   <extension
+         id="AerospikeUDF.udfProblem"
+         name="UDF Error"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
+<!--
+AQL Problem
+-->   
+   <extension
+         id="AerospikeAQL.aqlProblem"
+         name="AQL Error"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+ 
+<!-- project decorator   
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            lightweight="true"
+            location="TOP_LEFT"
+            adaptable="true"
+            label="Aerospike Decorator"
+            icon="icons/small/Aerospike.png"
+            state="true"
+            id="Aerospike.decorator">
+         <enablement>
+         	<and>
+            	<objectClass name="org.eclipse.core.resources.IProject"/>
+            	<objectState name="org.eclipse.core.resources.projectNature" value="com.aerospike.core.AerospikeNature"/>
+		    </and>
+         </enablement>
+      </decorator>
+   </extension>
+-->
+<!--
+AQL Editor
+-->   
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="AQL Editor"
+            extensions="aql"
+            icon="icons/small/query.png"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="com.aerospike.aql.plugin.editors.AQLEditor"
+            id="com.aerospike.aql.plugin.editors.AQLEditor">
+      </editor>
+   </extension>
+
+<!--
+Popups
+-->
+
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="Aerospike.aql.contribution">
+         <menu
+               label="Aerospike"
+               path="additions"
+               icon="icons/aerospike.logo.png"
+               id="Aerospike.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <enablement>
+            <and>
+    			<instanceof value="org.eclipse.core.resources.IFile"/>   
+    			<and>     
+		            <test property="org.eclipse.core.resources.name" value="*.aql"/>
+	                <test
+	                      value="com.aerospike.core.AerospikeNature"
+	                      property="org.eclipse.core.resources.projectNature">
+	                </test>
+                </and>
+            </and>
+         </enablement>
+         <action
+               label="&amp;Execute AQL"
+               class="com.aerospike.aql.plugin.actions.RunOnCluster"
+               menubarPath="Aerospike.menu1/group1"
+               enablesFor="1"
+               id="com.aerospike.aql.plugin.actions.RunOnCluster.popup">
+         </action>
+         <action
+               label="Genarate &amp;Java"
+               class="com.aerospike.aql.plugin.actions.GenerateSource"
+               menubarPath="Aerospike.menu1/group1"
+               enablesFor="1"
+               id="com.aerospike.aql.plugin.actions.GenerateSource.java.popup">
+         </action>
+<!-- future
+         <action
+               label="Genarate &amp;C"
+               class="com.aerospike.aql.plugin.actions.GenerateSource"
+               menubarPath="Aerospike.menu1/group1"
+               enablesFor="1"
+               id="com.aerospike.aql.plugin.actions.GenerateSource.c.popup">
+         </action>
+         <action
+               label="Genarate &amp;C#"
+               class="com.aerospike.aql.plugin.actions.GenerateSource"
+               menubarPath="Aerospike.menu1/group1"
+               enablesFor="1"
+               id="com.aerospike.aql.plugin.actions.GenerateSource.csharp.popup">
+         </action>
+-->
+      </objectContribution>
+   </extension>
+<!-- 
+Results view
+-->
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Aerospike"
+            id="aerospike.view.category">
+      </category>
+      <view
+            name="Query Results"
+            icon="icons/small/query.png"
+            category="aerospike.view.category"
+            class="com.aerospike.aql.plugin.views.ResultView"
+            id="com.aerospike.aql.plugin.views.ResultView">
+      </view>
+   </extension>
+<!-- 
+Property page
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            name="Aerospike Query Language"
+            category = "com.aerospike.properties.clusterPropertyPage.project"
+            icon="icons/small/query.png"
+            class="com.aerospike.aql.plugin.properties.AQLPropertyPage"
+            id="com.aerospike.aql.plugin.properties.AQLPropertyPage">
+         <enabledWhen>
+             <and>
+                <instanceof
+                      value="org.eclipse.core.resources.IProject">
+                </instanceof>
+               <test
+                      value="com.aerospike.core.AerospikeNature"
+                      property="org.eclipse.core.resources.projectNature">
+                </test> 
+             </and>
+         </enabledWhen>
+      </page>
+   </extension>
+-->
+<!-- 
+UDF popup
+-->
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            id="Aerospike.contribution1">
+         <menu
+               label="Aerospike"
+               path="additions"
+               icon="icons/aerospike.logo.png"
+               id="Aerospike.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <enablement>
+            <and>
+    			<instanceof value="org.eclipse.core.resources.IFile"/>   
+    			<and>     
+	            	<test property="org.eclipse.core.resources.name" value="*.lua"/>
+ 	                <test
+	                      value="com.aerospike.core.AerospikeNature"
+	                      property="org.eclipse.core.resources.projectNature">
+	                </test>
+				</and>	           
+            </and>
+         </enablement>
+         <action
+               label="Register UDF"
+               icon="icons/small/UDF.png"
+               class="com.aerospike.udf.actions.RegisterUDF"
+               menubarPath="Aerospike.menu1/group1"
+               enablesFor="1"
+               id="Aerospike.RegisterAction">
+         </action>
+      </objectContribution>
+   </extension>
+ <!-- 
+UDF property page
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            name="User Defined Functions"
+            category = "com.aerospike.properties.clusterPropertyPage.project"
+            icon="icons/small/UDF.png"
+            class="com.aerospike.udf.properties.UdfPropertyPage"
+            id="com.aerospike.udf.properties.UdfPropertyPage">
+         <enabledWhen>
+             <and>
+                <instanceof
+                      value="org.eclipse.core.resources.IProject">
+                </instanceof>
+               <test
+                      value="com.aerospike.core.AerospikeNature"
+                      property="org.eclipse.core.resources.projectNature">
+                </test> 
+             </and>
+         </enabledWhen>
+      </page>
+   </extension>
+-->
+	 
+</plugin>
