@@ -109,8 +109,51 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	@Override
 	public void reportError(int line, int offset, int length, String message) {
 		this.report(message);
-		//TODO 
 	}
 
+	@Override
+	public void reportInfo(String inforMessage, String... seperators) {
+		reportInfo(inforMessage, false, seperators);		
+	}
+
+	@Override
+	public void reportInfo(String inforMessage, boolean clear,
+			String... seperators) {
+		if (inforMessage == null || inforMessage.isEmpty() || seperators == null )
+			return;
+		if (clear)
+			this.clear();
+		if (seperators.length >= 1){
+			String[] outerParts = inforMessage.split(seperators[0]);
+			String rowFormat = null;
+			for (int i = 0; i < outerParts.length; i++){
+				if (seperators.length >= 2){
+					String[] innerParts = outerParts[i].split(seperators[1]);
+					if (i == 0){
+						StringBuffer sb = new StringBuffer("| ");
+						for (int j = 0; j < innerParts.length; j++){
+							sb.append("%").append(innerParts[j].length()).append("s | ");
+						}
+						rowFormat = sb.toString();
+						this.report(String.format(rowFormat, nameValueParts(innerParts, true, seperators[2])));
+					}
+					this.report(String.format(rowFormat, nameValueParts(innerParts, false, seperators[2])));
+				}
+			}
+		}
+	}
+
+	private String[] nameValueParts(String[] parts, boolean headerRow, String seperator){
+		String[] nvs = new String[parts.length];
+		for (int i = 0; i < parts.length; i++) {
+			String[] nv = parts[i].split(seperator);
+			if (headerRow){
+				nvs[i] = nv[0];
+			} else if (nv.length > 1){
+				nvs[i] = nv[1];
+			}
+		}
+		return nvs;
+	}
 	
 }

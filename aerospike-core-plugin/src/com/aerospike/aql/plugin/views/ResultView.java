@@ -343,4 +343,17 @@ public class ResultView extends ViewPart implements IResultReporter{
 		job.setUser(true);
 		job.schedule();
 	}
+
+	@Override
+	public void reportInfo(String inforMessage, String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String inforMessage, boolean clear,
+			String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
 }

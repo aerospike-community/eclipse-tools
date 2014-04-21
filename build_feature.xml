@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="feature_export" name="build">
+	<target name="feature_export">
+		<pde.exportFeatures destination="/Users/peter/git/eclipse-tools/target" exportSource="false" exportType="directory" features="com.aerospike.feature" useJARFormat="true"/>
+	</target>
+</project>
