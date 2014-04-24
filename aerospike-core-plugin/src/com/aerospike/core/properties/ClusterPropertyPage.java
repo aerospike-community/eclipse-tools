@@ -3,28 +3,24 @@ package com.aerospike.core.properties;
 import org.apache.log4j.Level;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
-
-import com.aerospike.core.CoreActivator;
-import com.aerospike.core.preferences.PreferenceConstants;
-
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import com.aerospike.client.AerospikeClient;
+import com.aerospike.core.CoreActivator;
+import com.aerospike.core.preferences.PreferenceConstants;
 /**
  * This page edits the Cluster properties attached to this lua resource
  * @author peter
@@ -162,6 +158,12 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, seedNode);
 				else 
 					resource.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, null);
+				// assume the cluster values have changed and disconnect the client
+				AerospikeClient client = (AerospikeClient) resource.getSessionProperty(CoreActivator.CLUSTER_PROPERTY);
+				if (client != null)
+					client.close();
+				resource.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
+				
 				String port = portEditor.getStringValue();
 				if (port != null && !port.isEmpty())
 					resource.setPersistentProperty(CoreActivator.PORT_PROPERTY, port);
