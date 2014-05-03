@@ -86,7 +86,6 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 							return Status.OK_STATUS;
 						}
 					};
-					job.setUser(true);
 					job.schedule();
 				} catch (CoreException e) {
 					CoreActivator.showError(e, COULD_NOT_EXECUTE_SQL_FILE + sqlFile.getName());

@@ -46,7 +46,7 @@ import com.aerospike.client.query.RecordSet;
 
 
 public class ResultView extends ViewPart implements IResultReporter{
-
+	boolean cancelled = false;
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
@@ -355,5 +355,16 @@ public class ResultView extends ViewPart implements IResultReporter{
 			String... seperators) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void cancel() {
+		this.cancelled = true;
+		
+	}
+
+	@Override
+	public boolean isCancelled() {
+		return this.cancelled;
 	}
 }

@@ -13,6 +13,7 @@ import com.aerospike.client.query.RecordSet;
 import com.aerospike.core.CoreActivator;
 
 public class ResultsConsoleView implements Log.Callback, IResultReporter, IErrorReporter {
+	boolean cancelled = false;
 	MessageConsole console;
 	MessageConsoleStream out;
 
@@ -154,6 +155,16 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 			}
 		}
 		return nvs;
+	}
+
+	@Override
+	public void cancel() {
+		this.cancelled = true;
+	}
+
+	@Override
+	public boolean isCancelled() {
+		return this.cancelled;
 	}
 	
 }

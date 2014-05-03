@@ -89,10 +89,6 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 			
 		}
 
-//		private void addMarker(AerospikeException e, int severity) {
-//			addMarker(file, e.getMessage(), 
-//					1, 1, 1, severity);
-//		}
 		private void addMarker(IFile file, String error, int line,
 				int charStart, int charEnd, int severity) throws BadLocationException {
 			try {

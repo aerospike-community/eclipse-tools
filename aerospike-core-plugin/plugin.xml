@@ -48,6 +48,7 @@ Aerospike Nature
       <runtime>
          <run class="com.aerospike.core.nature.AerospikeNature"/>
       </runtime>
+      <builder id="com.aerospike.aql.plugin.builder.AQLBuilder"/>
    </extension>
    <extension
          point="org.eclipse.ui.ide.projectNatureImages">
@@ -113,63 +114,6 @@ Aerospike Nature
 	     </action>
 	   </objectContribution>
    </extension>
-	
-<!--
-ProjectExplorer extension 
--->   
-   
-	<extension
-	      point="org.eclipse.ui.navigator.navigatorContent">
-	   <navigatorContent
-	         id="com.aerospike.navigator.core.clusterContent"
-	         name="Aerospike cluster content"
-	         contentProvider="com.aerospike.core.navigator.ClusterContentProvider"
-	         labelProvider="com.aerospike.core.navigator.ClusterLabelProvider"
-	         icon="icons/small/Cluster.png"
-	         activeByDefault="true"
-	         priority="high">
-	       <triggerPoints>
-			   <or> 
-                     <and>
-                        <instanceof
-                              value="org.eclipse.core.resources.IProject">
-                        </instanceof>
-                        <test
-                              value="com.aerospike.core.AerospikeNature"
-                              property="org.eclipse.core.resources.projectNature">
-                        </test>
-                     </and>
-			    	<instanceof value="com.aerospike.core.model.IAsEntity" />
-			   </or>
-			</triggerPoints>
-			<possibleChildren>
-		    	<instanceof value="com.aerospike.core.model.IAsEntity" />
-			</possibleChildren>
-	   </navigatorContent>
-	</extension>
-
-	
-	<extension
-	      point="org.eclipse.ui.navigator.viewer">
-	   <viewerContentBinding 
-	   		viewerId="org.eclipse.ui.navigator.ProjectExplorer">
-	      <includes>
-         	<contentExtension pattern="com.aerospike.navigator.core.clusterContent"/>
-	      </includes>
-	   </viewerContentBinding>
-	   <viewerActionBinding
-            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
-         <includes>
-            <actionExtension
-                  pattern="com.aerospike.core.navigator.ClusterRefreshAction">
-            </actionExtension>
-         </includes>
-      </viewerActionBinding>
-	</extension>
-	
- <extension
-       point="org.eclipse.ui.console.consoleFactories">
- </extension>
 <!--
 AQL Builder
 -->
@@ -178,13 +122,13 @@ AQL Builder
          name="AQL Builder"
          point="org.eclipse.core.resources.builders">
       <builder
-            hasNature="false">
+            hasNature="true">
          <run
                class="com.aerospike.aql.plugin.builder.AQLBuilder">
          </run>
       </builder>
    </extension>
-
+<!--
    <extension
          point="org.eclipse.ui.commands">
       <category
@@ -256,7 +200,64 @@ AQL Builder
          </command>
       </menuContribution>
 	</extension>
+-->
+	
+<!--
+ProjectExplorer extension 
+-->   
+   
+	<extension
+	      point="org.eclipse.ui.navigator.navigatorContent">
+	   <navigatorContent
+	         id="com.aerospike.navigator.core.clusterContent"
+	         name="Aerospike cluster content"
+	         contentProvider="com.aerospike.core.navigator.ClusterContentProvider"
+	         labelProvider="com.aerospike.core.navigator.ClusterLabelProvider"
+	         icon="icons/small/Cluster.png"
+	         activeByDefault="true"
+	         priority="high">
+	       <triggerPoints>
+			   <or> 
+                     <and>
+                        <instanceof
+                              value="org.eclipse.core.resources.IProject">
+                        </instanceof>
+                        <test
+                              value="com.aerospike.core.AerospikeNature"
+                              property="org.eclipse.core.resources.projectNature">
+                        </test>
+                     </and>
+			    	<instanceof value="com.aerospike.core.model.IAsEntity" />
+			   </or>
+			</triggerPoints>
+			<possibleChildren>
+		    	<instanceof value="com.aerospike.core.model.IAsEntity" />
+			</possibleChildren>
+	   </navigatorContent>
+	</extension>
 
+	
+	<extension
+	      point="org.eclipse.ui.navigator.viewer">
+	   <viewerContentBinding 
+	   		viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+	      <includes>
+         	<contentExtension pattern="com.aerospike.navigator.core.clusterContent"/>
+	      </includes>
+	   </viewerContentBinding>
+	   <viewerActionBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <actionExtension
+                  pattern="com.aerospike.core.navigator.ClusterRefreshAction">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
+	</extension>
+	
+ <extension
+       point="org.eclipse.ui.console.consoleFactories">
+ </extension>
 <!--
 UDF Problem
 -->   

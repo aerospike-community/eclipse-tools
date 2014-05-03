@@ -159,7 +159,7 @@ public class ClusterPropertyPage extends PropertyPage{
 				else 
 					resource.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, null);
 				// assume the cluster values have changed and disconnect the client
-				AerospikeClient client = (AerospikeClient) resource.getSessionProperty(CoreActivator.CLUSTER_PROPERTY);
+				AerospikeClient client = (AerospikeClient) resource.getSessionProperty(CoreActivator.CLIENT_PROPERTY);
 				if (client != null)
 					client.close();
 				resource.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
