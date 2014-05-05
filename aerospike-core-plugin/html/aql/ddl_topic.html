@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Data Definition Language (DDL)</title>
+</head>
+
+<body>
+<h1>Data Definition Language (DDL)</h1>
+CREATE INDEX <i>index</i> ON <i>namespace</i>[.<i>set</i>] (<i>bin name</i>) NUMERIC|STRING<br>
+DROP INDEX <i>namespace</i>[.<i>set</i>] <i>index</i> <br>       
+<ul>
+    <li><i>namespace</i> is the namespace for the index.</li>
+    <li><i>set</i> is the set name for the index.</li>
+    <li><i>index</i> is the name of the index.</li>
+    <li><i>bin name</i> is the name of the Bin to index</li>
+</ul>
+ Examples:<p>
+
+     CREATE INDEX idx_foo ON test.demo (foo) NUMERIC<br>
+     DROP INDEX test.demo idx_foo<br>
+
+</body>
+</html>

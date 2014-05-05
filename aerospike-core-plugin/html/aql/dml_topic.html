@@ -1,0 +1,22 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Data Manipulation Language (DML)</title>
+</head>
+
+<body>
+<h1>Data Manipulation Language (DML)</h1>
+INSERT INTO <i>namespace</i>[.<i>set</i>] (PK, <i>bin names</i>) VALUES (<i>key</i>, <i>bin values</i>)<br>
+DELETE FROM <i>namespace</i>[.<i>set</i>] WHERE PK = <i>key</i><br>
+<ul>
+    <li><i>namespace</i> is the namespace for the record.</li>
+    <li><i>set</i> is the set name for the record.</li>
+    <li><i>key</i> is the record's primary key.</li>
+    <li><i>bin names</i> is a comma-separated list of bin names.</li>
+    <li><i>bin values</i> is comma-separated list of bin values.</li>
+</ul>
+Examples:<p>
+INSERT INTO test.demo (PK, foo, bar) VALUES ('key1', 123, 'abc')<br>
+DELETE FROM test.demo WHERE PK = 'key1'<br>
+</body>
+</html>

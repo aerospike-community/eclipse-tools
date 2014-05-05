@@ -287,6 +287,19 @@ AQL Problem
             value="true">
       </persistent>
    </extension>
+<!--
+AQL help
+-->
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml" primary="true">
+      </toc>
+      <!--<toc
+            file="AqlToc.xml"
+            primary="true">
+      </toc>-->
+   </extension>
  
 <!-- project decorator   
    <extension

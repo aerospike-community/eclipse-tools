@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Queries</title>
+</head>
+
+<body>
+<h1>Queries</h1>
+SELECT <i>bin names</i> FROM <i>namespace</i>[.<i>set</i>]<br>
+SELECT <i>bin names</i> FROM <i>namespace</i>[.<i>set</i>] WHERE <i>bin</i> = <i>value</i><br>
+SELECT <i>bin names</i> FROM <i>namespace</i>[.<i>set</i>] WHERE <i>bin</i> BETWEEN <i>lower</i> AND <i>upper</i><br>
+SELECT <i>bin names</i> FROM <i>namespace</i>[.<i>set</i>] WHERE PK = <i>key</i><br>
+
+<ul>
+    <li><i>namespace</i> is the namespace for the records to be queried.</li>
+    <li><i>set</i> is the set name for the record to be queried.</li>
+    <li><i>key</i> is the record's primary key.</li>
+    <li><i>bin</i> is the name of a bin.</li>
+    <li><i>value</i> is the value of a bin.</li>
+    <li><i>bin names</i> can be either a wildcard (*) or a comma-separated list of bin names.</li>
+    <li><i>lower</i> is the lower bound for a numeric range query.</li>
+    <li><i>upper</i> is the lower bound for a numeric range query.</li>
+</ul>
+Examples:<p>
+
+    SELECT * FROM test.demo<br>
+    SELECT * FROM test.demo WHERE PK = 'key1'<br>
+    SELECT foo, bar FROM test.demo WHERE PK = 'key1'<br>
+    SELECT foo, bar FROM test.demo WHERE foo = 123<br>
+    SELECT foo, bar FROM test.demo WHERE foo BETWEEN 0 AND 999<br>
+
+</body>
+</html>

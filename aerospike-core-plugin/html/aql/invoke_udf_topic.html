@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Invoke User Defined Functions</title>
+</head>
+
+<body>
+<h1>Invoke User Defined Functions</h1>
+        EXECUTE <i>module</i>.<i>function</i>(<i>args</i>) ON <i>namespace</i>[.<i>set</i>]<br>
+        EXECUTE <i>module</i>.<i>function</i>(<i>args</i>) ON <i>namespace</i>[.<i>set</i>] WHERE PK = <i>key</i><br>
+        AGGREGATE <i>module</i>.<i>function</i>(<i>args</i>) ON <i>namespace</i>[.<i>set</i>] WHERE <bin> = <value><br>
+        AGGREGATE <i>module</i>.<i>function</i>(<i>args</i>) ON <i>namespace</i>[.<i>set</i>] WHERE <bin> BETWEEN <lower> AND <upper><br>
+<ul>      
+            <li><i>module</i> is UDF module containing the function to invoke.</li>
+            <li><i>function</i> is UDF to invoke.</li>
+            <li><i>args</i> is a comma-separated list of argument values for the UDF.</li>
+            <li><i>namespace</i> is the namespace for the records to be queried.</li>
+            <li><i>set</i> is the set name for the record to be queried.</li>
+            <li><i>key</i> is the record's primary key.</li>
+            <li><i>bin</i> is the name of a bin.</li>
+            <li><i>value</i> is the value of a bin.</li>
+            <li><i>lower</i> is the lower bound for a numeric range query.</li>
+            <li><i>upper</i> is the lower bound for a numeric range query.</li>
+</ul>       
+Examples:<p>
+
+    EXECUTE myudfs.udf1(2) ON test.demo<br>
+    EXECUTE myudfs.udf1(2) ON test.demo WHERE PK = 'key1'<br>
+    AGGREGATE myudfs.udf2(2) ON test.demo WHERE foo = 123<br>
+    AGGREGATE myudfs.udf2(2) ON test.demo WHERE foo BETWEEN 0 AND 999<br>
+
+</body>
+</html>
