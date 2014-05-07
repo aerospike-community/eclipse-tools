@@ -1,0 +1,280 @@
+group projectGroup;
+
+delimiters "%", "%"
+
+classpath()::=<<
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
+
+>>
+
+pom(artifactId, name, version, author, email, mainClass, package)::=<<
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.aerospike</groupId>
+	<artifactId>%artifactId%</artifactId>
+	<version>%version%</version>
+	<name>%name%</name>
+	<organization>
+		<name>Aerospike Inc.</name>
+		<url>http://www.aerospike.com</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>%author%</id>
+			<name>%author%</name>
+			<email>%email%</email>
+			<url>http://www.aerospike.com</url>
+			<organization>Aerospike Inc.</organization>
+			<organizationUrl>http://www.aerospike.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-6</timezone>
+		</developer>
+	</developers>
+	<dependencies>
+		<!-- Aerospike client. -->
+		<dependency>
+			<groupId>com.aerospike</groupId>
+			<artifactId>aerospike-client</artifactId>
+			<version>3.0.22</version>
+		</dependency>
+		<!-- Apache command line parser. -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- Log4j. -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+		<!-- JSON simple -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>%package%.%mainClass%</mainClass>
+						</manifest>
+					</archive>
+					<finalName>${project.artifactId}-${project.version}-full</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-my-jar-with-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+>>
+
+readme(name)::=<<
+#%name%
+
+##Problem
+
+##Solution
+yada yada yada
+
+The source code for this solution is available on GitHub, and the README.md 
+http://github.com/some place. 
+
+
+##Discussion
+
+>>
+
+ignore()::=<<
+.classpath
+.project
+.DS_Store
+
+>>
+
+mainClass(name, author, package)::=<<
+package %package%;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+import org.apache.log4j.Logger;
+
+import com.aerospike.client.AerospikeClient;
+import com.aerospike.client.AerospikeException;
+import com.aerospike.client.policy.Policy;
+import com.aerospike.client.policy.WritePolicy;
+
+
+/**
+@author %author%
+*/
+public class %name% {
+	private AerospikeClient client;
+	private String seedHost;
+	private int port;
+	private String namespace;
+	private String set;
+	private WritePolicy writePolicy;
+	private Policy policy;
+	
+	private static Logger log = Logger.getLogger(%name%.class);
+	public %name%(String host, int port, String namespace, String set) throws AerospikeException {
+		this.client = new AerospikeClient(host, port);
+		this.seedHost = host;
+		this.port = port;
+		this.namespace = namespace;
+		this.set = set;
+		this.writePolicy = new WritePolicy();
+		this.policy = new Policy();
+	}
+	public static void main(String[] args) throws AerospikeException {
+		try {
+			Options options = new Options();
+			options.addOption("h", "host", true, "Server hostname (default: localhost)");
+			options.addOption("p", "port", true, "Server port (default: 3000)");
+			options.addOption("n", "namespace", true, "Namespace (default: test)");
+			options.addOption("s", "set", true, "Set (default: demo)");
+			options.addOption("u", "usage", false, "Print usage.");
+
+			CommandLineParser parser = new PosixParser();
+			CommandLine cl = parser.parse(options, args, false);
+
+
+			String host = cl.getOptionValue("h", "127.0.0.1");
+			String portString = cl.getOptionValue("p", "3000");
+			int port = Integer.parseInt(portString);
+			String namespace = cl.getOptionValue("n", "test");
+			String set = cl.getOptionValue("s", "demo");
+			log.debug("Host: " + host);
+			log.debug("Port: " + port);
+			log.debug("Namespace: " + namespace);
+			log.debug("Set: " + set);
+
+			@SuppressWarnings("unchecked")
+			List<String> cmds = cl.getArgList();
+			if (cmds.size() == 0 && cl.hasOption("u")) {
+				logUsage(options);
+				return;
+			}
+
+			%name% as = new %name%(host, port, namespace, set);
+
+			// TODO add your code here
+
+		} catch (ParseException e) {
+			log.error("Critical error", e);
+		}
+	}
+	/**
+	 * Write usage to console.
+	 */
+	private static void logUsage(Options options) {
+		HelpFormatter formatter = new HelpFormatter();
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		String syntax = %name%.class.getName() + " [<options>]";
+		formatter.printHelp(pw, 100, syntax, "options:", options, 0, 2, null);
+		log.info(sw.toString());
+	}
+
+}
+>>
+
+log4J(package)::=<<
+log4j.logger.%package%=info, CONSOLE
+#log4j.logger.%package%=debug, CONSOLE, FILE
+
+# CONSOLE is set to be a ConsoleAppender using a PatternLayout.
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.Threshold=TRACE
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=\%m\%n
+
+# FILE is set to be a ConsoleAppender using a PatternLayout.
+#log4j.appender.FILE=org.apache.log4j.RollingFileAppender
+#log4j.appender.FILE.File=aql.log
+#log4j.appender.FILE.Threshold=TRACE
+#log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+#log4j.appender.FILE.layout.ConversionPattern=\%r \%-5p \%c{1} \%x - \%m\%n
+
+>>

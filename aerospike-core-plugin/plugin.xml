@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="aerospike-category"
+            name="Aerospike">
+      </category>
+      <wizard
+            category="aerospike-category"
+            class="com.aerospike.project.wizards.NewAerospikeProjectWizard"
+            icon="icons/aerospike.logo.png"
+            project="true"
+            id="com.aerospike.project.wizards.NewAerospikeProjectWizard"
+            name="New Aerospike Project">
+      </wizard>
+   </extension>
 
    <extension
          point="org.eclipse.ui.propertyPages">
@@ -405,12 +420,12 @@ Results view
          point="org.eclipse.ui.views">
       <category
             name="Aerospike"
-            id="aerospike.view.category">
+            id="aerospike-category">
       </category>
       <view
             name="Query Results"
             icon="icons/small/query.png"
-            category="aerospike.view.category"
+            category="aerospike-category"
             class="com.aerospike.aql.plugin.views.ResultView"
             id="com.aerospike.aql.plugin.views.ResultView">
       </view>

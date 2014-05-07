@@ -72,7 +72,7 @@ public class AQLConfiguration extends SourceViewerConfiguration {
 		AQLContentAssistant aqlAssitant = new AQLContentAssistant();
 		aqlAssitant.setDocumentPartitioning(getConfiguredDocumentPartitioning(sourceViewer));
 		aqlAssitant.setContentAssistProcessor(new AQLContentAssistProcessor(), IDocument.DEFAULT_CONTENT_TYPE);
-		aqlAssitant.setAutoActivationDelay(0);
+		aqlAssitant.setAutoActivationDelay(500);
 		aqlAssitant.enableAutoActivation(true);
 		aqlAssitant.setProposalSelectorBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		return aqlAssitant;
