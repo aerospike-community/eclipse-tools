@@ -41,6 +41,7 @@ public class AsNameSpace implements IAsEntity{
 			existingSet.setInfo(setData);
 		}
 	}
+	
 
 	public Object[] getChildren() {
 		return sets.values().toArray();

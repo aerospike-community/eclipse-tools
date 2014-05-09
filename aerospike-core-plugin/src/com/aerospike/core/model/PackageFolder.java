@@ -1,35 +1,44 @@
 package com.aerospike.core.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
 
 public class PackageFolder implements IAsEntity {
-	Set<Package> packageList = null;
+	Map<String, Package> packageList = null;
 	AsCluster parent;
 	private String name;
 	public PackageFolder(AsCluster parent) {
 		this.parent = parent;
 		this.name = "Packages";
+		this.packageList = new HashMap<String, Package>();
 	}
 
 	public Object[] getChildren(){
 		if (packageList == null)
 			return new Package[0];
 
-		return packageList.toArray();
+		return packageList.values().toArray();
 	}
 	public boolean hasChildren(){
 		return (packageList != null && packageList.size() > 0);
 	}
-	
+
 	public void clear(){
 		if (this.packageList != null)
 			this.packageList.clear();
 	}
-	public void add(Package pkg){
-		if (this.packageList == null)
-			this.packageList = new HashSet<Package>();
-		this.packageList.add(pkg);
+
+	public Package fetchPackage(String info){
+		
+		String name = Package.getNameFromInfo(info);
+		Package pkg = this.packageList.get(name);
+		if (pkg == null){
+			pkg = new Package(this, info);
+			this.packageList.put(name, pkg);
+		}
+		pkg.setPackageInfo(info);
+		return pkg;
 	}
 
 	@Override

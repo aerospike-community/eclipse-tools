@@ -146,17 +146,25 @@ public class AsNode implements IAsEntity{
 		return result;
 	}
 
-	public void addNameSpaces(AsNameSpace ns) {
-		this.nameSpaces.put(ns.getName(), ns);
+	//	public void addNameSpace(AsNameSpace ns) {
+	//		this.nameSpaces.put(ns.getName(), ns);
+	//
+	//	}
 
+	public AsNameSpace fetchNameSpace(String name) {
+		AsNameSpace ns = this.nameSpaces.get(name);
+		if (ns == null){
+			ns = new AsNameSpace(this, name);
+			this.nameSpaces.put(ns.getName(), ns);
+		}
+		return ns;
 	}
 
-
-		public String getNodeID() {
-			if (stats!=null)
-				return (String)stats.get("cluster_key").value;
-			return "Not available";
-		}
+	public String getNodeID() {
+		if (stats!=null)
+			return (String)stats.get("cluster_key").value;
+		return "Not available";
+	}
 
 	//	public void setNodeID(String nodeID) {
 	//		firePropertyChange("nodeID", this.nodeID, this.nodeID = nodeID);
@@ -170,16 +178,16 @@ public class AsNode implements IAsEntity{
 	//		firePropertyChange("build", this.build, this.build = build);
 	//	}
 	//
-		public int getClusterSize(){
-			if (stats!=null)
-				return Integer.parseInt((String)stats.get("cluster_size").getValue());
-			return 0;
-		}
-		public long	getObjects(){
-			if (stats!=null)
-				return Long.parseLong((String)stats.get("objects").getValue());
-			return 0;
-		}
+	public int getClusterSize(){
+		if (stats!=null)
+			return Integer.parseInt((String)stats.get("cluster_size").getValue());
+		return 0;
+	}
+	public long	getObjects(){
+		if (stats!=null)
+			return Long.parseLong((String)stats.get("objects").getValue());
+		return 0;
+	}
 	//
 	//	public String getVersion() {
 	//		return version;
@@ -199,30 +207,30 @@ public class AsNode implements IAsEntity{
 	//		return list;
 	//	}
 	//
-		public String getMigration() {
-			if (stats!=null)
-				return String.format("(%s, %s)", stats.get("migrate_progress_send"), stats.get("migrate_progress_recv"));
-			return "not available";
-		}
-	
-		public int getFreeMemory() {
-			if (stats!=null)
-				return Integer.parseInt((String)stats.get("free-pct-memory").value);
-			return -1;
-		}
-	
-		public int getFreeDisk() {
-			if (stats!=null)
-				return Integer.parseInt((String)stats.get("free-pct-disk").value);
-			return -1;
-		}
-	
-		public int getFreeSystemMemory() {
-			if (stats!=null)
-				return Integer.parseInt((String)stats.get("system_free_mem_pct").value);
-			return -1;
-		}
-	
+	public String getMigration() {
+		if (stats!=null)
+			return String.format("(%s, %s)", stats.get("migrate_progress_send"), stats.get("migrate_progress_recv"));
+		return "not available";
+	}
+
+	public int getFreeMemory() {
+		if (stats!=null)
+			return Integer.parseInt((String)stats.get("free-pct-memory").value);
+		return -1;
+	}
+
+	public int getFreeDisk() {
+		if (stats!=null)
+			return Integer.parseInt((String)stats.get("free-pct-disk").value);
+		return -1;
+	}
+
+	public int getFreeSystemMemory() {
+		if (stats!=null)
+			return Integer.parseInt((String)stats.get("system_free_mem_pct").value);
+		return -1;
+	}
+
 	//	public AsNameSpace getNameSpace(String name){
 	//		return nameSpaces.get(name);
 	//	}
@@ -231,14 +239,14 @@ public class AsNode implements IAsEntity{
 	//	}
 	//
 	//
-		public boolean isOnline() {
-			return online;
-		}
-	
-		public void setOnline(boolean online) {
-			this.online = online;
-		}
-	
+	public boolean isOnline() {
+		return online;
+	}
+
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+
 
 
 

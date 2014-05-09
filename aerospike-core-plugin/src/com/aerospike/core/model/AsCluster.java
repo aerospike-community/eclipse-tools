@@ -1,9 +1,5 @@
 package com.aerospike.core.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -13,16 +9,15 @@ import com.aerospike.core.CoreActivator;
 
 public class AsCluster implements IAsEntity{
 	private IProject project = null;
-	//NodeFolder 	nodes;
-	Map<String, AsNode> nodes;
+	NodeFolder nodes;
 	NsFolder 	namespaces;
 	PackageFolder packages;
+	
 	private Viewer viewer;
 	public AsCluster(IProject project){
 		this.project = project;
 		this.namespaces = new NsFolder(this);
-		// this.nodes = new NodeFolder(this);
-		this.nodes = new HashMap<String, AsNode>();
+		this.nodes = new NodeFolder(this);
 		this.packages = new PackageFolder(this);
 	}
 	public AsCluster(IProject project, Viewer viewer) {
@@ -30,10 +25,10 @@ public class AsCluster implements IAsEntity{
 		this.viewer = viewer;
 	}
 	public Object[] getChildren(){
-		int nodeSize = this.nodes.size();
-		Object[] kids = new Object[nodeSize + 1];
-		System.arraycopy(this.nodes.values().toArray(), 0, kids, 0, nodeSize);
-		kids[nodeSize] = this.packages;
+		Object[] kids = new Object[]{
+				//this.namespaces,
+				this.packages,
+				this.nodes};
 		return kids;
 	}
 	public boolean hasChildren(){
@@ -51,10 +46,7 @@ public class AsCluster implements IAsEntity{
 	public IProject getProject() {
 		return this.project;
 	}
-	//	public NodeFolder getNodes() {
-	//		return nodes;
-	//	}
-	public Map<String, AsNode> getNodes() {
+	public NodeFolder getNodes() {
 		return nodes;
 	}
 	public NsFolder getNamespaces() {
@@ -96,13 +88,7 @@ public class AsCluster implements IAsEntity{
 	}
 
 	public AsNode addNode(String nodesString) {
-		AsNode newNode = new AsNode(this,nodesString);
-		AsNode existingNode = this.nodes.get(newNode.getName());
-		if (existingNode == null){
-			this.nodes.put(newNode.getName(), newNode);
-			return newNode;
-		} else {
-			return existingNode;
-		}
+		AsNode newNode = new AsNode(this.nodes,nodesString);
+		return this.nodes.fetchNode(newNode);
 	}
 }

@@ -29,15 +29,17 @@ public class NodeFolder implements IAsEntity{
 		return toString();
 	}
 
-	public void add(AsNode asNode) {
+	public AsNode fetchNode(AsNode sourceNode) {
 		if (this.nodeList == null)
 			this.nodeList = new HashMap<String, AsNode>();
-		if (!this.nodeList.containsKey(asNode.getName())) {
-			this.nodeList.put(asNode.getName(), asNode);
+		AsNode asNode = this.nodeList.get(sourceNode.getName());
+		if (asNode == null) {
+			this.nodeList.put(sourceNode.getName(), sourceNode);
+			asNode = sourceNode;
 		} else {
-			AsNode existing = this.nodeList.get(asNode.getName());
-			existing.stats = asNode.stats;
+			asNode.stats = sourceNode.stats;
 		}
+		return asNode;
 	}
 	@Override
 	public Object getParent() {

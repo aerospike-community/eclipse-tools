@@ -62,14 +62,20 @@ public class Package implements IAsEntity{
 		return this.parent;
 	}
 
+	public static String getNameFromInfo(String info){
+		//filename=a_test_udf.lua,hash=874473d6583f6c4d16ce5ff3e14f2dca75bee062,type=LUA
+		if (!info.isEmpty()){
+			String[] parts = info.split(",");
+			return parts[0].substring(9, parts[0].length()-1);
+		}
+		return null;
+	}
 	public void setPackageInfo(String info){
 		//filename=a_test_udf.lua,hash=874473d6583f6c4d16ce5ff3e14f2dca75bee062,type=LUA
 		if (!info.isEmpty()){
 			String[] parts = info.split(",");
 			if (values == null){
 				values = new HashMap<String, String>();
-			} else {
-				values.clear();
 			}
 			for (String part : parts){
 				kvPut(part, this.values);
