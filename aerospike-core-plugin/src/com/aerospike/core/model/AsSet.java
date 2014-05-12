@@ -65,6 +65,35 @@ public class AsSet implements IAsEntity{
 		}
 	}
 
+	public void mergeSetInfo(String info){
+		//ns_name=test:set_name=demo:n_objects=1:set-stop-write-count=0:set-evict-hwm-count=0:set-enable-xdr=use-default:set-delete=false
+		if (!info.isEmpty()){
+			String[] parts = info.split(":");
+			if (values == null){
+				values = new HashMap<String, NameValuePair>();
+			} 
+			
+			for (String part : parts){
+				String[] kv = part.split("=");
+				String key = kv[0];
+				String value = kv[1];
+				NameValuePair storedValue = values.get(key);
+				if (storedValue == null){
+					storedValue = new NameValuePair(this, key, value);
+					values.put(key, storedValue);
+				} else {
+					try{
+						Long newValue = Long.parseLong(value);
+						Long oldValue = Long.parseLong(storedValue.value.toString());
+						storedValue.value = (oldValue + newValue);
+					} catch (NumberFormatException e){
+						storedValue.value = value;
+					}
+				}
+			}
+			this.name = (String) values.get("set_name").value;
+		}
+	}
 	public void setValues(Map<String, NameValuePair> newValues){
 		this.values = newValues;
 	}

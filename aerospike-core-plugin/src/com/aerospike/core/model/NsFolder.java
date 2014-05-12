@@ -1,16 +1,14 @@
 package com.aerospike.core.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NsFolder implements IAsEntity{
 	private AsCluster parent;
-	private List<AsNameSpace> nsList = null;
+	private Map<String, AsNameSpace> nsList = null;
 	public NsFolder(AsCluster parent) {
 		this.parent = parent;
-		this.nsList = new ArrayList<AsNameSpace>();
+		this.nsList = new HashMap<String, AsNameSpace>();
 	}
 
 	@Override
@@ -20,7 +18,7 @@ public class NsFolder implements IAsEntity{
 
 	public Object[] getChildren() {
 		if (nsList != null){
-			return nsList.toArray();
+			return nsList.values().toArray();
 		} else {
 			return null;
 		}
@@ -29,10 +27,19 @@ public class NsFolder implements IAsEntity{
 	public boolean hasChildren(){
 		return (nsList != null && nsList.size() > 0);
 	}
+//	
+//	public void add(AsNameSpace ns){
+//		if (!this.nsList.contains(ns))
+//			this.nsList.add(ns);
+//	}
 	
-	public void add(AsNameSpace ns){
-		if (!this.nsList.contains(ns))
-			this.nsList.add(ns);
+	public AsNameSpace fetchNameSpace(String name) {
+		AsNameSpace ns = this.nsList.get(name);
+		if (ns == null){
+			ns = new AsNameSpace(this, name);
+			this.nsList.put(ns.getName(), ns);
+		}
+		return ns;
 	}
 	
 	public void clear(){

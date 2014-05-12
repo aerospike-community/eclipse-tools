@@ -1,5 +1,6 @@
 package com.aerospike.core.model;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -40,15 +41,19 @@ public class ClusterRefreshJob extends Job{
 			String nodesString = Info.request(seedNode, port, "service");
 			if (!nodesString.isEmpty()){
 				AsNode newNode = this.cluster.addNode(nodesString);
-				String info = Info.request(newNode.getAddress(), newNode.getPort(), "statistics");
-				newNode.setInfo(info);
+//				String info = Info.request(newNode.getAddress(), newNode.getPort(), "statistics");
+//				newNode.setStatistics(info);
+				HashMap<String, String> info = Info.request(newNode.getAddress(), newNode.getPort());
+				newNode.setDetails(info);
 				nodesString = Info.request(seedNode, port, "services");
 				if (nodesString != null){
 					String[] nodesList = nodesString.split(";");
 					for (String nd : nodesList){
 						newNode = this.cluster.addNode(nd);
-						info = Info.request(newNode.getAddress(), newNode.getPort(), "statistics");
-						newNode.setInfo(info);
+//						info = Info.request(newNode.getAddress(), newNode.getPort(), "statistics");
+//						newNode.setStatistics(info);
+						info = Info.request(newNode.getAddress(), newNode.getPort());
+						newNode.setDetails(info);
 					}
 				}
 			}
@@ -63,13 +68,14 @@ public class ClusterRefreshJob extends Job{
 					if (!namespacesString.isEmpty()){
 						String[] nameSpaces = namespacesString.split(";");
 						for (String nameSpace : nameSpaces){
-							AsNameSpace ns = node.fetchNameSpace(nameSpace);
+							AsNameSpace nodeNamespace = node.fetchNameSpace(nameSpace);
+							AsNameSpace clusterNameSpace = this.cluster.namespaces.fetchNameSpace(nameSpace);
 							String setsString = Info.request(node.getAddress(), node.getPort(), "sets/"+nameSpace);
 							if (!setsString.isEmpty()){
 								String[] sets = setsString.split(";");
 								for (String setData : sets){
-									
-									ns.addSet(setData);
+									nodeNamespace.addSet(setData);
+									clusterNameSpace.mergeSet(setData);
 								}
 							}
 						}

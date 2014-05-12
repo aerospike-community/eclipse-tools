@@ -1,6 +1,7 @@
 package com.aerospike.core.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class AsNode implements IAsEntity{
 	private Map<String, AsNameSpace> nameSpaces = new HashMap<String, AsNameSpace>();
 	private Object parent;
 	private String name;
+	private String clusterGeneration;
 
 	public AsNode(Object parent, String name) {
 		this.parent = parent;
@@ -41,7 +43,19 @@ public class AsNode implements IAsEntity{
 
 	@Override
 	public Object[] getChildren() {
-		return this.nameSpaces.values().toArray();
+		Object[] kids = new Object[this.nameSpaces.values().size() + 6];
+		kids[0] = new NameValuePair(this, "Node ID", getNodeID());
+		kids[1] = new NameValuePair(this, "Build", getBuild());
+		kids[2] = new NameValuePair(this, "Cluster Size", getClusterSize());
+		kids[3] = new NameValuePair(this, "Free Memory", getFreeMemory());
+		kids[4] = new NameValuePair(this, "Free Disk", getFreeDisk());
+		kids[5] = new NameValuePair(this, "Migrations", getMigration());
+		int index = 6;
+		for (Object kid : this.nameSpaces.values()){
+			kids[index] = kid;
+			index++;
+		}
+		return kids;
 	}
 
 
@@ -78,8 +92,24 @@ public class AsNode implements IAsEntity{
 	public int getPort() {
 		return port;
 	}
+	
+	public void setDetails(HashMap<String, String> info){
+		setStatistics(info.get("statistics"));
+		setNodeID(info.get("node"));
+		setBuild(info.get("build"));
+		setVersion(info.get("version"));
+		setClusterGeneration(info.get("cluster-generation"));
+	}
 
-	public void setInfo(String info){
+	public void setClusterGeneration(String clusterGeneration) {
+		this.clusterGeneration = clusterGeneration;
+	}
+	
+	public String getClusterGeneration() {
+		return clusterGeneration;
+	}
+
+	public void setStatistics(String info){
 		/*
 		cluster_size=2;cluster_key=6FBF3542EBE77019;cluster_integrity=true;objects=5002;total-bytes-disk=474114686976;
 		used-bytes-disk=3166720;free-pct-disk=99;total-bytes-memory=15032385536;used-bytes-memory=320384;
@@ -161,23 +191,24 @@ public class AsNode implements IAsEntity{
 	}
 
 	public String getNodeID() {
-		if (stats!=null)
-			return (String)stats.get("cluster_key").value;
-		return "Not available";
+		return this.nodeID;
+//		if (stats!=null)
+//			return (String)stats.get("cluster_key").value;
+//		return "Not available";
 	}
 
-	//	public void setNodeID(String nodeID) {
-	//		firePropertyChange("nodeID", this.nodeID, this.nodeID = nodeID);
-	//	}
-	//
-	//	public String getBuild() {
-	//		return build;
-	//	}
-	//
-	//	public void setBuild(String build) {
-	//		firePropertyChange("build", this.build, this.build = build);
-	//	}
-	//
+		public void setNodeID(String nodeID) {
+			this.nodeID = nodeID;
+		}
+	
+		public String getBuild() {
+			return build;
+		}
+	
+		public void setBuild(String build) {
+			this.build = build;
+		}
+	
 	public int getClusterSize(){
 		if (stats!=null)
 			return Integer.parseInt((String)stats.get("cluster_size").getValue());
@@ -188,15 +219,15 @@ public class AsNode implements IAsEntity{
 			return Long.parseLong((String)stats.get("objects").getValue());
 		return 0;
 	}
-	//
-	//	public String getVersion() {
-	//		return version;
-	//	}
-	//
-	//	public void setVersion(String version) {
-	//		firePropertyChange("version", this.version, this.version = version);
-	//	}
-	//
+	
+		public String getVersion() {
+			return version;
+		}
+	
+		public void setVersion(String version) {
+			this.version = version;
+		}
+	
 
 
 	//	public List<NameValuePair> getStatsAsNameValue(){
@@ -209,7 +240,7 @@ public class AsNode implements IAsEntity{
 	//
 	public String getMigration() {
 		if (stats!=null)
-			return String.format("(%s, %s)", stats.get("migrate_progress_send"), stats.get("migrate_progress_recv"));
+			return String.format("(%s, %s)", stats.get("migrate_progress_send").value, stats.get("migrate_progress_recv").value);
 		return "not available";
 	}
 

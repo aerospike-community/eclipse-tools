@@ -26,7 +26,7 @@ public class AsCluster implements IAsEntity{
 	}
 	public Object[] getChildren(){
 		Object[] kids = new Object[]{
-				//this.namespaces,
+				this.namespaces,
 				this.packages,
 				this.nodes};
 		return kids;

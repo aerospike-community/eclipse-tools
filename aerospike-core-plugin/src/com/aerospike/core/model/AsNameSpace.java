@@ -42,6 +42,17 @@ public class AsNameSpace implements IAsEntity{
 		}
 	}
 	
+	public void mergeSet(String setData){
+		if (sets == null)
+			sets = new HashMap<String, AsSet>();
+		AsSet newSet = new AsSet(this, setData);
+		AsSet existingSet = sets.get(newSet.getName());
+		if (existingSet == null){
+			sets.put(newSet.getName(), newSet);
+		} else {
+			existingSet.mergeSetInfo(setData);
+		}
+	}
 
 	public Object[] getChildren() {
 		return sets.values().toArray();
