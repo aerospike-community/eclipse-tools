@@ -85,7 +85,7 @@ public class AsSet implements IAsEntity{
 					try{
 						Long newValue = Long.parseLong(value);
 						Long oldValue = Long.parseLong(storedValue.value.toString());
-						storedValue.value = (oldValue + newValue);
+						storedValue.value = Long.toString(oldValue + newValue);
 					} catch (NumberFormatException e){
 						storedValue.value = value;
 					}
