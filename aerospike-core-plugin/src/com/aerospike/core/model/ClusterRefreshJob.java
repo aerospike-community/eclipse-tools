@@ -73,7 +73,7 @@ public class ClusterRefreshJob extends Job{
 							String setsString = Info.request(node.getAddress(), node.getPort(), "sets/"+nameSpace);
 							if (!setsString.isEmpty()){
 								String[] sets = setsString.split(";");
-								for (String setData : sets){
+								for (String setData : sets) {
 									nodeNamespace.addSet(setData);
 									clusterNameSpace.mergeSet(setData);
 								}
