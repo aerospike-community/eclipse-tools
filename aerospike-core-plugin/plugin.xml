@@ -127,6 +127,14 @@ Aerospike Nature
 	           icon="icons/refresh_nav_enabled.gif"
 	           menubarPath="additions">
 	     </action>
+	     <action
+	           class="com.aerospike.core.navigator.ClusterPropertiesAction"
+	           enablesFor="+"
+	           id="com.aerospike.core.navigator.ClusterPropertiesAction"
+	           label="Properties"
+	           icon="icons/aerospike.logo.png"
+	           menubarPath="additions">
+	     </action>
 	   </objectContribution>
    </extension>
 <!--
@@ -143,79 +151,6 @@ AQL Builder
          </run>
       </builder>
    </extension>
-<!--
-   <extension
-         point="org.eclipse.ui.commands">
-      <category
-            name="AQL Builder commands"
-            id="com.aerospike.aql.plugin.builder.category">
-      </category>
-      <command
-            name="Add/Remove AQL Builder"
-            defaultHandler="com.aerospike.aql.plugin.actions.AddRemoveAQLBuilder"
-            categoryId="com.aerospike.aql.plugin.builder.category"
-            id="com.aerospike.aql.plugin.AddRemoveBuilder.command">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
-         <command
-               commandId="com.aerospike.aql.plugin.AddRemoveBuilder.command"
-               label="Remove AQL Builder"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate>
-                     <and>
-                        <instanceof
-                              value="org.eclipse.core.resources.IProject">
-                        </instanceof>
-                        <test
-                              value="com.aerospike.core.AerospikeNature"
-                              property="org.eclipse.core.resources.projectNature">
-                        </test>
-                     </and>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="com.aerospike.aql.plugin.AddRemoveBuilder.command"
-               label="Add AQL Builder"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <with
-                     variable="selection">
-                  <count
-                        value="1">
-                  </count>
-                  <iterate>
-                     <and>
-                        <instanceof
-                              value="org.eclipse.core.resources.IProject">
-                        </instanceof>
-                        <not>
-                           <test
-                                 value="com.aerospike.core.AerospikeNature"
-                                 property="org.eclipse.core.resources.projectNature">
-                           </test>
-                        </not>
-                     </and>
-                  </iterate>
-               </with>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-	</extension>
--->
 	
 <!--
 ProjectExplorer extension 
@@ -310,10 +245,6 @@ AQL help
       <toc
             file="toc.xml" primary="true">
       </toc>
-      <!--<toc
-            file="AqlToc.xml"
-            primary="true">
-      </toc>-->
    </extension>
  
 <!-- project decorator   

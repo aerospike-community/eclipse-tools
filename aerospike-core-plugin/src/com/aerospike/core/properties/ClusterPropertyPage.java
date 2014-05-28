@@ -29,6 +29,7 @@ import com.aerospike.core.preferences.PreferenceConstants;
 public class ClusterPropertyPage extends PropertyPage{
 	public static final String ID_SQL = "com.aerospike.properties.clusterPropertyPage.aql";
 	public static final String ID_UDF = "com.aerospike.properties.clusterPropertyPage.udf";
+	public static final String ID = "com.aerospike.properties.clusterPropertyPage.project";
 	private DirectoryFieldEditor udfDirectoryEditor;
 	private DirectoryFieldEditor genDirectoryEditor;
 	private StringFieldEditor seedNodeEditor;
