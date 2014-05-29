@@ -4,6 +4,7 @@ import java.util.Collections;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IViewActionDelegate;
@@ -35,8 +36,9 @@ public class ClusterPropertiesAction implements IViewActionDelegate{
 		   IWorkbench wb = PlatformUI.getWorkbench();
 		   this.window = wb.getActiveWorkbenchWindow();
 		}
-		PreferencesUtil.createPropertyDialogOn(window.getShell(), project, 
+		PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(window.getShell(), project, 
 		    ClusterPropertyPage.ID, new String[] { ClusterPropertyPage.ID }, Collections.EMPTY_MAP);
+		dialog.open();
 	}
 
 	public AsCluster getCluster(IAsEntity selectedEntity) {
