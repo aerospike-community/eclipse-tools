@@ -15,8 +15,11 @@ This feature set provides the following
  	
 
 ##Build Instructions
+Run the ANT script to build the Aerospike Feature.
+
 ```
 ant -f build_feature.xml
 ``` 
+the output will be in the `target` directory.
 
 
