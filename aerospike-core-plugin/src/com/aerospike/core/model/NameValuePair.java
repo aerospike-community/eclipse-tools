@@ -34,4 +34,15 @@ public class NameValuePair implements IAsEntity{
 		return this.parent;
 	}
 	
+	public void clear(){
+		if (this.value != null && (this.value instanceof Long)){
+			this.value = 0L;
+		} else if (this.value != null && (this.value instanceof String)){
+			this.value = "";
+		} else if (this.value != null && (this.value instanceof Integer)){
+			this.value = 0;
+		} else if (this.value != null && (this.value instanceof Float)){
+			this.value = 0.0;
+		}
+	}
 }

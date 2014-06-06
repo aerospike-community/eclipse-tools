@@ -108,4 +108,12 @@ public class AsSet implements IAsEntity{
 		return result;
 	}
 	
+	public void clear(){
+		Set<String> keys = this.values.keySet();
+		for (String key : keys){
+			NameValuePair nvp = this.values.get(key);
+			nvp.clear();
+		}
+	}
+	
 }

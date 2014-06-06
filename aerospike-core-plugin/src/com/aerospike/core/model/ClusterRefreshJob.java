@@ -66,15 +66,18 @@ public class ClusterRefreshJob extends Job{
 				}
 			}
 			monitor.worked(10);
-
+			
 			monitor.subTask("Fetching name spaces");
+			this.cluster.namespaces.clearSetData();
 			// refresh Namespace list for each node
 			for (Object kid : this.cluster.nodes.getChildren()){
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 				if (kid instanceof AsNode){
 					AsNode node = (AsNode)kid;
-					String namespacesString = Info.request(node.getAddress(), node.getPort(), "namespaces");
+					String nodeAddress = node.getAddress();
+					int nodePort = node.getPort();
+					String namespacesString = Info.request(nodeAddress, nodePort, "namespaces");
 					if (!namespacesString.isEmpty()){
 						String[] nameSpaces = namespacesString.split(";");
 						for (String nameSpace : nameSpaces){
@@ -82,7 +85,7 @@ public class ClusterRefreshJob extends Job{
 								return Status.CANCEL_STATUS;
 							AsNameSpace nodeNamespace = node.fetchNameSpace(nameSpace);
 							AsNameSpace clusterNameSpace = this.cluster.namespaces.fetchNameSpace(nameSpace);
-							String setsString = Info.request(node.getAddress(), node.getPort(), "sets/"+nameSpace);
+							String setsString = Info.request(nodeAddress, nodePort, "sets/"+nameSpace);
 							if (!setsString.isEmpty()){
 								String[] sets = setsString.split(";");
 								for (String setData : sets) {
@@ -97,7 +100,6 @@ public class ClusterRefreshJob extends Job{
 				}
 			}
 			monitor.worked(10);
-
 
 			// refresh packages;
 			if (monitor.isCanceled())

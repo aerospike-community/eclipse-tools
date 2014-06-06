@@ -62,5 +62,13 @@ public class AsNameSpace implements IAsEntity{
 	public String getName() {
 		return toString();
 	}
+	
+	public void clear(){
+		if (this.sets != null){
+			for (AsSet set : this.sets.values()){
+				set.clear();
+			}
+		}
+	}
 
 }

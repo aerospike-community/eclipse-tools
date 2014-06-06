@@ -54,5 +54,12 @@ public class NsFolder implements IAsEntity{
 	public Object getParent() {
 		return this.parent;
 	}
-
+	
+	public void clearSetData(){
+		if (nsList != null){
+			for (AsNameSpace ns : nsList.values()){
+				ns.clear();
+			}
+		}
+	}
 }
