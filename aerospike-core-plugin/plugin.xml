@@ -362,31 +362,6 @@ Results view
       </view>
    </extension>
 <!-- 
-Property page
-
-   <extension
-         point="org.eclipse.ui.propertyPages">
-      <page
-            name="Aerospike Query Language"
-            category = "com.aerospike.properties.clusterPropertyPage.project"
-            icon="icons/small/query.png"
-            class="com.aerospike.aql.plugin.properties.AQLPropertyPage"
-            id="com.aerospike.aql.plugin.properties.AQLPropertyPage">
-         <enabledWhen>
-             <and>
-                <instanceof
-                      value="org.eclipse.core.resources.IProject">
-                </instanceof>
-               <test
-                      value="com.aerospike.core.AerospikeNature"
-                      property="org.eclipse.core.resources.projectNature">
-                </test> 
-             </and>
-         </enabledWhen>
-      </page>
-   </extension>
--->
-<!-- 
 UDF popup
 -->
    <extension point="org.eclipse.ui.popupMenus">
@@ -424,30 +399,5 @@ UDF popup
          </action>
       </objectContribution>
    </extension>
- <!-- 
-UDF property page
-
-   <extension
-         point="org.eclipse.ui.propertyPages">
-      <page
-            name="User Defined Functions"
-            category = "com.aerospike.properties.clusterPropertyPage.project"
-            icon="icons/small/UDF.png"
-            class="com.aerospike.udf.properties.UdfPropertyPage"
-            id="com.aerospike.udf.properties.UdfPropertyPage">
-         <enabledWhen>
-             <and>
-                <instanceof
-                      value="org.eclipse.core.resources.IProject">
-                </instanceof>
-               <test
-                      value="com.aerospike.core.AerospikeNature"
-                      property="org.eclipse.core.resources.projectNature">
-                </test> 
-             </and>
-         </enabledWhen>
-      </page>
-   </extension>
--->
 	 
 </plugin>

@@ -77,6 +77,7 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 		private IFile file;
 		private IDocument document;
 		private IDocumentProvider provider = new TextFileDocumentProvider();
+		private int errors = 0;
 
 		public AQLErrorHandler(IFile file) {
 			this.file = file;
@@ -122,9 +123,15 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 			try {
 				addMarker(this.file, message, 
 						line, charStart, charEnd, IMarker.SEVERITY_ERROR);
+				errors++;
 			} catch (BadLocationException e) {
 				CoreActivator.log(Status.ERROR, "Error adding marker to " + file.getName(), e);
 			}
+		}
+
+		@Override
+		public int getErrors() {
+			return errors;
 		}
 
 	}

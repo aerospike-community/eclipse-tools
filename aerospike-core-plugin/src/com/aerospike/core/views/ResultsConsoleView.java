@@ -16,6 +16,7 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	boolean cancelled = false;
 	MessageConsole console;
 	MessageConsoleStream out;
+	int errors = 0;
 
 	public ResultsConsoleView() {
 		console = CoreActivator.findAerospikeConsole();
@@ -109,7 +110,8 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 
 	@Override
 	public void reportError(int line, int offset, int length, String message) {
-		this.report(message);
+		this.report(String.format("Error on Line: %d at %d, %s", line, offset, message));
+		this.errors++;
 	}
 
 	@Override
@@ -165,6 +167,12 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	@Override
 	public boolean isCancelled() {
 		return this.cancelled;
+	}
+
+	@Override
+	public int getErrors() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

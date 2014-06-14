@@ -24,6 +24,7 @@ import org.eclipse.ui.console.IConsoleView;
 import com.aerospike.aql.AQL;
 import com.aerospike.aql.grammar.AQLTree;
 import com.aerospike.aql.grammar.AQLastParser.aqlFile_return;
+import com.aerospike.aql.grammar.AQLastParser.aqlStatements_return;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.views.ResultsConsoleView;
 
@@ -53,7 +54,7 @@ public class AQLContentAssistProcessor implements IContentAssistProcessor {
 			view.display(results.getConsole());
 
 			AQL aql = new AQL();
-			aqlFile_return ast = aql.compile(document.get(), results, results);
+			aqlStatements_return ast = aql.compile(document.get(), results, results);
 			int lineOffset = document.getLineOfOffset(offset);
 			Object token = AQLTree.findTokenByOffset((AQLTree) ast.getTree(), lineOffset, offset-lineOffset);
 			System.out.println(token);
