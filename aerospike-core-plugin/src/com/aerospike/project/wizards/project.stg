@@ -74,7 +74,7 @@ pom(artifactId, name, version, author, email, mainClass, package)::=<<
 		<dependency>
 			<groupId>com.aerospike</groupId>
 			<artifactId>aerospike-client</artifactId>
-			<version>3.0.22</version>
+			<version>3.0.25</version>
 		</dependency>
 		<!-- Apache command line parser. -->
 		<dependency>
@@ -137,6 +137,14 @@ pom(artifactId, name, version, author, email, mainClass, package)::=<<
 				</executions>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources/</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 </project>
 >>
@@ -164,7 +172,7 @@ ignore()::=<<
 
 >>
 
-mainClass(name, author, package)::=<<
+mainClass(name, author, package, seedNode, port)::=<<
 package %package%;
 
 import java.io.PrintWriter;
@@ -210,8 +218,8 @@ public class %name% {
 	public static void main(String[] args) throws AerospikeException {
 		try {
 			Options options = new Options();
-			options.addOption("h", "host", true, "Server hostname (default: localhost)");
-			options.addOption("p", "port", true, "Server port (default: 3000)");
+			options.addOption("h", "host", true, "Server hostname (default: %seedNode%)");
+			options.addOption("p", "port", true, "Server port (default: %port%)");
 			options.addOption("n", "namespace", true, "Namespace (default: test)");
 			options.addOption("s", "set", true, "Set (default: demo)");
 			options.addOption("u", "usage", false, "Print usage.");
@@ -220,8 +228,8 @@ public class %name% {
 			CommandLine cl = parser.parse(options, args, false);
 
 
-			String host = cl.getOptionValue("h", "127.0.0.1");
-			String portString = cl.getOptionValue("p", "3000");
+			String host = cl.getOptionValue("h", "%seedNode%");
+			String portString = cl.getOptionValue("p", "%port%");
 			int port = Integer.parseInt(portString);
 			String namespace = cl.getOptionValue("n", "test");
 			String set = cl.getOptionValue("s", "demo");
@@ -239,9 +247,9 @@ public class %name% {
 
 			%name% as = new %name%(host, port, namespace, set);
 
-			// TODO add your code here
+			as.work();
 
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			log.error("Critical error", e);
 		}
 	}
@@ -256,13 +264,17 @@ public class %name% {
 		formatter.printHelp(pw, 100, syntax, "options:", options, 0, 2, null);
 		log.info(sw.toString());
 	}
+	
+	public void work() throws Exception {
+		// TODO add your code here
+	}
 
 }
 >>
 
-log4J(package)::=<<
-log4j.logger.%package%=info, CONSOLE
-#log4j.logger.%package%=debug, CONSOLE, FILE
+log4J(package, mainClass)::=<<
+log4j.logger.%package%.%mainClass%=info, CONSOLE
+#log4j.logger.%package%.%mainClass%=debug, CONSOLE, FILE
 
 # CONSOLE is set to be a ConsoleAppender using a PatternLayout.
 log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender

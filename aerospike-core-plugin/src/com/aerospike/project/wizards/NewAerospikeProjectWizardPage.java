@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -19,6 +20,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+
+import com.aerospike.core.CoreActivator;
+import com.aerospike.core.preferences.PreferenceConstants;
 
 /**
  * The "New" wizard page allows setting the container for the new file as well
@@ -43,6 +49,12 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	private Text artifactIdText;
 	private Label lblVersion;
 	private Text versionText;
+	private Label lblSeedNode;
+	private Text seedNodeText;
+	private Label lblPort;
+	private Text portText;
+	private IPreferenceStore store;
+	
 
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -54,6 +66,7 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		setTitle("New Aerospike project");
 		setDescription("This wizard creates a new Aerospike project. This project can be used as a start for an Aerospike application in Java");
 		this.selection = selection;
+		this.store = CoreActivator.getDefault().getPreferenceStore();
 	}
 
 	/**
@@ -133,6 +146,42 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		
 		emailText = new Text(container, SWT.BORDER);
 		emailText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(container, SWT.NONE);
+		
+		lblSeedNode = new Label(container, SWT.NONE);
+		lblSeedNode.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblSeedNode.setText("Seed node:");
+		
+		seedNodeText = new Text(container, SWT.BORDER);
+		seedNodeText.setText(store.getString(PreferenceConstants.SEED_NODE));
+		seedNodeText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(container, SWT.NONE);
+		
+		lblPort = new Label(container, SWT.NONE);
+		lblPort.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblPort.setText("Port:");
+		
+		portText = new Text(container, SWT.BORDER);
+		portText.setText(Integer.toString(store.getInt(PreferenceConstants.PORT)));
+		portText.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				String currentText = ((Text)e.widget).getText();
+		        String port =  currentText.substring(0, e.start) + e.text + currentText.substring(e.end);
+		        try{  
+		            int portNum = Integer.valueOf(port);  
+		            if(portNum <0 || portNum > 65535){  
+		                e.doit = false;  
+		            }  
+		        }  
+		        catch(NumberFormatException ex){  
+		            if(!port.equals(""))
+		                e.doit = false;  
+		        }  
+			}
+		});
+		GridData gd_portText = new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1);
+		gd_portText.widthHint = 95;
+		portText.setLayoutData(gd_portText);
 		new Label(container, SWT.NONE);
 	}
 
@@ -218,4 +267,14 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	public String getEmail() {
 		return emailText.getText();
 	}
+	public String getSeedNode(){
+		return seedNodeText.getText();
+	}
+	public int getPort(){
+		return Integer.parseInt(portText.getText());
+	}
+	public String getPortString(){
+		return portText.getText();
+	}
+
 }

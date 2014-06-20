@@ -48,6 +48,7 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
+import com.aerospike.core.CoreActivator;
 import com.aerospike.core.nature.AerospikeNature;
 
 
@@ -88,11 +89,17 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 		final String artifactId = page.getArtifiactId();
 		final String version = page.getVersion();
 		final String mainClass = page.getMainClassName();
+		final String seedNode = page.getSeedNode();
+		final String port = page.getPortString();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
 					//Create the project
 					IProject project = createProject(projectName, monitor);
+					project.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, seedNode);
+					project.setPersistentProperty(CoreActivator.PORT_PROPERTY, port);
+					project.setPersistentProperty(CoreActivator.UDF_DIRECTORY, null);
+					project.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, null);
 					//make a java project
 					IJavaProject javaProject = JavaCore.create(project);
 					// create the classpath entries
@@ -159,7 +166,8 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					// create the log4J.properties
 					template = projectSTG.getInstanceOf("log4J");
 					template.add("package", PACKAGE_COM_AEROSPIKE_EXAMPLE);
-					createFile(project, srcMainResource, "log4j.properties", monitor, template);
+					template.add("mainClass", mainClass);
+					createFile(project, srcMainJava, "log4j.properties", monitor, template);
 					// create the .gitignore
 					template = projectSTG.getInstanceOf("ignore");
 					createFile(project, null, ".gitignore", monitor, template);
@@ -175,6 +183,8 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					template.add("name", mainClass);
 					template.add("package", PACKAGE_COM_AEROSPIKE_EXAMPLE);
 					template.add("author", author);
+					template.add("seedNode", seedNode);
+					template.add("port", port);
 					final ICompilationUnit cu = pack.createCompilationUnit(mainClass+".java", template.render(), false, monitor);
 					// open editor on main class
 					monitor.setTaskName("Opening file for editing...");

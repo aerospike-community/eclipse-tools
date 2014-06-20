@@ -247,7 +247,7 @@ AQL help
       </toc>
    </extension>
  
-<!-- project decorator   
+<!-- project decorator -->
    <extension
          point="org.eclipse.ui.decorators">
       <decorator
@@ -266,7 +266,7 @@ AQL help
          </enablement>
       </decorator>
    </extension>
--->
+
 <!--
 AQL Editor
 -->   
