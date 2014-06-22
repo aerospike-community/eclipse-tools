@@ -13,6 +13,11 @@ This feature set provides the following
  	- AQL execution on the connected Cluster
  	- Generation of Java (future C#, C) application from AQL
  	
+##Installation
+Add the following URL to your software update sites
+
+https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
+
 
 ##Build Instructions
 Run the ANT script to build the Aerospike Feature.
