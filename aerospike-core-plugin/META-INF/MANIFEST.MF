@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: aerospike-core-plugin
+Bundle-Name: Aerospike Core Plugin
 Bundle-SymbolicName: aerospike-core-plugin;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: com.aerospike.core.CoreActivator
