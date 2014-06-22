@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/com.aerospike.feature_3.0.0.201406221545.jar" id="com.aerospike.feature" version="3.0.0.201406221545">
+   <feature url="features/com.aerospike.feature_3.0.0.201406221810.jar" id="com.aerospike.feature" version="3.0.0.201406221810" os="linux,macosx,win32">
       <category name="Aerospike"/>
    </feature>
    <category-def name="Aerospike" label="Aerospike"/>
