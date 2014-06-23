@@ -243,7 +243,7 @@ AQL help
    <extension
          point="org.eclipse.help.toc">
       <toc
-            file="toc.xml" primary="true">
+            file="html/toc.xml" primary="true">
       </toc>
    </extension>
  
