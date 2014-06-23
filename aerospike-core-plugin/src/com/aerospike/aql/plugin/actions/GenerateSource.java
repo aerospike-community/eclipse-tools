@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
@@ -34,6 +35,7 @@ import com.aerospike.aql.AQL;
 import com.aerospike.aql.plugin.views.AQLResult;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.model.AsCluster;
+import com.aerospike.core.preferences.PreferenceConstants;
 
 public class GenerateSource implements IWorkbenchWindowActionDelegate {
 	private static final String COULD_NOT_GENERATE_CODE_FROM_SQL_FILE = "Could not generate code from SQL file: ";
@@ -107,11 +109,15 @@ public class GenerateSource implements IWorkbenchWindowActionDelegate {
 						protected IStatus run(IProgressMonitor monitor) {
 							AQL aql = new AQL();
 							try {
-								String seedNode = "127.0.0.1";
+								String seedNode = "";
 								int port = 3000;
 								if (cluster!=null){
 									seedNode = cluster.getSeedHost();
 									port = cluster.getPort();
+								} else {
+									IPreferenceStore store = CoreActivator.getDefault().getPreferenceStore();
+									seedNode = store.getString(PreferenceConstants.SEED_NODE);
+									port = store.getInt(PreferenceConstants.PORT);
 								}
 								aql.compileAndGenerate(file, outputFile, language, seedNode, port);
 								results.report("Completed generation for " + sqlFile.getName());

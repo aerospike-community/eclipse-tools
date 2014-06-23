@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Record UDF</title>
+</head>
+<h1>Record UDF</h1>
+A User Defined Function (UDF) is a piece of code, 
+written by a user (or developer) in the Lua programming language that runs inside the Aerospike database server. 
+UDFs significantly extend the capability of the Aerospike Database engine both in terms of functionality and performance. 
+Record UDF operates on single record. Record UDF can be executed on result record set from other system feature like Scan / Query / Batch.<p>
+
+<h2>Why would I use Record UDF ?</h2>
+<h3>Performance</h3>
+
+For large records with complex structure, pushing record read/write logic server side removes requirement of reading and writing entire record reducing network overhead
+Moving the operation into the server via a UDF call, 
+complex operation can be done under the umbrella of a single transaction, 
+removing need for the "Compare and Set" (CAS) mode of operation.<p>
+
+<h3>Functionality</h3>
+
+Using the basic types (string, number, byte array) and the collection types (list, map), 
+virtually any complex data structure and function can be created with a UDF.
+
+
+<h2>How Would I Use Them?</h2>
+This section walks a developer through the steps to build and run a Record UDF against an Aerospike Server cluster.<p>
+
+The following steps are involved:<p>
+
+<ul>
+	<li>Install and configure the server.</li>
+	<li>Write a User-Defined Function (UDF)</li>
+	<li>Register a UDF package</li>
+	<li>Execute a command using the UDF</li>
+	<li>Writing a Record UDF</li>
+	<li>Write a UDF in the Lua programming language (http://www.lua.org/).</li> 
+</ul>       
+
+Please refer to UDF Developer Guide.<p>
+
+<body>
+</body>
+</html>

@@ -16,6 +16,7 @@ public class AerospikePreferencePage
 	private IntegerFieldEditor portEditor;
 	private StringFieldEditor udfDirectoryEditor;
 	private StringFieldEditor genDirectoryEditor;
+	private StringFieldEditor aqlDirectoryEditor;
 
 	public AerospikePreferencePage() {
 		super(GRID);
@@ -37,14 +38,14 @@ public class AerospikePreferencePage
 		portEditor = new IntegerFieldEditor(PreferenceConstants.PORT, "&Port:", getFieldEditorParent());
 		portEditor.setPreferenceStore(store);
 		addField(portEditor);
-//		addField(new DirectoryFieldEditor(PreferenceConstants.UDF_PATH, 
-//				"&UDF Directory:", getFieldEditorParent()));
-//		addField(new DirectoryFieldEditor(PreferenceConstants.GENERATION_PATH, 
-//				"&Generation Directory:", getFieldEditorParent()));
 		udfDirectoryEditor = new StringFieldEditor(PreferenceConstants.UDF_PATH, 
 				"&UDF Directory:", getFieldEditorParent());
 		udfDirectoryEditor.setPreferenceStore(store);
 		addField(udfDirectoryEditor);
+		aqlDirectoryEditor = new StringFieldEditor(PreferenceConstants.AQL_PATH, 
+				"&AQL Directory:", getFieldEditorParent());
+		aqlDirectoryEditor.setPreferenceStore(store);
+		addField(aqlDirectoryEditor);
 		genDirectoryEditor = new StringFieldEditor(PreferenceConstants.GENERATION_PATH, 
 				"&Generation Directory:", getFieldEditorParent());
 		genDirectoryEditor.setPreferenceStore(store);

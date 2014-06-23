@@ -24,7 +24,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.UDF_PATH,
 				"udf");
 		store.setDefault(PreferenceConstants.GENERATION_PATH,
-				"generated");
+				"src/generated");
+		store.setDefault(PreferenceConstants.AQL_PATH,
+				"aql");
 	}
 
 }

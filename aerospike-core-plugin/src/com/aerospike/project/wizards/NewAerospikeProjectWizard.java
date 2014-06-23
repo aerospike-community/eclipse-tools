@@ -34,6 +34,7 @@ import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -50,6 +51,7 @@ import org.stringtemplate.v4.STGroupFile;
 
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.nature.AerospikeNature;
+import com.aerospike.core.preferences.PreferenceConstants;
 
 
 public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
@@ -57,13 +59,15 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 	public static final String ID = "com.aerospike.eclipse.wizards.NewAerospikeProjectWizard";
 	private NewAerospikeProjectWizardPage page;
 	private ISelection selection;
+	private IPreferenceStore store;
 
 	/**
-	 * Constructor for NewExampleWizard.
+	 * Constructor for NewAerospikeProjectWizard.
 	 */
 	public NewAerospikeProjectWizard() {
 		super();
 		setNeedsProgressMonitor(true);
+		this.store = CoreActivator.getDefault().getPreferenceStore();
 	}
 
 	/**
@@ -132,9 +136,9 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					IFolder srcTestResource = project.getFolder("src/test/resource");
 					createFolder(srcTestResource);
 					// create aerospike folders
-					IFolder srcUDF = project.getFolder("udf");
+					IFolder srcUDF = project.getFolder(store.getString(PreferenceConstants.UDF_PATH));
 					createFolder(srcUDF);
-					IFolder srcGenerated = project.getFolder("src/generated");
+					IFolder srcGenerated = project.getFolder(store.getString(PreferenceConstants.GENERATION_PATH));
 					createFolder(srcGenerated);
 					IFolder srcAql = project.getFolder("aql");
 					createFolder(srcAql);
