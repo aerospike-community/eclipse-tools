@@ -1,6 +1,7 @@
 The Aerospike Developer's Toolkit provides the developer with facilities that aid in developing applications that use Aerospike.
 
 These are:
+* New Aerospike project wizard
 * Cluster Explorer
 * User Defined Function (UDF) registration
 * Aerospike Query Language (AQL)
@@ -14,6 +15,28 @@ The update site for the this plugin is located at: https://github.com/aerospike/
 
 Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/tasks-127.htm) to you Eclipse environment.
 
+# New Aerospike Project wizard
+
+The new project wizard will generate a new Java project with a Maven nature and an Aerospike nature. Your Eclipse environment will need to have the Eclipse **Java development Toolkit (JDT)** and the **Maven (m2e)** plugins installed prior to running this wizard.
+
+To generate a new Aerospike plugin, , 
+
+<img src="assets/eclipse_new_project.png" alt="New -> Project" width="50%" height="50%"/>
+
+then Expand the Aerospike category, and select `New Aerospike Project`
+
+<img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
+
+The New Aerospike project wizard will start and display the Aerospike properties page
+
+<img src="assets/eclipse_new_project_aerospike_properties.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
+
+Enter the properties and click `Finish`
+
+After the project has been generated, Right click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
+ 
+<img src="assets/eclipse_update_maven.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
+  
 # Cluster Explorer
 
 The cluster connection details, of seed node and port, are stored in persistent properties attached to the project. 
