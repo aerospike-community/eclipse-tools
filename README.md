@@ -31,6 +31,8 @@ The New Aerospike project wizard will start and display the Aerospike properties
 
 <img src="assets/eclipse_new_project_aerospike_properties.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
+
+
 Enter the properties and click `Finish`
 
 After the project has been generated, Right click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
