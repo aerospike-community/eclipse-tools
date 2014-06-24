@@ -19,13 +19,20 @@ Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/in
 
 The new project wizard will generate a new Java project with a Maven nature and an Aerospike nature. Your Eclipse environment will need to have the Eclipse **Java development Toolkit (JDT)** and the **Maven (m2e)** plugins installed prior to running this wizard.
 
-To generate a new Aerospike plugin, , 
+To generate a new Aerospike Java project
+
+Select New Project
 
 <img src="assets/eclipse_new_project.png" alt="New -> Project" width="50%" height="50%"/>
+
+The new project dislog will be displayed
+
+<img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
 then Expand the Aerospike category, and select `New Aerospike Project`
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
+
 
 The New Aerospike project wizard will start and display the Aerospike properties page
 
