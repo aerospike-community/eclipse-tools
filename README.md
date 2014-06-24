@@ -17,16 +17,12 @@ Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/in
 # Cluster Explorer
 
 The cluster connection details, of seed node and port, are stored in persistent properties attached to the project. 
-{{#figure "Figure 1" "Properties" size="small"}}
 ![Figure 1](assets/eclipse_aerospike_properties.png) 
-{{/figure}}
 
 These properties also store the location of UDF modules, and the output directory of generated code.
 
 The cluster explorer adds Aerospike specific elements to the Explorer tree:
-{{#figure "Figure 2" "Cluster explorer elements" size="small"}}
 ![Figure 2](assets/eclipse_cluster_explorer.png)
-{{/figure}}
 		
 **Note:**
 These extensions are not visible in the Java Package Explorer (JDT limitation)
@@ -38,9 +34,7 @@ These extensions are not visible in the Java Package Explorer (JDT limitation)
 User Defined Function need to be registered with the cluster before they are available for use. During development, you may need to frequently register UDF packages with your development cluster as you make additions and modifications.
 
 To do this, simply right-click, in the Explorer, on the Lua file containing the UDF package. Select the popup menu `Register UDF`
-{{#figure "Figure 3" "Register UDF" size="small"}}
 ![Figure 3](assets/eclipse_register_udf.png) 
-{{/figure}}
 
 The UDF package will be registered with the cluster configured in the `Properties` page.
 
@@ -54,20 +48,18 @@ The AQL editor provides color syntax highlighting of the language elements, plus
 ## Query Execution
 An AQL file can be directly executed on the cluster configured.
 Right-click on the aql file and select `Execute AQL`. The output from the cluster will be displayed in the console view.
-{{#figure "Figure 4" "AQL Menu" size="small"}}
 ![Figure 3](assets/eclipse_aql_menu.png) 
-{{/figure}}
 
 
 ## Code Generation
 You can translate the AQL statements int the semantic equivalent Java code. To generate a Java class, Right-click on `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `Generation` folder. The location of this folder is configured in the Aerospike properties.
 
 This AQL code: 
-![Figure 3](assets/eclipse_aql_editor.png =100x50) 
+![Figure 3](assets/eclipse_aql_editor.png) 
 
 
 Will generate this Java code:
-![Figure 3](assets/eclipse_exported_java.png =100x50) 
+<img src="assets/eclipse_exported_java.png" alt="iFigure 3" />
 
 
 The class is immediately runnable, and it can be a start to build on.
