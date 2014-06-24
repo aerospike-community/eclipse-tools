@@ -63,14 +63,12 @@ Right-click on the aql file and select `Execute AQL`. The output from the cluste
 You can translate the AQL statements int the semantic equivalent Java code. To generate a Java class, Right-click on `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `Generation` folder. The location of this folder is configured in the Aerospike properties.
 
 This AQL code: 
-{{#figure "Figure 5" "AQL Editor" size="small"}}
-![Figure 3](assets/eclipse_aql_editor.png) 
-{{/figure}}
+![Figure 3](assets/eclipse_aql_editor.png =100x50) 
+
 
 Will generate this Java code:
-{{#figure "Figure 6" "Generated Java" size="small"}}
-![Figure 3](assets/eclipse_exported_java.png) 
-{{/figure}}
+![Figure 3](assets/eclipse_exported_java.png =100x50) 
+
 
 The class is immediately runnable, and it can be a start to build on.
 
