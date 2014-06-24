@@ -69,14 +69,7 @@ The cluster explorer adds Aerospike specific elements to the Explorer tree:
 
 <img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
 
-<<<<<<< HEAD
-=======
-* **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
-* **Port** - The port used by the seed node 
-* **UDF Directory** - The directory where the User Defined Function are located. This directory is relative to the project root. The local client will look for UDFs here.
-* **Generation Directory** - The directory where the source code will be generated from AQL.
->>>>>>> branch 'master' of https://github.com/aerospike/eclipse-tools.git
-		
+
 **Note:**
 These extensions are not visible in the Java Package Explorer (JDT limitation)
 
