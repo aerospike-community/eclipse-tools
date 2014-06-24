@@ -38,7 +38,14 @@ The New Aerospike project wizard will start and display the Aerospike properties
 
 <img src="assets/eclipse_new_project_aerospike_properties.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
-
+* **Project Name** - The name of the Eclipse project and the Maven project name.
+* **Artifact ID** - Tne Maven artifact ID
+* **Version** - The Maven version
+* **Main Class* - The name of the Java main class
+* **Author** - The project author in the Maven POM.
+* **email** - Email address of the author in the Maven POM
+* **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
+* **Port** - The port used by the seed node 
 
 Enter the properties and click `Finish`
 
@@ -52,12 +59,16 @@ The cluster connection details, of seed node and port, are stored in persistent 
 
 <img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
  
+* **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
+* **Port** - The port used by the seed node 
+* **UDF Directory** - The directory where the User Defined Function are located. This directory is relative to the project root. The local client will look for UDFs here.
+* **Generation Directory** - The directory where the source code will be generated from AQL.
 
-These properties also store the location of UDF modules, and the output directory of generated code.
 
 The cluster explorer adds Aerospike specific elements to the Explorer tree:
 
 <img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
+
 		
 **Note:**
 These extensions are not visible in the Java Package Explorer (JDT limitation)
