@@ -41,7 +41,7 @@ The New Aerospike project wizard will start and display the Aerospike properties
 * **Project Name** - The name of the Eclipse project and the Maven project name.
 * **Artifact ID** - Tne Maven artifact ID
 * **Version** - The Maven version
-* **Main Class* - The name of the Java main class
+* **Main Class** - The name of the Java main class
 * **Author** - The project author in the Maven POM.
 * **email** - Email address of the author in the Maven POM
 * **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
