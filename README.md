@@ -120,12 +120,6 @@ The source code is available on GitHub at: https://github.com/aerospike/eclipse-
 ```bash
 git clone https://github.com/aerospike/eclipse-tools.git
 ```
-##Build Instructions
-Run the ANT script to build the Aerospike Feature.
 
-```
-ant -f build_feature.xml
-``` 
-the output will be in the `target` directory.
 
 
