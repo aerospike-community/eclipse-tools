@@ -1,7 +1,8 @@
-The Aerospike Developer's Toolkit provides the developer with facilities that aid in developing applications that use Aerospike.
+This Aerospike Toolkit makes it easier for Java developers using Eclipse IDE in incorporating Aerospike functionality into their applications.
 
-These are:
-* New Aerospike project wizard
+The toolkit currently includes:
+
+* Aerospike Project wizard
 * Cluster Explorer
 * User Defined Function (UDF) registration
 * Aerospike Query Language (AQL)
@@ -11,9 +12,18 @@ These are:
 	
 
 # Installation
-The update site for the this plugin is located at: https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site 
+The update site for the this toolkit can be found here: https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site 
 
-Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/tasks-127.htm) to you Eclipse environment.
+Eclipse Java EE IDE for Web Developers:
+
+* Click on Help >> Install New Software...
+* In 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
+* In the checkbox below, check Aerospike
+* Click Next and complete installation process - this requires you to restart Eclipse 
+
+Eclipse Workbench Developers:
+
+Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/tasks-127.htm) to your  environment.
 
 # New Aerospike Project wizard
 
