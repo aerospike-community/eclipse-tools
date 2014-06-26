@@ -10,7 +10,6 @@ The toolkit currently includes:
 	* Query execution
 	* Code generation
 	
-
 # Installation
 The update site for the this toolkit can be found here: https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site 
 
@@ -55,18 +54,18 @@ The New Aerospike project wizard will be displayed with Aerospike properties to 
 * **Project Name** - Name of your Eclipse project -- this will also be set as the Maven project name
 * **Artifact ID** - Maven artifact ID
 * **Version** - Maven version
-* **Main Class** - Name of the Java main class
-* **Author** - The project author in the Maven POM.
+* **Main Class** - Name of the main Java class
+* **Author** - Project author in the Maven POM
 * **email** - Email address of the author in the Maven POM
 * **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
 * **Port** - The port used by the seed node 
 
-Enter the properties and click `Finish`
+Click Finish
 
-After the project has been generated, Right click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
- 
+After the project has been generated, right-click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
+
 <img src="assets/eclipse_update_maven.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
-  
+
 # Cluster Explorer
 
 The cluster connection details, of seed node and port, are stored in persistent properties attached to the project. 
