@@ -13,14 +13,14 @@ The toolkit currently includes:
 # Installation
 The update site for the this toolkit can be found here: https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site 
 
-Eclipse Java EE IDE for Web Developers:
+**Eclipse Java EE IDE for Web Developers:**
 
 * Click Help >> Install New Software...
 * For 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
 * Check Aerospike checkbox below
 * Click Next and complete installation process - this requires you to restart Eclipse 
 
-Eclipse Workbench Developers:
+**Eclipse Workbench Developers:**
 
 Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/tasks-127.htm) to your  environment.
 
