@@ -2,7 +2,7 @@ This Aerospike Toolkit makes it easier for Java developers using Eclipse IDE in 
 
 The toolkit currently includes:
 
-* Aerospike Project wizard
+* Aerospike Java Project wizard
 * Cluster Explorer
 * User Defined Function (UDF) registration
 * Aerospike Query Language (AQL)
@@ -16,42 +16,46 @@ The update site for the this toolkit can be found here: https://github.com/aeros
 
 Eclipse Java EE IDE for Web Developers:
 
-* Click on Help >> Install New Software...
-* In 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
-* In the checkbox below, check Aerospike
+* Click Help >> Install New Software...
+* For 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
+* Check Aerospike checkbox below
 * Click Next and complete installation process - this requires you to restart Eclipse 
 
 Eclipse Workbench Developers:
 
 Follow these instructions to [Add Update Site](http://help.eclipse.org/kepler/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/tasks-127.htm) to your  environment.
 
-# New Aerospike Project wizard
+# Aerospike Java Project wizard
 
-The new project wizard will generate a new Java project with a Maven nature and an Aerospike nature. Your Eclipse environment will need to have the Eclipse **Java development Toolkit (JDT)** and the **Maven (m2e)** plugins installed prior to running this wizard.
+Prerequisites:
 
-To generate a new Aerospike Java project
+* Java Development Toolkit (JDT)
+* Maven
 
-Select New Project
+This wizard will help you generate a starter Java project that uses Aerospike.
+
+To generate a new Aerospike Java project:
+
+Click File >> New >> Project
 
 <img src="assets/eclipse_new_project.png" alt="New -> Project" width="50%" height="50%"/>
 
-The new project dislog will be displayed
+The New Project dialog will be displayed
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
-then Expand the Aerospike category, and select `New Aerospike Project`
+Expand Aerospike category, select *New Aerospike Project* and click Next
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
-
-The New Aerospike project wizard will start and display the Aerospike properties page
+The New Aerospike project wizard will be displayed with Aerospike properties to be filled
 
 <img src="assets/eclipse_new_project_aerospike_properties.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
-* **Project Name** - The name of the Eclipse project and the Maven project name.
-* **Artifact ID** - Tne Maven artifact ID
-* **Version** - The Maven version
-* **Main Class** - The name of the Java main class
+* **Project Name** - Name of your Eclipse project -- this will also be set as the Maven project name
+* **Artifact ID** - Maven artifact ID
+* **Version** - Maven version
+* **Main Class** - Name of the Java main class
 * **Author** - The project author in the Maven POM.
 * **email** - Email address of the author in the Maven POM
 * **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
