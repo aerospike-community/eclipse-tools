@@ -1,6 +1,6 @@
 The Aerospike Developer's Toolkit provides the developer with facilities that aid in developing applications that use Aerospike.
 
-These are:
+These facilities are:
 * New Aerospike project wizard
 * Cluster Explorer
 * User Defined Function (UDF) registration
