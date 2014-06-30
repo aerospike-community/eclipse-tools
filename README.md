@@ -6,9 +6,9 @@ The toolkit currently includes:
 * Cluster Explorer
 * User Defined Function (UDF) Registration
 * Aerospike Query Language (AQL)
-	* AQL specific editor
-	* Query execution
-	* Code generation
+	* AQL Editor
+	* Query Execution
+	* Code Generation
 	
 # Installation
 
@@ -85,7 +85,7 @@ These extensions are not visible in the Java Package Explorer (JDT limitation)
 
 User Defined Functions need to be registered with the cluster before they are available for use. During development, you may need to frequently register UDF packages with your development cluster as you make additions and modifications.
 
-To register, in Package Explorer right-click on the Lua file containing the UDF package. Select `Aerospike` >> `Register UDF`
+*Usage*: In Package Explorer, right-click on the Lua (.lua) file containing the UDF package. Then select `Aerospike` >> `Register UDF`
 
 <img src="assets/eclipse_register_udf.png" alt="Figure 3" width="50%" height="50%"/>
 
@@ -93,38 +93,35 @@ The UDF package will be registered with the cluster configured in the `Propertie
 
 
 # Aerospike Query Language
-Aerospike Query Language (aql) is an SQL-like language that is specific to Aerospike, it is easy to learn because of its similarity to SQL 
+Aerospike Query Language (aql) is a SQL-like language made available for database, UDF and index management operations. It is easy to learn because of its similarity to SQL.
 
 ## AQL Editor
-The AQL editor provides color syntax highlighting of the language elements, plus error checking when the AQL file is saved.
+The AQL Editor provides color syntax highlighting of the language elements and error checking when the AQL file is saved.
 
 ## Query Execution
-An AQL file can be directly executed on the cluster configured.
-Right-click on the aql file and select `Execute AQL`. The output from the cluster will be displayed in the console view.
+An AQL file can be executed directlty on the cluster configured.
+Right-click on the aql file and select `Aerospike` >> `Execute AQL`. The output from the cluster will be displayed in the console view.
 
 <img src="assets/eclipse_aql_menu.png" alt="Figure 4" width="50%" height="50%"/>
 
 ## Code Generation
-You can translate the AQL statements int the semantic equivalent Java code. To generate a Java class, Right-click on `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `Generation` folder. The location of this folder is configured in the Aerospike properties.
+This tool lets you generate executable Java code from AQL statements. 
 
-This AQL code: 
+*Usage*: In Package Explorer, right-click on the AQL (.aql) file containing aql statements. Then select `Aerospike` >> `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `generated` folder. The location of this folder is configured in Aerospike properties.
 
-<img src="assets/eclipse_aql_editor.png" alt="Figure 5" width="50%" height="50%"/>
+For example, this AQL code: 
 
-Will generate this Java code:
-
-<img src="assets/eclipse_exported_java.png" alt="iFigure 6" width="50%" height="50%"/>
-
-
-The class is immediately runnable, and it can be a start to build on.
-
-# Source Code
-
-The source code is available on GitHub at: https://github.com/aerospike/eclipse-tools
-
-```bash
-git clone https://github.com/aerospike/eclipse-tools.git
+```aql
+select FL_DATE_BIN from bar.flights where PK = 5000
 ```
+
+Generates this Java code:
+
+```java
+record = client.get(this.policy, new Key("bar", "flights", Value.get(5000)), "FL_DATE_BIN");
+```
+
+
 
 
 
