@@ -59,9 +59,7 @@ Where:
 * **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
 * **Port** - Port used by the seed node
 
-After filling in the properties, click `Finish`
-
-After the project is generated, right-click on the project in Package Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
+After filling in the properties, click `Finish`. Once the project is generated, right-click on the project in Package Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
 
 <img src="assets/eclipse_update_maven.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
