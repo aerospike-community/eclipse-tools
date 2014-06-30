@@ -40,7 +40,7 @@ The New Project dialog will be displayed
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
-Expand `Aerospike` category, select `New Aerospike Project` and click Next
+Expand `Aerospike` category, then select `New Aerospike Project` and click `Next`
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
