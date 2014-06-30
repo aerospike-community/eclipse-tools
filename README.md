@@ -16,8 +16,8 @@ The toolkit currently includes:
 
 * Click `Help >> Install New Software...`
 * For 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
-* Check `Aerospike` checkbox below
-* Click `Next` and complete installation process - this requires you to restart Eclipse 
+* Check `Aerospike` checkbox
+* Click `Next` and complete installation process - this step requires you to restart Eclipse 
 
 **Eclipse Workbench Developers:**
 
@@ -32,7 +32,7 @@ Prerequisites:
 
 This wizard will help you generate a starter Java project that uses Aerospike.To generate a new Aerospike Java project:
 
-Click File >> New >> Project
+Click `File >> New >> Project`
 
 <img src="assets/eclipse_new_project.png" alt="New -> Project" width="50%" height="50%"/>
 
@@ -40,7 +40,7 @@ The New Project dialog will be displayed
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
-Expand Aerospike category, select *New Aerospike Project* and click Next
+Expand `Aerospike` category, select `New Aerospike Project` and click Next
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
@@ -57,7 +57,7 @@ The New Aerospike project wizard will be displayed with Aerospike properties to 
 * **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
 * **Port** - The port used by the seed node 
 
-Click Finish
+Click `Finish`
 
 After the project has been generated, right-click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
 
@@ -74,16 +74,12 @@ The cluster connection details, of seed node and port, are stored in persistent 
 * **UDF Directory** - The directory where the User Defined Function are located. This directory is relative to the project root. The local client will look for UDFs here.
 * **Generation Directory** - The directory where the source code will be generated from AQL.
 
-
 The cluster explorer adds Aerospike specific elements to the Explorer tree:
 
 <img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
 
-
 **Note:**
 These extensions are not visible in the Java Package Explorer (JDT limitation)
-
-
 
 # User Defined Functions (UDFs)
 
