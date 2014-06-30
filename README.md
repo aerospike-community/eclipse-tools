@@ -11,14 +11,13 @@ The toolkit currently includes:
 	* Code generation
 	
 # Installation
-The update site for the this toolkit can be found here: https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site 
 
 **Eclipse Java EE IDE for Web Developers:**
 
-* Click Help >> Install New Software...
+* Click `Help >> Install New Software...`
 * For 'Work with' enter:  https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site
-* Check Aerospike checkbox below
-* Click Next and complete installation process - this requires you to restart Eclipse 
+* Check `Aerospike` checkbox below
+* Click `Next` and complete installation process - this requires you to restart Eclipse 
 
 **Eclipse Workbench Developers:**
 
@@ -31,9 +30,7 @@ Prerequisites:
 * Java Development Toolkit (JDT)
 * Maven
 
-This wizard will help you generate a starter Java project that uses Aerospike.
-
-To generate a new Aerospike Java project:
+This wizard will help you generate a starter Java project that uses Aerospike.To generate a new Aerospike Java project:
 
 Click File >> New >> Project
 
