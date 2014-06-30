@@ -4,7 +4,7 @@ The toolkit currently includes:
 
 * Aerospike Java Project wizard
 * Cluster Explorer
-* User Defined Function (UDF) registration
+* User Defined Function (UDF) Registration
 * Aerospike Query Language (AQL)
 	* AQL specific editor
 	* Query execution
@@ -52,14 +52,14 @@ The New Aerospike project wizard will be displayed with Aerospike properties to 
 * **Artifact ID** - Maven artifact ID
 * **Version** - Maven version
 * **Main Class** - Name of the main Java class
-* **Author** - Project author in the Maven POM
-* **email** - Email address of the author in the Maven POM
-* **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
-* **Port** - The port used by the seed node 
+* **Author** - Project author in Maven POM
+* **email** - Email address of the author in Maven POM
+* **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
+* **Port** - Port used by the seed node
 
 Click `Finish`
 
-After the project has been generated, right-click on the project in the Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
+After the project is generated, right-click on the project in Package Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
 
 <img src="assets/eclipse_update_maven.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
@@ -69,23 +69,23 @@ The cluster connection details, of seed node and port, are stored in persistent 
 
 <img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
  
-* **Seed Node** - A node address in the Aerospike cluster. This will be stored in the projects persistent properties and used for connections to the Aerospike cluster
-* **Port** - The port used by the seed node 
-* **UDF Directory** - The directory where the User Defined Function are located. This directory is relative to the project root. The local client will look for UDFs here.
-* **Generation Directory** - The directory where the source code will be generated from AQL.
+* **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
+* **Port** - Port used by the seed node
+* **UDF Directory** - Directory where the User Defined Function are stored. This directory is relative to the project root. The local client will look for UDFs here.
+* **Generation Directory** - Directory where the source code will be generated from AQL.
 
-The cluster explorer adds Aerospike specific elements to the Explorer tree:
+The Cluster Explorer adds Aerospike specific elements to the Explorer tree:
 
 <img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
 
 **Note:**
 These extensions are not visible in the Java Package Explorer (JDT limitation)
 
-# User Defined Functions (UDFs)
+# User Defined Function (UDF) Registration
 
-User Defined Function need to be registered with the cluster before they are available for use. During development, you may need to frequently register UDF packages with your development cluster as you make additions and modifications.
+User Defined Functions need to be registered with the cluster before they are available for use. During development, you may need to frequently register UDF packages with your development cluster as you make additions and modifications.
 
-To do this, simply right-click, in the Explorer, on the Lua file containing the UDF package. Select the popup menu `Register UDF`
+To register, in Package Explorer right-click on the Lua file containing the UDF package. Select `Aerospike` >> `Register UDF`
 
 <img src="assets/eclipse_register_udf.png" alt="Figure 3" width="50%" height="50%"/>
 
@@ -103,7 +103,6 @@ An AQL file can be directly executed on the cluster configured.
 Right-click on the aql file and select `Execute AQL`. The output from the cluster will be displayed in the console view.
 
 <img src="assets/eclipse_aql_menu.png" alt="Figure 4" width="50%" height="50%"/>
-
 
 ## Code Generation
 You can translate the AQL statements int the semantic equivalent Java code. To generate a Java class, Right-click on `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `Generation` folder. The location of this folder is configured in the Aerospike properties.
