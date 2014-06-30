@@ -44,9 +44,11 @@ Expand `Aerospike` category, then select `New Aerospike Project` and click `Next
 
 <img src="assets/eclipse_new_project_dialog_aerospike.png" alt="New Aerospike Project" width="50%" height="50%"/>
 
-The New Aerospike project wizard will be displayed with Aerospike properties to be filled
+The New Aerospike project wizard will be displayed.
 
 <img src="assets/eclipse_new_project_aerospike_properties.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
+
+Where:
 
 * **Project Name** - Name of your Eclipse project -- this will also be set as the Maven project name
 * **Artifact ID** - Maven artifact ID
@@ -57,7 +59,7 @@ The New Aerospike project wizard will be displayed with Aerospike properties to 
 * **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
 * **Port** - Port used by the seed node
 
-Click `Finish`
+After filling in the properties, click `Finish`
 
 After the project is generated, right-click on the project in Package Explorer and update the Maven project. This will download the required Maven dependencies and rebuild the project.
 
