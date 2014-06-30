@@ -67,7 +67,7 @@ After filling in the properties, click `Finish`. Once the project is generated, 
 
 User Defined Functions need to be registered with the cluster before they are available for use. During development, this tool will make it easy for you to  register UDF packages with your cluster as you make frequent additions and modifications to them.
 
-*Usage*: In Package Explorer, right-click on the Lua (.lua) file containing  UDF package. Then select `Aerospike` >> `Register UDF`
+**Usage**: In Package Explorer, right-click on the Lua (.lua) file containing  UDF package. Then select `Aerospike` >> `Register UDF`
 
 <img src="assets/eclipse_register_udf.png" alt="Figure 3" width="50%" height="50%"/>
 
@@ -78,9 +78,9 @@ Aerospike Query Language (aql) is a SQL-like language made available for databas
 
 The three tools include are:
 
-    * AQL Editor
-    * Query Execution
-    * Code Generation
+* AQL Editor
+* Query Execution
+* Code Generation
 
 ## AQL Editor
 The AQL Editor provides color syntax highlighting of the language elements and error checking when the AQL file is saved.
@@ -94,7 +94,7 @@ Right-click on the aql file and select `Aerospike` >> `Execute AQL`. The output 
 ## Code Generation
 This tool lets you generate executable Java code from AQL statements. 
 
-*Usage*: In Package Explorer, right-click on the AQL (.aql) file containing aql statements. Then select `Aerospike` >> `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `generated` folder. The location of this folder is configured in Aerospike properties -- see Cluster Explorer.
+**Usage**: In Package Explorer, right-click on the AQL (.aql) file containing aql statements. Then select `Aerospike` >> `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `generated` folder. The location of this folder is configured in Aerospike properties -- see Cluster Explorer.
 
 For example, this AQL code: 
 
@@ -110,11 +110,11 @@ record = client.get(this.policy, new Key("bar", "flights", Value.get(5000)), "FL
 
 # Cluster Explorer
 
-The Cluster Explorer lets you easily view and edit Aerospike properties pertaining to the project. These properties include cluster connection details, UDF directory where Lua (.lua) files are stored and the directory where AQL Code Generation tool will store the generated Java code.
+The Cluster Explorer lets you easily view and edit Aerospike properties pertaining to the project. These properties include cluster connection details, UDF directory where Lua (.lua) files are stored and the directory where AQL Code Generation tool will store the generated Java class file(s).
 
 To view the Cluster Explorer, select `Window` >> `Show View` >> `Project Explorer` and expand your project. You should see `Cluster` -- right-click on it and select `Properties` to view and edit 
 
-*Note*: Due to Eclipse limitations, Cluster Explorer will not be visible in Package Explorer.
+**Note**: Due to Eclipse limitations, Cluster Explorer will not be visible in Package Explorer.
 
 <img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
  
