@@ -3,12 +3,12 @@ This Aerospike Toolkit makes it easier for Java developers using Eclipse IDE in 
 The toolkit currently includes:
 
 * Aerospike Java Project wizard
-* Cluster Explorer
 * User Defined Function (UDF) Registration
 * Aerospike Query Language (AQL)
 	* AQL Editor
 	* Query Execution
 	* Code Generation
+* Cluster Explorer
 	
 # Installation
 
@@ -63,24 +63,6 @@ After filling in the properties, click `Finish`. Once the project is generated, 
 
 <img src="assets/eclipse_update_maven.png" alt="Enter the Aerospike properties" width="50%" height="50%"/>
 
-# Cluster Explorer
-
-The cluster connection details, of seed node and port, are stored in persistent properties attached to the project. 
-
-<img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
- 
-* **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
-* **Port** - Port used by the seed node
-* **UDF Directory** - Directory where the User Defined Function are stored. This directory is relative to the project root. The local client will look for UDFs here.
-* **Generation Directory** - Directory where the source code will be generated from AQL.
-
-The Cluster Explorer adds Aerospike specific elements to the Explorer tree:
-
-<img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
-
-**Note:**
-These extensions are not visible in the Java Package Explorer (JDT limitation)
-
 # User Defined Function (UDF) Registration
 
 User Defined Functions need to be registered with the cluster before they are available for use. During development, you may need to frequently register UDF packages with your development cluster as you make additions and modifications.
@@ -120,6 +102,27 @@ Generates this Java code:
 ```java
 record = client.get(this.policy, new Key("bar", "flights", Value.get(5000)), "FL_DATE_BIN");
 ```
+
+# Cluster Explorer
+
+The Cluster Explorer lets you easily view and edit Aerospike properties pertaining to the project. These properties include cluster connection details, UDF directory where Lua (.lua) files are stored and the directory where AQL Code Generation tool will store the generated Java code.
+
+To view the Cluster Explorer, select `Window` >> `Show View` >> `Project Explorer` and expand your project. You should see `Cluster` -- right-click on it and select `Properties` to view and edit 
+
+*Note*: Due to Eclipse limitations, the Cluster Explorer will not be visible in Package Explorer.
+
+<img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
+ 
+ Where:
+
+* **Seed Node** - IP address of any one of the nodes in the Aerospike cluster. This will be stored in the projects persistent properties and is used for connections to the Aerospike cluster.
+* **Port** - Port used by the seed node
+* **UDF Directory** - Directory where Lua (.lua) are stored. This directory is relative to the project root. The local client will look for UDFs here.
+* **Generation Directory** - Directory where the source code will be generated from AQL. This directory is relative to the project root.
+
+The Cluster Explorer adds Aerospike specific elements to the Prpject Explorer tree:
+
+<img src="assets/eclipse_cluster_explorer.png" alt="Figure 2" width="50%" height="50%"/>
 
 
 
