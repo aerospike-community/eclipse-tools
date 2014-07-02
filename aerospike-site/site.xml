@@ -3,5 +3,8 @@
    <feature url="features/com.aerospike.feature_3.0.3.jar" id="com.aerospike.feature" version="3.0.3">
       <category name="Aerospike"/>
    </feature>
+   <feature url="features/com.aerospike.feature_3.0.5.jar" id="com.aerospike.feature" version="3.0.5">
+      <category name="Aerospike"/>
+   </feature>
    <category-def name="Aerospike" label="Aerospike"/>
 </site>
