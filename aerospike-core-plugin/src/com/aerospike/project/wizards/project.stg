@@ -139,7 +139,7 @@ pom(artifactId, name, version, author, email, mainClass, package)::=<<
 		</plugins>
 		<resources>
 			<resource>
-				<directory>${project.basedir}/src/main/resources/</directory>
+				<directory>${project.basedir}/src/main/java</directory>
 				<includes>
 					<include>**/*.properties</include>
 				</includes>
