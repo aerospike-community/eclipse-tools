@@ -2,7 +2,7 @@
 <feature
       id="com.aerospike.feature"
       label="Aerospike Developers Toolkit"
-      version="3.0.7"
+      version="3.0.8"
       provider-name="Aerospike Inc.">
 
    <description url="http://www.example.com/description">

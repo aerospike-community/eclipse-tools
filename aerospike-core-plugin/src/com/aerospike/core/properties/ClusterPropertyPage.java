@@ -1,6 +1,7 @@
 package com.aerospike.core.properties;
 
 import org.apache.log4j.Level;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
@@ -97,27 +98,21 @@ public class ClusterPropertyPage extends PropertyPage{
 
 
 		try {
-			IResource resource = ((IResource) getElement());
-			if (resource != null){
-				String seedNode = resource.getPersistentProperty(CoreActivator.SEED_NODE_PROPERTY);
-				if (seedNode != null)
-					seedNodeEditor.setStringValue(seedNode);
-				else
-					seedNodeEditor.setStringValue(store.getString(PreferenceConstants.SEED_NODE));
+			IProject project = ((IProject) getElement());
+			if (project != null){
+				String seedNode = CoreActivator.getSeedHost(project);
+				seedNodeEditor.setStringValue(seedNode);
 
-				String port = resource.getPersistentProperty(CoreActivator.PORT_PROPERTY);
-				if (port != null)
-					portEditor.setStringValue(port);
-				else
-					portEditor.setStringValue(String.valueOf(store.getInt(PreferenceConstants.PORT)));
+				int port = CoreActivator.getPort(project);
+				portEditor.setStringValue(Integer.toString(port));
 
-				String udfDirectoryString = resource.getPersistentProperty(CoreActivator.UDF_DIRECTORY);
+				String udfDirectoryString = project.getPersistentProperty(CoreActivator.UDF_DIRECTORY);
 				if (udfDirectoryString != null)
 					udfDirectoryEditor.setStringValue(udfDirectoryString);
 				else
 					udfDirectoryEditor.setStringValue(store.getString(PreferenceConstants.UDF_PATH));
 
-				String aqlOutputString = resource.getPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY);
+				String aqlOutputString = project.getPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY);
 				if (aqlOutputString != null)
 					genDirectoryEditor.setStringValue(aqlOutputString);
 				else

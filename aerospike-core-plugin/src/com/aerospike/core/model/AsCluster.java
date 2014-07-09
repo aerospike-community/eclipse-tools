@@ -61,24 +61,14 @@ public class AsCluster implements IAsEntity{
 	}
 
 	public String getSeedHost(){
-		String seedHost = null;
-		try {
-			if (project!=null)
-				seedHost = project.getPersistentProperty(CoreActivator.SEED_NODE_PROPERTY);
-		} catch (CoreException e) {
-			CoreActivator.log(Status.ERROR, "Error getting SEED_NODE_PROPERTY", e);
-		}
+		String seedHost = CoreActivator.getSeedHost(project);
 		return seedHost;
 	}
 
 	public int getPort(){
 		int port = 3000;
-		String portString;
-		try {
-			portString = project.getPersistentProperty(CoreActivator.PORT_PROPERTY);
-			port = Integer.parseInt(portString);
-		} catch (CoreException e) {
-			CoreActivator.log(Status.ERROR, "Error getting PORT_PROPERTY", e);
+		if (project != null){
+			port = CoreActivator.getPort(project);
 		}
 		return port;
 	}

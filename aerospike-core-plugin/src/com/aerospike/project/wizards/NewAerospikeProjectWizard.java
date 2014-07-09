@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -55,7 +56,6 @@ import com.aerospike.core.preferences.PreferenceConstants;
 
 
 public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
-	public static final String PACKAGE_COM_AEROSPIKE_EXAMPLE = "com.aerospike.example";
 	public static final String ID = "com.aerospike.eclipse.wizards.NewAerospikeProjectWizard";
 	private NewAerospikeProjectWizardPage page;
 	private ISelection selection;
@@ -85,6 +85,10 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+		return generateJavaProject();
+	}
+	
+	protected boolean generateJavaProject(){
 		URL url = this.getClass().getResource("project.stg");
 		final STGroup projectSTG = new STGroupFile(url.getPath());
 		final String projectName = page.getProjectName();
@@ -92,6 +96,7 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 		final String email = page.getEmail();
 		final String artifactId = page.getArtifiactId();
 		final String version = page.getVersion();
+		final String packageString = page.getPackage();
 		final String mainClass = page.getMainClassName();
 		final String seedNode = page.getSeedNode();
 		final String port = page.getPortString();
@@ -165,11 +170,11 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					template.add("author", author);
 					template.add("email", email);
 					template.add("mainClass", mainClass);
-					template.add("package", PACKAGE_COM_AEROSPIKE_EXAMPLE);
+					template.add("package", packageString);
 					createFile(project, null, "pom.xml", monitor, template);
 					// create the log4J.properties
 					template = projectSTG.getInstanceOf("log4J");
-					template.add("package", PACKAGE_COM_AEROSPIKE_EXAMPLE);
+					template.add("package", packageString);
 					template.add("mainClass", mainClass);
 					createFile(project, srcMainJava, "log4j.properties", monitor, template);
 					// create the .gitignore
@@ -181,11 +186,11 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					createFile(project, null, "README.md", monitor, template);
 					// create package
 					IPackageFragment pack = javaProject.getPackageFragmentRoot(srcMainJava)
-							.createPackageFragment(PACKAGE_COM_AEROSPIKE_EXAMPLE, false, null);
+							.createPackageFragment(packageString, false, null);
 					// create main class
 					template = projectSTG.getInstanceOf("mainClass");
 					template.add("name", mainClass);
-					template.add("package", PACKAGE_COM_AEROSPIKE_EXAMPLE);
+					template.add("package", packageString);
 					template.add("author", author);
 					template.add("seedNode", seedNode);
 					template.add("port", port);
@@ -221,6 +226,51 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 		}
 		return true;
 	}
+	
+//	protected boolean generateCProject(){
+//		// Create and persist Standard Makefile project
+//		{
+//		// Create model project and accompanied project description
+//		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+//		IWorkspaceRoot root = workspace.getRoot();
+//
+//		IProject newProjectHandle = root.getProject(projectName);
+//		Assert.assertNotNull(newProjectHandle);
+//		Assert.assertFalse(newProjectHandle.exists());
+//
+//		IProjectDescription description = 
+//		workspace.newProjectDescription(newProjectHandle.getName());
+//		IProject project = 
+//		CCorePlugin.getDefault().createCDTProject(description, newProjectHandle, 
+//		new NullProgressMonitor());
+//		Assert.assertTrue(newProjectHandle.isOpen());
+//
+//		ICProjectDescriptionManager mngr = 
+//		CoreModel.getDefault().getProjectDescriptionManager();
+//		ICProjectDescription des = mngr.createProjectDescription(project, 
+//		false);
+//		ManagedProject mProj = new ManagedProject(des);
+//
+//		Configuration cfg = new Configuration(mProj, null, 
+//		"your.configuration.id", "YourConfigurationName");
+//
+//		IBuilder bld = cfg.getEditableBuilder();
+//		Assert.assertNotNull(bld);
+//		Assert.assertFalse(bld.isInternalBuilder());
+//
+//		bld.setManagedBuildOn(false);
+//
+//		CConfigurationData data = cfg.getConfigurationData();
+//		Assert.assertNotNull(data);
+//		des.createConfiguration(ManagedBuildManager.CFG_DATA_PROVIDE R_ID, data);
+//
+//		// Persist the project description
+//		mngr.setProjectDescription(project, des);
+//
+//		project.close(null);
+//		}
+//		return true;
+//	}
 	
 	private void createFolder(IContainer container) throws CoreException {
 	    if (!container.exists()) {

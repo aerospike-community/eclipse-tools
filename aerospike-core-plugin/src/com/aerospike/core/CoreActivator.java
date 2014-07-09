@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -17,6 +18,7 @@ import org.osgi.framework.BundleContext;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.AerospikeException;
+import com.aerospike.core.preferences.PreferenceConstants;
 
 
 
@@ -41,7 +43,7 @@ public class CoreActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static CoreActivator plugin;
-//	
+	//	
 	/**
 	 * The constructor
 	 */
@@ -99,7 +101,7 @@ public class CoreActivator extends AbstractUIPlugin {
 			return null;
 		return img.createImage();
 	}
-	
+
 	/**
 	 * 
 	 * shows an error
@@ -120,7 +122,7 @@ public class CoreActivator extends AbstractUIPlugin {
 	public static void log(int level, String message, Throwable e){
 		plugin.getLog().log(new Status(level, PLUGIN_ID, message, e));
 	}
-	
+
 	public static MessageConsole findConsole(String name) {
 		MessageConsole targetConsole = null;
 		ConsolePlugin plugin = ConsolePlugin.getDefault();
@@ -136,11 +138,11 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return targetConsole;
 	}
-	
+
 	public static MessageConsole findAerospikeConsole() {
 		return findConsole(AS_CONSOLE);
 	}
-	
+
 	public static AerospikeClient getClient(IProject project){
 		AerospikeClient client = null;
 		try {
@@ -162,7 +164,38 @@ public class CoreActivator extends AbstractUIPlugin {
 			showError(e, "Cannot get Aerospike client");
 		}
 		return client;
-		
+
 	}
 
+	public static int getPort(IProject project){
+		String portString;
+		int port = 3000;
+		try {
+			portString = project.getPersistentProperty(CoreActivator.PORT_PROPERTY);
+			if (portString == null || portString.isEmpty()){
+				IPreferenceStore store = getDefault().getPreferenceStore();
+				port = store.getDefaultInt(PreferenceConstants.PORT);
+				project.setPersistentProperty(CoreActivator.PORT_PROPERTY, Integer.toString(port));
+			}
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting PORT_PROPERTY", e);
+		} catch (NumberFormatException e){
+			//use default
+		}
+		return port;
+	}
+	public static String getSeedHost(IProject project){
+		String seedHost = "127.0.0.1";
+		try {
+			seedHost = project.getPersistentProperty(CoreActivator.SEED_NODE_PROPERTY);
+			if (seedHost == null || seedHost.isEmpty()){
+				IPreferenceStore store = getDefault().getPreferenceStore();
+				seedHost = store.getDefaultString(PreferenceConstants.SEED_NODE);
+				project.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, seedHost);
+			}
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting SEED_NODE_PROPERTY", e);
+		}
+		return seedHost;
+	}
 }
