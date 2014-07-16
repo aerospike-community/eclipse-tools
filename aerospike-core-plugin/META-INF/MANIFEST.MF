@@ -20,7 +20,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Aerospike Inc.
 Bundle-ClassPath: .,
- aql-3.0.4-full.jar
+ aql-3.0.4-full.jar,
+ swing2swt.jar
 Export-Package: com.aerospike.aql,
  com.aerospike.aql.grammar,
  com.aerospike.aql.plugin.actions,

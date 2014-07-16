@@ -136,6 +136,16 @@ Aerospike Nature
 	           menubarPath="additions">
 	     </action>
 	   </objectContribution>
+	   <!--org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor-->
+	   	<viewerContribution
+			id="com.aerospike.aql.action.contribution.popup.editor" targetID="#TextEditorContext">
+			<action
+				id="com.aerospike.aql.plugin.actions.GenerateSnipet" label="Insert AQL"
+				icon="icons/aerospike.logo.png"
+				menubarPath="additions" 
+				class="com.aerospike.aql.plugin.actions.GenerateSnipet">
+			</action> 
+		</viewerContribution>
    </extension>
 <!--
 AQL Builder

@@ -13,7 +13,6 @@ public class AQLEditor extends TextEditor {
 		this.colorManager = new ColorManager();
 		setSourceViewerConfiguration(new AQLConfiguration(colorManager));
 		setDocumentProvider(new AQLDocumentProvider());
-		
 
 	}
 	public void dispose() {

@@ -1,7 +1,5 @@
 package com.aerospike.aql.plugin.editors;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,20 +11,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.ui.console.IConsoleView;
 
-import com.aerospike.aql.AQL;
-import com.aerospike.aql.grammar.AQLTree;
-import com.aerospike.aql.grammar.AQLastParser.aqlFile_return;
-import com.aerospike.aql.grammar.AQLastParser.aqlStatements_return;
 import com.aerospike.core.CoreActivator;
-import com.aerospike.core.views.ResultsConsoleView;
 
 public class AQLContentAssistProcessor implements IContentAssistProcessor {
 
@@ -42,30 +28,21 @@ public class AQLContentAssistProcessor implements IContentAssistProcessor {
 		// Computes the set of completions based on the offset provided
 		List<ICompletionProposal> proposals = 
 				new ArrayList<ICompletionProposal>();
-
-		//compute proposals at offset
-		try {
-			ResultsConsoleView results = new ResultsConsoleView();
-			// find the Aerospike console and display it
-			IWorkbench wb = PlatformUI.getWorkbench();
-			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
-			IWorkbenchPage page = win.getActivePage();
-			IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
-			view.display(results.getConsole());
-
-			AQL aql = new AQL();
-			aqlStatements_return ast = aql.compile(document.get(), results, results);
-			int lineOffset = document.getLineOfOffset(offset);
-			Object token = AQLTree.findTokenByOffset((AQLTree) ast.getTree(), lineOffset, offset-lineOffset);
-			System.out.println(token);
-
-		} catch (PartInitException e) {
-			CoreActivator.showError(e, "Content assist failure");
-		} catch (IOException e) {
-			CoreActivator.showError(e, "Content assist failure");
-		} catch (BadLocationException e) {
-			CoreActivator.showError(e, "Content assist failure");
+		
+		for (String keyword : AQLKeyWords.getKeywords()){
+			if (keyword.toLowerCase().startsWith(prefix.toLowerCase())){
+				//TODO
+			}
 		}
+		// find the Aerospike console and display it
+		
+//			ResultsConsoleView results = new ResultsConsoleView();
+//			IWorkbench wb = PlatformUI.getWorkbench();
+//			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+//			IWorkbenchPage page = win.getActivePage();
+//			IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
+//			view.display(results.getConsole());
+
 
 		return proposals.toArray(new ICompletionProposal[proposals.size()]);
 	}
