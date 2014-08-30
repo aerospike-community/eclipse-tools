@@ -52,6 +52,7 @@ public class ClusterPropertyPage extends PropertyPage{
 	private StringFieldEditor seedNodeEditor;
 	private IntegerFieldEditor portEditor;
 	private IPreferenceStore store;
+	private IntegerFieldEditor timeoutEditor;
 	public ClusterPropertyPage() {
 		setImageDescriptor(ResourceManager.getPluginImageDescriptor("aerospike-core-plugin", "icons/aerospike.logo.png"));
 		setTitle("Aerospike Properties");
@@ -84,8 +85,11 @@ public class ClusterPropertyPage extends PropertyPage{
 		new Label(composite, SWT.NONE);
 
 		portEditor = new IntegerFieldEditor(PreferenceConstants.PORT, "&Port:", composite);
-
 		new Label(composite, SWT.NONE);
+		
+		timeoutEditor = new IntegerFieldEditor(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT, "Connection &Timeput:", composite);
+		new Label(composite, SWT.NONE);
+		
 		Label lblNewLabel_1 = new Label(composite, SWT.NONE);
 		lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
 		lblNewLabel_1.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/UDF.png"));
@@ -122,6 +126,9 @@ public class ClusterPropertyPage extends PropertyPage{
 				int port = CoreActivator.getPort(project);
 				portEditor.setStringValue(Integer.toString(port));
 
+				int timeout = CoreActivator.getConnectionTimeout(project);
+				timeoutEditor.setStringValue(Integer.toString(timeout));
+
 				String udfDirectoryString = project.getPersistentProperty(CoreActivator.UDF_DIRECTORY);
 				if (udfDirectoryString != null)
 					udfDirectoryEditor.setStringValue(udfDirectoryString);
@@ -154,6 +161,8 @@ public class ClusterPropertyPage extends PropertyPage{
 
 		portEditor.setStringValue(String.valueOf(store.getInt(PreferenceConstants.PORT)));
 
+		timeoutEditor.setStringValue(String.valueOf(store.getInt(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT)));
+
 		udfDirectoryEditor.setStringValue(store.getString(PreferenceConstants.UDF_PATH));
 
 		genDirectoryEditor.setStringValue(store.getString(PreferenceConstants.GENERATION_PATH));
@@ -181,6 +190,13 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.PORT_PROPERTY, port);
 				else
 					resource.setPersistentProperty(CoreActivator.PORT_PROPERTY, null);
+				
+				String timeout = timeoutEditor.getStringValue();
+				if (timeout != null && !timeout.isEmpty())
+					resource.setPersistentProperty(CoreActivator.CLUSTER_CONNECTION_TIMEOUT_PROPERTY, timeout);
+				else
+					resource.setPersistentProperty(CoreActivator.CLUSTER_CONNECTION_TIMEOUT_PROPERTY, null);
+				
 				String udfDirectoryString = udfDirectoryEditor.getStringValue();
 				if (udfDirectoryString != null && !udfDirectoryString.isEmpty())
 					resource.setPersistentProperty(CoreActivator.UDF_DIRECTORY, udfDirectoryString);

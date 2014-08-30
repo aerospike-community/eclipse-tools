@@ -16,6 +16,9 @@
  */
 package com.aerospike.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -34,6 +37,8 @@ import org.osgi.framework.BundleContext;
 
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.AerospikeException;
+import com.aerospike.client.Host;
+import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.core.preferences.PreferenceConstants;
 
 
@@ -56,6 +61,7 @@ public class CoreActivator extends AbstractUIPlugin {
 	public static final QualifiedName UDF_DIRECTORY = new QualifiedName("Aerospike", "UDFDirectory");
 	public static final QualifiedName AQL_GENERATION_DIRECTORY = new QualifiedName("Aerospike", "AQLGenerationDirectory");
 	public static final QualifiedName UDF_REGISTERED = new QualifiedName("Aerospike", "UDFregistered");
+	public static final QualifiedName CLUSTER_CONNECTION_TIMEOUT_PROPERTY = new QualifiedName("Aerospike", "ClusterConnectionTimeout");
 
 	// The shared instance
 	private static CoreActivator plugin;
@@ -167,9 +173,21 @@ public class CoreActivator extends AbstractUIPlugin {
 				client = null;
 			}
 			if (client == null){
-				String seedNode = project.getPersistentProperty(CoreActivator.SEED_NODE_PROPERTY);
-				String portString = project.getPersistentProperty(CoreActivator.PORT_PROPERTY);
-				client = new AerospikeClient(seedNode, Integer.parseInt(portString));
+				String seedNode = getSeedHost(project);
+				int port = getPort(project);
+				ClientPolicy cp = new ClientPolicy();
+				cp.timeout = getConnectionTimeout(project);
+				if (seedNode.contains(",")){
+					String names[] = seedNode.split(",");
+					List<Host> hosts = new ArrayList<Host>();
+					for (String name : names){
+						Host host = new Host(name, port);
+						hosts.add(host);
+					}
+					client = new AerospikeClient(cp, hosts.toArray(new Host[hosts.size()]));
+				} else {
+					client = new AerospikeClient(cp, seedNode, port);
+				}
 				project.setSessionProperty(CoreActivator.CLIENT_PROPERTY, client);
 			}
 		} catch (CoreException e) {
@@ -200,6 +218,23 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return port;
 	}
+	public static int getConnectionTimeout(IProject project) {
+		String timeoutString;
+		int timeout = 20;
+		try {
+			timeoutString = project.getPersistentProperty(CoreActivator.CLUSTER_CONNECTION_TIMEOUT_PROPERTY);
+			if (timeoutString == null || timeoutString.isEmpty()){
+				IPreferenceStore store = getDefault().getPreferenceStore();
+				timeout = store.getDefaultInt(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT);
+				project.setPersistentProperty(CoreActivator.PORT_PROPERTY, Integer.toString(timeout));
+			}
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting CLUSTER_CONNECTION_TIMEOUT_PROPERTY", e);
+		} catch (NumberFormatException e){
+			//use default
+		}
+		return timeout;
+	}
 	public static String getSeedHost(IProject project){
 		String seedHost = "127.0.0.1";
 		try {
@@ -214,4 +249,5 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return seedHost;
 	}
+
 }

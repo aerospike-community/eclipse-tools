@@ -35,6 +35,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = CoreActivator.getDefault().getPreferenceStore();
 		store.setDefault(PreferenceConstants.SEED_NODE,
 				"127.0.0.1");
+		store.setDefault(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT,
+				20);
 		store.setDefault(PreferenceConstants.PORT,
 				3000);
 		store.setDefault(PreferenceConstants.UDF_PATH,

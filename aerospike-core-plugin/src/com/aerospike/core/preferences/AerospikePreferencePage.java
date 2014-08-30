@@ -33,6 +33,7 @@ public class AerospikePreferencePage
 	private StringFieldEditor udfDirectoryEditor;
 	private StringFieldEditor genDirectoryEditor;
 	private StringFieldEditor aqlDirectoryEditor;
+	private IntegerFieldEditor timeoutEditor;
 
 	public AerospikePreferencePage() {
 		super(GRID);
@@ -54,6 +55,9 @@ public class AerospikePreferencePage
 		portEditor = new IntegerFieldEditor(PreferenceConstants.PORT, "&Port:", getFieldEditorParent());
 		portEditor.setPreferenceStore(store);
 		addField(portEditor);
+		timeoutEditor = new IntegerFieldEditor(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT, "Connection &Timeout:", getFieldEditorParent());
+		timeoutEditor.setPreferenceStore(store);
+		addField(timeoutEditor);
 		udfDirectoryEditor = new StringFieldEditor(PreferenceConstants.UDF_PATH, 
 				"&UDF Directory:", getFieldEditorParent());
 		udfDirectoryEditor.setPreferenceStore(store);
