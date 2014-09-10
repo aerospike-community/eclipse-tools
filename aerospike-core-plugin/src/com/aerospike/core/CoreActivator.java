@@ -227,6 +227,8 @@ public class CoreActivator extends AbstractUIPlugin {
 				IPreferenceStore store = getDefault().getPreferenceStore();
 				timeout = store.getDefaultInt(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT);
 				project.setPersistentProperty(CoreActivator.PORT_PROPERTY, Integer.toString(timeout));
+			} else {
+				timeout = Integer.parseInt(timeoutString);
 			}
 		} catch (CoreException e) {
 			CoreActivator.log(Status.ERROR, "Error getting CLUSTER_CONNECTION_TIMEOUT_PROPERTY", e);
