@@ -39,6 +39,7 @@ import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Host;
 import com.aerospike.client.policy.ClientPolicy;
+import com.aerospike.client.policy.InfoPolicy;
 import com.aerospike.core.preferences.PreferenceConstants;
 
 
@@ -62,6 +63,8 @@ public class CoreActivator extends AbstractUIPlugin {
 	public static final QualifiedName AQL_GENERATION_DIRECTORY = new QualifiedName("Aerospike", "AQLGenerationDirectory");
 	public static final QualifiedName UDF_REGISTERED = new QualifiedName("Aerospike", "UDFregistered");
 	public static final QualifiedName CLUSTER_CONNECTION_TIMEOUT_PROPERTY = new QualifiedName("Aerospike", "ClusterConnectionTimeout");
+	private static final QualifiedName CLIENT_POLICY = new QualifiedName("Aerospike", "ClientPolicy");
+	private static final QualifiedName INFO_POLICY = new QualifiedName("Aerospike", "InfoPolicy");
 
 	// The shared instance
 	private static CoreActivator plugin;
@@ -175,8 +178,7 @@ public class CoreActivator extends AbstractUIPlugin {
 			if (client == null){
 				String seedNode = getSeedHost(project);
 				int port = getPort(project);
-				ClientPolicy cp = new ClientPolicy();
-				cp.timeout = getConnectionTimeout(project);
+				ClientPolicy cp = getClientPolicy(project);
 				if (seedNode.contains(",")){
 					String names[] = seedNode.split(",");
 					List<Host> hosts = new ArrayList<Host>();
@@ -199,6 +201,36 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return client;
 
+	}
+
+	public static ClientPolicy getClientPolicy(IProject project){
+		ClientPolicy policy = null;
+		try {
+			policy = (ClientPolicy) project.getSessionProperty(CoreActivator.CLIENT_POLICY);
+			if (policy == null){
+				policy = new ClientPolicy();
+				policy.timeout = getConnectionTimeout(project);
+				project.setSessionProperty(CoreActivator.CLIENT_POLICY, policy);
+			}
+		} catch (CoreException e) {
+			showError(e, "Cannot get Aerospike client");
+		}
+		return policy;
+	}
+
+	public static InfoPolicy getInfoPolicy(IProject project){
+		InfoPolicy policy = null;
+		try {
+			policy = (InfoPolicy) project.getSessionProperty(CoreActivator.INFO_POLICY);
+			if (policy == null){
+				policy = new InfoPolicy();
+				policy.timeout = getConnectionTimeout(project);
+				project.setSessionProperty(CoreActivator.INFO_POLICY, policy);
+			}
+		} catch (CoreException e) {
+			showError(e, "Cannot get Aerospike client");
+		}
+		return policy;
 	}
 
 	public static int getPort(IProject project){

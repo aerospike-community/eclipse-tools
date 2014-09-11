@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.Viewer;
 
+import com.aerospike.client.cluster.Node;
 import com.aerospike.core.CoreActivator;
 
 public class AsCluster implements IAsEntity{
@@ -95,6 +96,10 @@ public class AsCluster implements IAsEntity{
 
 	public AsNode addNode(String nodesString) {
 		AsNode newNode = new AsNode(this.nodes,nodesString);
+		return this.nodes.fetchNode(newNode);
+	}
+	public AsNode addNode(Node node) {
+		AsNode newNode = new AsNode(this.nodes, node);
 		return this.nodes.fetchNode(newNode);
 	}
 }

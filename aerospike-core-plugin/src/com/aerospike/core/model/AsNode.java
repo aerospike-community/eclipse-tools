@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.aerospike.client.cluster.Node;
+
 
 public class AsNode implements IAsEntity{
 	String 	nodeID;
@@ -43,6 +45,13 @@ public class AsNode implements IAsEntity{
 		String[] parts = this.name.split(":");
 		address = parts[0];
 		port = Integer.parseInt(parts[1]);
+	}
+
+	public AsNode(Object parent, Node node) {
+		this.parent = parent;
+		this.name = node.getHost().toString();
+		address = node.getHost().name;
+		port = node.getHost().port;
 	}
 
 	@Override

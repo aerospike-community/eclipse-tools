@@ -29,6 +29,8 @@ import org.eclipse.ui.progress.UIJob;
 
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Info;
+import com.aerospike.client.cluster.Node;
+import com.aerospike.client.policy.InfoPolicy;
 import com.aerospike.core.CoreActivator;
 
 public class ClusterRefreshJob extends Job{
@@ -45,17 +47,25 @@ public class ClusterRefreshJob extends Job{
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask("Refreshing Aerospike cluster information", 30);
 
-
-
 		String seedNode = cluster.getSeedHost();
 		int port = cluster.getPort();
-
+		InfoPolicy infoPolicy = CoreActivator.getInfoPolicy(cluster.getProject());
 		try {
 			TimeUnit.SECONDS.sleep(1);
 			// refresh nodes
 			if (monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 			monitor.subTask("Fetching nodes");
+			Node[] nodes = CoreActivator.getClient(cluster.getProject()).getNodes();
+			
+			for (Node node : nodes){
+				AsNode newNode = this.cluster.addNode(node);
+				HashMap<String, String> info = (HashMap<String, String>) Info.request(infoPolicy, node);
+				newNode.setDetails(info);
+				if (monitor.isCanceled())
+					return Status.CANCEL_STATUS;
+			}
+/*			
 			String nodesString = Info.request(seedNode, port, "service");
 			if (!nodesString.isEmpty()){
 				if (monitor.isCanceled())
@@ -81,6 +91,7 @@ public class ClusterRefreshJob extends Job{
 					}
 				}
 			}
+*/
 			monitor.worked(10);
 			
 			monitor.subTask("Fetching name spaces");
