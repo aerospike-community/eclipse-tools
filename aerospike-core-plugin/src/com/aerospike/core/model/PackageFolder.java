@@ -21,18 +21,18 @@ import java.util.HashSet;
 import java.util.Map;
 
 public class PackageFolder implements IAsEntity {
-	Map<String, Package> packageList = null;
+	Map<String, Module> packageList = null;
 	AsCluster parent;
 	private String name;
 	public PackageFolder(AsCluster parent) {
 		this.parent = parent;
 		this.name = "Packages";
-		this.packageList = new HashMap<String, Package>();
+		this.packageList = new HashMap<String, Module>();
 	}
 
 	public Object[] getChildren(){
 		if (packageList == null)
-			return new Package[0];
+			return new Module[0];
 
 		return packageList.values().toArray();
 	}
@@ -45,12 +45,12 @@ public class PackageFolder implements IAsEntity {
 			this.packageList.clear();
 	}
 
-	public Package fetchPackage(String info){
+	public Module fetchPackage(String info){
 		
-		String name = Package.getNameFromInfo(info);
-		Package pkg = this.packageList.get(name);
+		String name = Module.getNameFromInfo(info);
+		Module pkg = this.packageList.get(name);
 		if (pkg == null){
-			pkg = new Package(this, info);
+			pkg = new Module(this, info);
 			this.packageList.put(name, pkg);
 		}
 		pkg.setPackageInfo(info);

@@ -136,7 +136,7 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		
 		lblPackage = new Label(container, SWT.NONE);
 		lblPackage.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblPackage.setText("Package:");
+		lblPackage.setText("Module:");
 		
 		packageText = new Text(container, SWT.BORDER);
 		packageText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));

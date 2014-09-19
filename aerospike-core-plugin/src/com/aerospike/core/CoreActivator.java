@@ -17,7 +17,9 @@
 package com.aerospike.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -210,6 +212,7 @@ public class CoreActivator extends AbstractUIPlugin {
 			if (policy == null){
 				policy = new ClientPolicy();
 				policy.timeout = getConnectionTimeout(project);
+				policy.failIfNotConnected = true;
 				project.setSessionProperty(CoreActivator.CLIENT_POLICY, policy);
 			}
 		} catch (CoreException e) {
@@ -283,5 +286,15 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return seedHost;
 	}
+	
+	public static  Map<String, String> parseMap(final String input, String seperator) {
+        final Map<String, String> map = new HashMap<String, String>();
+        for (String pair : input.split(seperator)) {
+            String[] kv = pair.split("=");
+            map.put(kv[0], kv[1]);
+        }
+        return map;
+    }
+
 
 }

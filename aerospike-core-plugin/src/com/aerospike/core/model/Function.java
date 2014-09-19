@@ -19,9 +19,9 @@ package com.aerospike.core.model;
 public class Function implements IAsEntity
 {
 	private String name;
-	private Package parent;
+	private Module parent;
 
-	public Function(Package parent, String name) {
+	public Function(Module parent, String name) {
 		super();
 		this.name = name;
 		this.parent = parent;

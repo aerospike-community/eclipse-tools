@@ -131,6 +131,19 @@ Aerospike Nature
 	           menubarPath="org.eclipse.ui.projectConfigure/additions">
 	     </action>
 	   </objectContribution>
+      <objectContribution
+            objectClass="com.aerospike.core.model.Module"
+            id="com.aerospike.projectMenu.deregister">
+         <action
+               class="com.aerospike.udf.actions.DeregisterUDF"
+               enablesFor="1"
+               id="com.aerospike.core.navigator.DeregisterAction"
+               label="Deregister UDF"
+               icon="icons/small/UDF.png"
+               menubarPath="additions">
+               
+         </action>
+       </objectContribution>
 	   
 	   <objectContribution adaptable="true"
 	        id="com.aerospike.projectMenu.refresh"

@@ -32,7 +32,7 @@ import com.aerospike.core.model.NameValuePair;
 import com.aerospike.core.model.NodeFolder;
 import com.aerospike.core.model.NsFolder;
 import com.aerospike.core.model.PackageFolder;
-import com.aerospike.core.model.Package;
+import com.aerospike.core.model.Module;
 
 public class ClusterLabelProvider extends LabelProvider implements ILabelProvider, IDescriptionProvider{
 
@@ -50,7 +50,7 @@ public class ClusterLabelProvider extends LabelProvider implements ILabelProvide
 			return CoreActivator.getImage("icons/small/node.png");
 		} else if (element instanceof PackageFolder){
 			return CoreActivator.getImage("icons/small/UDF.png");
-		} else if (element instanceof Package){
+		} else if (element instanceof Module){
 			return CoreActivator.getImage("icons/small/UDF.png");
 		} else if (element instanceof Function){
 			return CoreActivator.getImage("icons/small/function.png");
