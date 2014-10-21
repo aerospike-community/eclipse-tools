@@ -3,12 +3,16 @@ This Aerospike Toolkit makes it easier for Java developers using Eclipse IDE in 
 The toolkit currently includes:
 
 * Aerospike Java Project wizard
-* User Defined Function (UDF) Registration
+* User Defined Function (UDF) module Registration/Deregistration
 * Aerospike Query Language (AQL) Tools
 	* AQL Editor
 	* Query Execution
 	* Code Generation
-* Cluster Explorer
+* Cluster Explorer to browse
+	* Namespaces
+	* Sets
+	* Nodes
+	* UDF Modules and functions
 	
 # Installation
 
@@ -65,13 +69,16 @@ After filling in the properties, click `Finish`. Once the project is generated, 
 
 # User Defined Function (UDF) Registration
 
-User Defined Functions need to be registered with the cluster before they are available for use. During development, this tool will make it easy for you to  register UDF packages with your cluster as you make frequent additions and modifications to them.
+User Defined Functions need to be registered with the cluster before they are available for use. During development, this tool will make it easy for you to  register UDF modules with your development cluster as you make frequent additions and modifications to them.
 
 **Usage**: In Package Explorer, right-click on the Lua (.lua) file containing  UDF package. Then select `Aerospike` >> `Register UDF`
 
 <img src="assets/eclipse_register_udf.png" alt="Figure 3" width="50%" height="50%"/>
 
-The UDF package will be registered with the cluster configured in Aerospike properties -- see Cluster Explorer.
+The UDF module will be registered with the cluster configured in Aerospike properties -- see Cluster Explorer.
+
+A registered module can be deregistered from the cluster explorer. 
+**Usage**: In Cluster Explorer, right-click on the UDF Module. Then select `Deregister UDF`
 
 # Aerospike Query Language Tools
 Aerospike Query Language (aql) is a SQL-like language made available for database, UDF and index management operations. AQL is easy to learn because of its similarity to SQL.
@@ -86,15 +93,15 @@ The three tools include are:
 The AQL Editor provides color syntax highlighting of the language elements and error checking when the AQL file is saved.
 
 ## Query Execution
-An AQL file can be executed directlty on the cluster configured.
-Right-click on the aql file and select `Aerospike` >> `Execute AQL`. The output from the cluster will be displayed in the console view.
+An AQL file can be executed directly on the cluster configured.
+Right-click on the AQL file and select `Aerospike` >> `Execute AQL`. The output from the cluster will be displayed in the console view.
 
 <img src="assets/eclipse_aql_menu.png" alt="Figure 4" width="50%" height="50%"/>
 
 ## Code Generation
 This tool lets you generate executable Java code from AQL statements. 
 
-**Usage**: In Package Explorer, right-click on the AQL (.aql) file containing aql statements. Then select `Aerospike` >> `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `generated` folder. The location of this folder is configured in Aerospike properties -- see Cluster Explorer.
+**Usage**: In Package Explorer, right-click on the AQL (.aql) file containing AQL statements. Then select `Aerospike` >> `Generate Java`. A new class, with the same name as the AQL file, will be generated and stored in the `generated` folder. The location of this folder is configured in Aerospike properties -- see Cluster Explorer.
 
 For example, this AQL code: 
 

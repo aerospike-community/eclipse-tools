@@ -28,14 +28,14 @@ public class AsCluster implements IAsEntity{
 	private IProject project = null;
 	NodeFolder nodes;
 	NsFolder 	namespaces;
-	PackageFolder packages;
+	ModuleFolder packages;
 	
 	private Viewer viewer;
 	public AsCluster(IProject project){
 		this.project = project;
 		this.namespaces = new NsFolder(this);
 		this.nodes = new NodeFolder(this);
-		this.packages = new PackageFolder(this);
+		this.packages = new ModuleFolder(this);
 	}
 	public AsCluster(IProject project, Viewer viewer) {
 		this(project);
@@ -69,7 +69,7 @@ public class AsCluster implements IAsEntity{
 	public NsFolder getNamespaces() {
 		return namespaces;
 	}
-	public PackageFolder getPackages() {
+	public ModuleFolder getPackages() {
 		return packages;
 	}
 	@Override
