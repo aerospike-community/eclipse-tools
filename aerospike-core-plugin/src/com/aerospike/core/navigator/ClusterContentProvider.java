@@ -28,7 +28,7 @@ import com.aerospike.core.model.AsSet;
 import com.aerospike.core.model.IAsEntity;
 import com.aerospike.core.model.NodeFolder;
 import com.aerospike.core.model.NsFolder;
-import com.aerospike.core.model.PackageFolder;
+import com.aerospike.core.model.ModuleFolder;
 
 
 

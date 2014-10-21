@@ -179,11 +179,6 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, seedNode);
 				else 
 					resource.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, null);
-				// assume the cluster values have changed and disconnect the client
-				AerospikeClient client = (AerospikeClient) resource.getSessionProperty(CoreActivator.CLIENT_PROPERTY);
-				if (client != null)
-					client.close();
-				resource.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
 				
 				String port = portEditor.getStringValue();
 				if (port != null && !port.isEmpty())
@@ -207,6 +202,13 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, aqlOutputString);
 				else 
 					resource.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, null);
+				
+				// assume the cluster values have changed and disconnect the client
+				AerospikeClient client = CoreActivator.getClient((IProject) resource);
+				if (client != null)
+					client.close();
+				resource.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
+				
 			}
 		} catch (CoreException e) {
 			CoreActivator.showError(e, "Error saving persistent properties");

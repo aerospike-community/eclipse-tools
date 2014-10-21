@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public class PackageFolder implements IAsEntity {
+public class ModuleFolder implements IAsEntity {
 	Map<String, Module> packageList = null;
 	AsCluster parent;
 	private String name;
-	public PackageFolder(AsCluster parent) {
+	public ModuleFolder(AsCluster parent) {
 		this.parent = parent;
-		this.name = "Packages";
+		this.name = "Modules";
 		this.packageList = new HashMap<String, Module>();
 	}
 

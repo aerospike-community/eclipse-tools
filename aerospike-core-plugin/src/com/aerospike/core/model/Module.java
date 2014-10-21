@@ -34,7 +34,7 @@ import com.aerospike.core.CoreActivator;
 
 public class Module implements IAsEntity{
 
-	private PackageFolder parent;
+	private ModuleFolder parent;
 	private String name;
 	protected Map<String, String> values;
 	private String source;
@@ -42,7 +42,7 @@ public class Module implements IAsEntity{
 
 	private static final Pattern fn_name = Pattern.compile("function\\s+([a-zA-Z_$][a-zA-Z\\d_$]*\\(.*\\))");
 
-	public Module(PackageFolder parent, String info) {
+	public Module(ModuleFolder parent, String info) {
 		this.parent = parent;
 		setPackageInfo(info);
 
@@ -150,7 +150,7 @@ public class Module implements IAsEntity{
 	}
 
 	public AsCluster getCluster() {
-		PackageFolder folder = (PackageFolder) getParent();
+		ModuleFolder folder = (ModuleFolder) getParent();
 		return (AsCluster) folder.getParent();
 	}
 	public IProject getPackage() {

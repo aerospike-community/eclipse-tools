@@ -174,9 +174,15 @@ public class CoreActivator extends AbstractUIPlugin {
 		AerospikeClient client = null;
 		try {
 			client = (AerospikeClient) project.getSessionProperty(CoreActivator.CLIENT_PROPERTY);
+			/*
+			 * remove client if not connected
+			 */
 			if (client != null && !client.isConnected()){
 				client = null;
 			}
+			/*
+			 * if there is no client, make one
+			 */
 			if (client == null){
 				String seedNode = getSeedHost(project);
 				int port = getPort(project);
