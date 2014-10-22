@@ -170,6 +170,20 @@ public class CoreActivator extends AbstractUIPlugin {
 		return findConsole(AS_CONSOLE);
 	}
 
+	public static void clearClient(IProject project){
+		AerospikeClient client;
+		try {
+			client = (AerospikeClient) project.getSessionProperty(CoreActivator.CLIENT_PROPERTY);
+			if (client != null){
+				client.close();
+				client = null;
+			}
+			project.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
+		} catch (CoreException e) {
+			showError(e, "Cannot clear Aerospike client");
+		}
+	}
+
 	public static AerospikeClient getClient(IProject project){
 		AerospikeClient client = null;
 		try {
@@ -292,15 +306,15 @@ public class CoreActivator extends AbstractUIPlugin {
 		}
 		return seedHost;
 	}
-	
+
 	public static  Map<String, String> parseMap(final String input, String seperator) {
-        final Map<String, String> map = new HashMap<String, String>();
-        for (String pair : input.split(seperator)) {
-            String[] kv = pair.split("=");
-            map.put(kv[0], kv[1]);
-        }
-        return map;
-    }
+		final Map<String, String> map = new HashMap<String, String>();
+		for (String pair : input.split(seperator)) {
+			String[] kv = pair.split("=");
+			map.put(kv[0], kv[1]);
+		}
+		return map;
+	}
 
 
 }

@@ -204,10 +204,7 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, null);
 				
 				// assume the cluster values have changed and disconnect the client
-				AerospikeClient client = CoreActivator.getClient((IProject) resource);
-				if (client != null)
-					client.close();
-				resource.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
+				CoreActivator.clearClient((IProject) resource);
 				
 			}
 		} catch (CoreException e) {
