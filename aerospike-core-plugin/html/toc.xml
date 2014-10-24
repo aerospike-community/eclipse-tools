@@ -23,4 +23,6 @@
 		<topic label="Record UDF" href="html/udf/record_udf_topic.html"/>
 		<topic label="Stream UDF" href="html/udf/stream_udf_topic.html"/>
 	</topic>
+ <topic href="html/server/server_topic.html" label="Server Operations">
+ </topic>
 </toc>

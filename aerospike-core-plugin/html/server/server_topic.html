@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Server Operations</title>
+</head>
+
+<body>
+<h1>Installing the Server</h1>
+To install the Aerospike server and monitoring console you must have root/sudo privileges, follow these steps:
+<ol type="1">
+	<li>Download the Aerospike server software (ASD) software<p/>
+	$ wget -O aerospike-server.tgz <a href="http://www.aerospike.com/download/server/latest/artifact/el6">http://www.aerospike.com/download/server/latest/artifact/el6</a></li>
+	<li>Download the Aerospike Monitoring Console (AMC) software<p/>
+	$ wget -O aerospike-amc.rpm <a href="http://www.aerospike.com/download/amc/latest/artifact/el6">http://www.aerospike.com/download/amc/latest/artifact/el6</a> </li>
+	<li>Install the AMC<p/>
+	sudo rpm -ivh aerospike-amc.rpm
+	</li>
+	<li>Install the server<p/>
+	$ tar xvf aerospike-server.tgz<p/>
+	$ cd aerospike-server-community-&lt;version&gt;<p/>
+	$ sudo ./asinstall<p/>
+	</li>
+</ol>
+<h1>Starting and stopping the Server</h1>
+Controlling the server requires you to be root or have sudo privileges.<p/>
+Start server<p/>
+$ sudo service aerospike start<p/>
+Check on server status<p/>
+$ sudo service aerospike status<p/>
+Stop server<p/>
+$ sudo service aerospike stop<p/>
+Restart server<p/>
+$ sudo service aerospike restart<p/>
+<h1>Starting and Stopping the AMC Server</h1>
+The Aerospike Management Console (AMC) is used to see how the server is doing.
+<p/>
+Start server<p/>
+$ sudo service amc start<p/>
+Check on server status<p/>
+$ sudo service amc status<p/>
+Stop server<p/>
+$ sudo service amc stop<p/>
+Restart server<p/>
+$ sudo service amc restart<p/>
+<h1>Log files</h1>
+It is always helpful to be able to look at the logs of the server. You MUST have root/sudo privileges to see the logs in the default locations:<p/>
+<ul>
+<li>/var/log/aerospike/aerospike.log</li>
+<li>/var/log/aerospike/udf.log</li>
+</ul>
+It is often useful to keep a window open with a tail of the log:<p/>
+$ sudo tail -f /var/log/aerospike/aerospike.log<p/>
+<h2>UDF logging</h2>
+Log entries are used to debug User Defined Functions (UDFs). It is easier to debug if you log UDF entries in a separate log file, follow these steps:<p/>
+Edit the Aerospike configuration file:<p/>
+	/etc/aerospike/aerospike.conf<p/>
+Locate the “logging” stanza and modify it to look like this:<p/>
+<code>
+logging {
+ 	file /var/log/aerospike/aerospike.log {
+		context any warning
+	 }
+	 file /var/log/aerospike/udf.log {
+ 	          context udf debug
+	}
+}
+</code>
+Restart Aerospike (sudo service aerospike restart)<p/>
+
+
+
+
+
+</body>
+</html>
