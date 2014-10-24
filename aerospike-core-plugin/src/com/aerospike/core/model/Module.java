@@ -112,7 +112,7 @@ public class Module implements IAsEntity{
 		}
 		try {
 			String code = values.get("content");
-			code = code.substring(0, code.length()-2);
+			//code = code.substring(0, code.length()-2);
 			setSource(new String(Base64.decode(code)));
 		} catch (UnsupportedEncodingException e) {
 			CoreActivator.log(Status.ERROR, "Cannot decode " + getName(), e);
