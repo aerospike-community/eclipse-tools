@@ -44,6 +44,7 @@ import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Host;
 import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.InfoPolicy;
+import com.aerospike.core.model.AsCluster;
 import com.aerospike.core.preferences.PreferenceConstants;
 
 
@@ -69,6 +70,8 @@ public class CoreActivator extends AbstractUIPlugin {
 	public static final QualifiedName CLUSTER_CONNECTION_TIMEOUT_PROPERTY = new QualifiedName("Aerospike", "ClusterConnectionTimeout");
 	private static final QualifiedName CLIENT_POLICY = new QualifiedName("Aerospike", "ClientPolicy");
 	private static final QualifiedName INFO_POLICY = new QualifiedName("Aerospike", "InfoPolicy");
+	public static final QualifiedName EDITED_FROM_NODE = new QualifiedName("Aerospike", "EditedFromNode");
+	public static final QualifiedName CLUSTER = new QualifiedName("Aerospike", "AsCluster");
 
 	// The shared instance
 	private static CoreActivator plugin;
@@ -172,6 +175,14 @@ public class CoreActivator extends AbstractUIPlugin {
 		return findConsole(AS_CONSOLE);
 	}
 
+	public static void clearPolicies(IProject project){
+		try {	
+			project.setSessionProperty(CoreActivator.CLIENT_POLICY, null);
+			project.setSessionProperty(CoreActivator.INFO_POLICY, null);
+		} catch (CoreException e) {
+			showError(e, "Cannot clear policies");
+		}
+	}
 	public static void clearClient(IProject project){
 		AerospikeClient client;
 		try {
@@ -181,6 +192,7 @@ public class CoreActivator extends AbstractUIPlugin {
 				client = null;
 			}
 			project.setSessionProperty(CoreActivator.CLIENT_PROPERTY, null);
+			clearPolicies(project);
 		} catch (CoreException e) {
 			showError(e, "Cannot clear Aerospike client");
 		}
@@ -217,16 +229,28 @@ public class CoreActivator extends AbstractUIPlugin {
 				project.setSessionProperty(CoreActivator.CLIENT_PROPERTY, client);
 			}
 		} catch (CoreException e) {
+			CoreActivator.clearClient(project);
 			showError(e, "Cannot get Aerospike client");
 		} catch (NumberFormatException e) {
+			CoreActivator.clearClient(project);
 			showError(e, "Cannot get Aerospike client");
 		} catch (AerospikeException e) {
+			CoreActivator.clearClient(project);
 			showError(e, "Cannot get Aerospike client");
 		}
 		return client;
 
 	}
 
+	public static AsCluster getCluster(IProject project) {
+			try {
+				return (AsCluster) project.getSessionProperty(CoreActivator.CLUSTER);
+			} catch (CoreException e) {
+				showError(e, "Cannot get Cluster from session property");
+			}
+			return null;
+	}
+	
 	public static ClientPolicy getClientPolicy(IProject project){
 		ClientPolicy policy = null;
 		try {
@@ -238,7 +262,7 @@ public class CoreActivator extends AbstractUIPlugin {
 				project.setSessionProperty(CoreActivator.CLIENT_POLICY, policy);
 			}
 		} catch (CoreException e) {
-			showError(e, "Cannot get Aerospike client");
+			showError(e, "Cannot get Aerospike client Policy");
 		}
 		return policy;
 	}
@@ -253,7 +277,7 @@ public class CoreActivator extends AbstractUIPlugin {
 				project.setSessionProperty(CoreActivator.INFO_POLICY, policy);
 			}
 		} catch (CoreException e) {
-			showError(e, "Cannot get Aerospike client");
+			showError(e, "Cannot get Info Policy");
 		}
 		return policy;
 	}

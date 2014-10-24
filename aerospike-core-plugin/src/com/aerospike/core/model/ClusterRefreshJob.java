@@ -19,6 +19,7 @@ package com.aerospike.core.model;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -27,6 +28,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.progress.UIJob;
 
+import com.aerospike.client.AerospikeClient;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Info;
 import com.aerospike.client.cluster.Node;
@@ -37,6 +39,10 @@ public class ClusterRefreshJob extends Job{
 	AsCluster cluster;
 	IViewPart viewPart;
 	private Viewer viewer;
+	
+	public ClusterRefreshJob(IProject project){
+		this(CoreActivator.getCluster(project));
+	}
 	public ClusterRefreshJob(AsCluster cluster) {
 		super(cluster.getProject().getName() + " cluster refresh");
 		this.cluster = cluster;
@@ -56,8 +62,10 @@ public class ClusterRefreshJob extends Job{
 			if (monitor.isCanceled())
 				return Status.CANCEL_STATUS;
 			monitor.subTask("Fetching nodes");
-			Node[] nodes = CoreActivator.getClient(cluster.getProject()).getNodes();
-			
+			AerospikeClient client = CoreActivator.getClient(cluster.getProject());
+			if (client == null)
+				return Status.CANCEL_STATUS;
+			Node[] nodes = client.getNodes();
 			for (Node node : nodes){
 				AsNode newNode = this.cluster.addNode(node);
 				HashMap<String, String> info = (HashMap<String, String>) Info.request(infoPolicy, node);

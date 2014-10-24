@@ -36,6 +36,11 @@ public class AsCluster implements IAsEntity{
 		this.namespaces = new NsFolder(this);
 		this.nodes = new NodeFolder(this);
 		this.packages = new ModuleFolder(this);
+		try {
+			project.setSessionProperty(CoreActivator.CLUSTER, this);
+		} catch (CoreException e) {
+			CoreActivator.showError(e, "cannot set cluster property on prohect");
+		}
 	}
 	public AsCluster(IProject project, Viewer viewer) {
 		this(project);
@@ -101,5 +106,9 @@ public class AsCluster implements IAsEntity{
 	public AsNode addNode(Node node) {
 		AsNode newNode = new AsNode(this.nodes, node);
 		return this.nodes.fetchNode(newNode);
+	}
+	public String getRandomNodeID() {
+		AsNode node = this.nodes.getRandomNode();
+		return node.nodeID;
 	}
 }

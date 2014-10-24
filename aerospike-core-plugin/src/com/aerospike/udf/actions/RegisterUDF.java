@@ -47,6 +47,7 @@ import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.Policy;
 import com.aerospike.client.task.RegisterTask;
 import com.aerospike.core.CoreActivator;
+import com.aerospike.core.model.ClusterRefreshJob;
 import com.aerospike.core.views.ResultsConsoleView;
 
 /**
@@ -127,6 +128,8 @@ public class RegisterUDF implements IWorkbenchWindowActionDelegate {
 							"Aerospike UDF",
 							message.toString());
 					udfFile.setPersistentProperty(CoreActivator.UDF_REGISTERED, "true");
+					ClusterRefreshJob job = new ClusterRefreshJob(udfFile.getProject());
+					job.schedule();
 				} catch (CoreException e) {
 					CoreActivator.showError(e, "Could not register UDF in file: " + udfFile.getName());
 				} catch (NumberFormatException e) {

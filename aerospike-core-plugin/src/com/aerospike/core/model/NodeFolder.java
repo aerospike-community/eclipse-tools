@@ -62,4 +62,8 @@ public class NodeFolder implements IAsEntity{
 		return this.parent;
 	}
 
+	public AsNode getRandomNode() {
+		return (AsNode) getChildren()[0];
+	}
+
 }

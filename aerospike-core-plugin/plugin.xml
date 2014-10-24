@@ -316,10 +316,10 @@ help
             lightweight="true"
             location="TOP_LEFT"
             adaptable="true"
-            label="Aerospike Decorator"
+            label="Aerospike Project Decorator"
             icon="icons/small/Aerospike.png"
             state="true"
-            id="Aerospike.decorator">
+            id="Aerospike.decorator.project">
          <enablement>
          	<and>
             	<objectClass name="org.eclipse.core.resources.IProject"/>

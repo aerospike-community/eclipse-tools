@@ -120,11 +120,11 @@ public class DeregisterUDF implements IWorkbenchWindowActionDelegate {
 					ClusterRefreshJob job = new ClusterRefreshJob(udfModule.getCluster());
 					job.schedule();
 				} catch (CoreException e) {
-					CoreActivator.showError(e, "Could not register UDF in file: " + udfModule.getName());
+					CoreActivator.showError(e, "Could not deregister UDF in file: " + udfModule.getName());
 				} catch (NumberFormatException e) {
-					CoreActivator.showError(e, "Could not register UDF in file: " + udfModule.getName());
+					CoreActivator.showError(e, "Could not deregister UDF in file: " + udfModule.getName());
 				} catch (AerospikeException e) {
-					CoreActivator.showError(e, "Could not register UDF in file: " + udfModule.getName());
+					CoreActivator.showError(e, "Could not deregister UDF in file: " + udfModule.getName());
 				}
 
 			} 
