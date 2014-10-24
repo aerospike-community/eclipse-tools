@@ -141,7 +141,14 @@ Aerospike Nature
                label="Deregister UDF"
                icon="icons/small/UDF.png"
                menubarPath="additions">
-               
+         </action>
+         <action
+               class="com.aerospike.udf.actions.EditRegisteredUDF"
+               enablesFor="1"
+               id="com.aerospike.core.navigator.EditRegisteredUDF"
+               label="Edit registered UDF"
+               icon="icons/small/UDF.png"
+               menubarPath="additions">
          </action>
        </objectContribution>
 	   
@@ -165,8 +172,7 @@ Aerospike Nature
 	           menubarPath="additions">
 	     </action>
 	   </objectContribution>
-	   <!--org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor-->
-	   	<viewerContribution
+<!--	   	<viewerContribution
 			id="com.aerospike.aql.action.contribution.popup.editor" targetID="#TextEditorContext">
 			<action
 				id="com.aerospike.aql.plugin.actions.GenerateSnipet" label="Insert AQL"
@@ -174,7 +180,7 @@ Aerospike Nature
 				menubarPath="additions" 
 				class="com.aerospike.aql.plugin.actions.GenerateSnipet">
 			</action> 
-		</viewerContribution>
+		</viewerContribution>-->
    </extension>
 <!--
 AQL Builder
@@ -222,13 +228,15 @@ ProjectExplorer extension
 			<possibleChildren>
 		    	<instanceof value="com.aerospike.core.model.IAsEntity" />
 			</possibleChildren>
+			<!--
 			<actionProvider
-            	class="com.aerospike.core.navigator.FunctionActionProvider"
-            	id="com.aerospike.core.navigator.FunctionActionProvider">
+            	class="com.aerospike.udf.actions.ModuleActionProvider"
+            	id="com.aerospike.core.navigator.ModuleActionProvider">
           		<enablement>
-             		<instanceof value="com.aerospike.core.model.Function"/>
+             		<instanceof value="com.aerospike.core.model.Module"/>
           		</enablement>
-        </actionProvider>
+        	</actionProvider>
+        	-->
 	   </navigatorContent>
 	</extension>
 
@@ -243,11 +251,19 @@ ProjectExplorer extension
 	   </viewerContentBinding>
 	   <viewerActionBinding
             viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <!-- 
          <includes>
             <actionExtension
                   pattern="com.aerospike.core.navigator.ClusterRefreshAction">
             </actionExtension>
+            <actionExtension
+                  pattern="com.aerospike.core.navigator.ModuleActionProvider">
+            </actionExtension>
          </includes>
+         <excludes>
+			<actionExtension 
+				pattern="org.eclipse.ui.navigator.resources.OpenActions" />
+		 </excludes> -->
       </viewerActionBinding>
 	</extension>
 	

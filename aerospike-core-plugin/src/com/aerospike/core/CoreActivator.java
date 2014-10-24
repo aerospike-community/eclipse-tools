@@ -21,7 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
@@ -316,5 +318,15 @@ public class CoreActivator extends AbstractUIPlugin {
 		return map;
 	}
 
-
+	public static IFolder getUdfFolder(IProject project){
+		String udfFolderString;
+		try {
+			udfFolderString = project.getPersistentProperty(CoreActivator.UDF_DIRECTORY);
+			IResource udfFolder = project.findMember(udfFolderString);
+			return (IFolder) udfFolder;
+		} catch (CoreException e) {
+			showError(e, "Cannot locate UDF folder");
+		}
+		return null;
+	}
 }
