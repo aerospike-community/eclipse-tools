@@ -2,21 +2,24 @@
 <feature
       id="com.aerospike.feature"
       label="Aerospike Developers Toolkit"
-      version="3.0.16"
+      version="3.0.17"
       provider-name="Aerospike Inc.">
 
    <description url="http://www.example.com/description">
-      This Aerospike Toolkit makes it easier for Java developers using Eclipse IDE in incorporating Aerospike functionality into their applications.
-
-      The toolkit currently includes:
-
-      - Aerospike Java Project wizard
-      - User Defined Function (UDF) Registration
-      - Aerospike Query Language (AQL) Tools
-        -- AQL Editor
-        -- Query Execution
-        -- Code Generation
-      - Cluster Explorer
+      This Aerospike Toolkit makes it easier for Java developers using
+Eclipse IDE in incorporating Aerospike functionality into their
+applications.
+The toolkit currently includes:
+- Aerospike Java Project wizard
+- User Defined Function (UDF)
+-- Registration
+-- Deregistration
+-- Edit
+- Aerospike Query Language (AQL) Tools
+-- AQL Editor
+-- Query Execution
+-- Code Generation
+- Cluster Explorer
    </description>
 
    <copyright>

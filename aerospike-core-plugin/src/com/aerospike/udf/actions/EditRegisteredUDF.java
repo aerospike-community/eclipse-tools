@@ -81,7 +81,7 @@ public class EditRegisteredUDF implements IWorkbenchWindowActionDelegate {
 				 * export it to the local project
 				 */
 				IFolder udfFolder = CoreActivator.getUdfFolder(project);
-				IFile udfFile = udfFolder.getFile(udfModule.getName() + ".lua");
+				IFile udfFile = udfFolder.getFile(udfModule.getName());
 				try {
 					String contense = udfModule.getSource();
 					InputStream stream = new ByteArrayInputStream(contense.getBytes());
