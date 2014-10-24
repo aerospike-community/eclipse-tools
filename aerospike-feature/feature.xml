@@ -46,6 +46,7 @@ limitations under the License.
    </license>
 
    <url>
+      <update label="Aerospike" url="https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site"/>
       <discovery label="Aerospike" url="http://www.aerospike.com"/>
       <discovery label="http://www.aerospike.com/community/labs/" url="http://newsite"/>
    </url>

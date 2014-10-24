@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <description name="Aerospike" url="https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site">
+      This site contains feature and plugin versions for Aerospike
+   </description>
    <feature url="features/com.aerospike.feature_3.0.18.jar" id="com.aerospike.feature" version="3.0.18">
       <category name="Aerospike"/>
    </feature>
