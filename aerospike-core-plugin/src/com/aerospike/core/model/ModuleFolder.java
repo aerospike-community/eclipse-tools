@@ -59,7 +59,7 @@ public class ModuleFolder implements IAsEntity {
 
 	@Override
 	public String toString() {
-		return "Packages";
+		return "Modules";
 	}
 
 	@Override
