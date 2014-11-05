@@ -16,19 +16,19 @@
  */
 package com.aerospike.project.wizards;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -36,8 +36,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
-import org.eclipse.swt.events.VerifyListener;
-import org.eclipse.swt.events.VerifyEvent;
 
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.preferences.PreferenceConstants;
@@ -72,6 +70,9 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	private IPreferenceStore store;
 	private Label lblPackage;
 	private Text packageText;
+	private Button btnMainCheckButton;
+	private Composite composite;
+	private Button btnJunitCheckButton;
 	
 
 	/**
@@ -156,6 +157,17 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		});
 		dialogChanged();
 		setControl(container);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		
+		composite = new Composite(container, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		
+		btnMainCheckButton = new Button(composite, SWT.CHECK);
+		btnMainCheckButton.setText("Main method");
+		
+		btnJunitCheckButton = new Button(composite, SWT.CHECK);
+		btnJunitCheckButton.setText("Junit Test");
 		new Label(container, SWT.NONE);
 		
 		lblAuthor = new Label(container, SWT.NONE);
@@ -304,6 +316,12 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	}
 	public String getPortString(){
 		return portText.getText();
+	}
+	public boolean getGenerateJUnit(){
+		return btnJunitCheckButton.getSelection();
+	}
+	public boolean getGenerateMain(){
+		return btnMainCheckButton.getSelection();
 	}
 
 }

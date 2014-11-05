@@ -116,6 +116,8 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 		final String mainClass = page.getMainClassName();
 		final String seedNode = page.getSeedNode();
 		final String port = page.getPortString();
+		final boolean generateMain = page.getGenerateMain();
+		final boolean generateJUnit = page.getGenerateJUnit();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
@@ -201,9 +203,19 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					template.add("name", projectName);
 					createFile(project, null, "README.md", monitor, template);
 					// create package
+					// create JUnit
+					if (generateJUnit){
+						IPackageFragment pack = javaProject.getPackageFragmentRoot(srcTestJava)
+								.createPackageFragment(packageString, false, null);
+						template = projectSTG.getInstanceOf("junit");
+						template.add("name", mainClass + "Test");
+						template.add("package", packageString);
+						template.add("classUnderTest", mainClass);
+						pack.createCompilationUnit(mainClass + "Test" + ".java", template.render(), false, monitor);
+					}
+					// create main class
 					IPackageFragment pack = javaProject.getPackageFragmentRoot(srcMainJava)
 							.createPackageFragment(packageString, false, null);
-					// create main class
 					template = projectSTG.getInstanceOf("mainClass");
 					template.add("name", mainClass);
 					template.add("package", packageString);
