@@ -215,6 +215,13 @@ public class %name% {
 		this.writePolicy = new WritePolicy();
 		this.policy = new Policy();
 	}
+	public %name%(AerospikeClient client, String namespace, String set) throws AerospikeException {
+		this.client = client;
+		this.namespace = namespace;
+		this.set = set;
+		this.writePolicy = new WritePolicy();
+		this.policy = new Policy();
+	}
 	public static void main(String[] args) throws AerospikeException {
 		try {
 			Options options = new Options();
@@ -270,6 +277,42 @@ public class %name% {
 	}
 
 }
+>>
+
+junit(package, name, classUnderTest)::=<<
+package %package%;
+
+import static org.junit.Assert.fail;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.aerospike.client.AerospikeClient;
+
+public class %name% {
+
+	AerospikeClient client;
+	%classUnderTest% subject;
+
+	@Before
+	public void setUp() throws Exception {
+		client = new AerospikeClient("localhost", 3000);
+		subject = new %classUnderTest%(client, "test", "demo");
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		client.close();
+	}
+
+	@Test
+	public void test%classUnderTest%() throws Exception {
+		subject.work();
+	}
+
+}
+
 >>
 
 log4J(package, mainClass)::=<<
