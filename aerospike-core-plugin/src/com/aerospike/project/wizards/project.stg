@@ -74,7 +74,7 @@ pom(artifactId, name, version, author, email, mainClass, package)::=<<
 		<dependency>
 			<groupId>com.aerospike</groupId>
 			<artifactId>aerospike-client</artifactId>
-			<version>3.0.25</version>
+			<version>3.0.30</version>
 		</dependency>
 		<!-- Apache command line parser. -->
 		<dependency>
