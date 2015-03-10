@@ -16,16 +16,20 @@
  */
 package com.aerospike.core.views;
 
+import java.util.Map;
+
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import com.aerospike.aql.grammar.IErrorReporter;
-import com.aerospike.aql.grammar.IResultReporter;
+import com.aerospike.aql.IResultReporter;
 import com.aerospike.client.AerospikeException;
+import com.aerospike.client.Key;
 import com.aerospike.client.Log;
 import com.aerospike.client.Log.Level;
 import com.aerospike.client.Record;
 import com.aerospike.client.query.RecordSet;
+import com.aerospike.client.query.ResultSet;
 import com.aerospike.core.CoreActivator;
 
 public class ResultsConsoleView implements Log.Callback, IResultReporter, IErrorReporter {
@@ -189,6 +193,60 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	public int getErrors() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void report(AerospikeException e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(ResultSet resultSey) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(Key key, Record record) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(ResultSet resultSet, boolean clear) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(Key key, Record record, boolean clear) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(Map<String, String>[] infoMap) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String[] infoStrings, String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String[] infoStrings, boolean clear, String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setViewFormat(ViewFormat viewFormar) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

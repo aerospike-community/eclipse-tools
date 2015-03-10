@@ -17,6 +17,7 @@
 package com.aerospike.aql.plugin.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 				final List<String> errorList = new ArrayList<String>();
 				try {
 					final AerospikeClient client = CoreActivator.getClient(sqlFile.getProject());
+					final int timeOut = CoreActivator.getConnectionTimeout(sqlFile.getProject());
 					if (client == null){
 						CoreActivator.showError("Aerospike client is null");
 						return;
@@ -96,8 +98,15 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
 							results.report("Ecexuting AQL file: " + sqlFile.getName());
-							AQL aql = new AQL(client);
-							aql.execute(aqlFile, results, results);
+							AQL aql = new AQL(client, timeOut);
+							aql.setResultsReporter(results);
+							aql.setErrorReporter(results);
+							//aql.execute(aqlFile, results, results);
+							try {
+								aql.execute(aqlFile);
+							} catch (IOException e) {
+								CoreActivator.showError(e, COULD_NOT_EXECUTE_SQL_FILE + sqlFile.getName());
+							}
 							results.report(sqlFile.getName() + " completed");
 							return Status.OK_STATUS;
 						}

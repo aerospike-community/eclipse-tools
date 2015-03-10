@@ -122,17 +122,6 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 			
 		}
 
-//		public void error(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_ERROR);
-//		}
-//
-//		public void fatalError(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_ERROR);
-//		}
-//
-//		public void warning(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_WARNING);
-//		}
 
 		@Override
 		public void reportError(int line, int charStart, int charEnd, String message) {
@@ -196,8 +185,8 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 	private void processAQL(IFile sqlFile, AQLErrorHandler reporter, boolean remove) {
 		int errors = 0;
 		try {
-			AQLErrorHandler errorHandler = new AQLErrorHandler(sqlFile);
-			final ResultsConsoleView results = new ResultsConsoleView();
+			//AQLErrorHandler errorHandler = new AQLErrorHandler(sqlFile);
+			//final ResultsConsoleView results = new ResultsConsoleView();
 			// find the Aerospike console and display it
 //			IWorkbench wb = PlatformUI.getWorkbench();
 //			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
@@ -206,7 +195,8 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 //			view.display(results.getConsole());
 			AQL aql = new AQL();
 			File sourceFile = new File(sqlFile.getRawLocation().toOSString());
-			aql.compile(sourceFile, reporter, results);
+			aql.setErrorReporter(reporter);
+			aql.compile(sourceFile);
 		} catch (NumberFormatException e) {
 			CoreActivator.showError(e, "Could not process AQL file: " + sqlFile.getName());
 		} catch (IOException e) {

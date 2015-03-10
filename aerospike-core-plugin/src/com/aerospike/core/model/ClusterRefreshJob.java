@@ -126,6 +126,22 @@ public class ClusterRefreshJob extends Job{
 				}
 			}
 			monitor.worked(10);
+			
+			//refresh Indexes
+			if (monitor.isCanceled())
+				return Status.CANCEL_STATUS;
+			monitor.subTask("Fetching Indexes");
+			String indexString = Info.request(seedNode, port, "sindex");
+			if (!indexString.isEmpty()){
+				String[] indexList = indexString.split(";");
+				for (String index : indexList){
+					if (monitor.isCanceled())
+						return Status.CANCEL_STATUS;
+					this.cluster.indexes.add(index);	
+				}
+			}
+			monitor.worked(10);
+			
 
 
 		} catch (AerospikeException e) {

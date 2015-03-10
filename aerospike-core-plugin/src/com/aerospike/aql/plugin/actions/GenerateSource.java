@@ -48,6 +48,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsoleView;
 
 import com.aerospike.aql.AQL;
+import com.aerospike.aql.AQLGenerator.Language;
 import com.aerospike.aql.plugin.views.AQLResult;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.model.AsCluster;
@@ -85,16 +86,19 @@ public class GenerateSource implements IWorkbenchWindowActionDelegate {
 					view.display(results.getConsole());
 					// set generation language
 					String extension;
-					final com.aerospike.aql.AQL.Language language;
+					final Language language;
 						if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.java.popup")){
-							language = com.aerospike.aql.AQL.Language.JAVA;
+							language = Language.JAVA;
 							extension = ".java";
 						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.c.popup")){
-							language = com.aerospike.aql.AQL.Language.C;
+							language = Language.C;
 							extension = ".c";
 						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.csharp.popup")){
-							language = com.aerospike.aql.AQL.Language.CSHARP;
+							language = Language.CSHARP;
 							extension = ".csharp";
+						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.go.popup")){
+							language = Language.GO;
+							extension = ".go";
 						} else {
 							return;
 						}
@@ -135,7 +139,7 @@ public class GenerateSource implements IWorkbenchWindowActionDelegate {
 									seedNode = store.getString(PreferenceConstants.SEED_NODE);
 									port = store.getInt(PreferenceConstants.PORT);
 								}
-								aql.compileAndGenerate(file, outputFile, language, seedNode, port);
+								aql.generate(file, outputFile, language);
 								results.report("Completed generation for " + sqlFile.getName());
 								outputIFile.getParent().refreshLocal(IResource.DEPTH_ONE, null);
 								return Status.OK_STATUS;

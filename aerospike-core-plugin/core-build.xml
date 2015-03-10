@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project default="plugin_export" name="build">
-	<target name="plugin_export">
-		<pde.exportPlugins destination="/Users/peter/git/aerospike/aerospike-tools/eclipse-tools/target" exportSource="false" exportType="directory" plugins="aerospike-core-plugin" useJARFormat="true"/>
-	</target>
-</project>

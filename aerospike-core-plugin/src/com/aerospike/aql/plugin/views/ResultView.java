@@ -20,6 +20,7 @@ package com.aerospike.aql.plugin.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -55,10 +56,13 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-import com.aerospike.aql.grammar.IResultReporter;
+import com.aerospike.aql.IResultReporter;
+import com.aerospike.client.AerospikeException;
+import com.aerospike.client.Key;
 import com.aerospike.client.Log.Level;
 import com.aerospike.client.Record;
 import com.aerospike.client.query.RecordSet;
+import com.aerospike.client.query.ResultSet;
 
 
 public class ResultView extends ViewPart implements IResultReporter{
@@ -382,5 +386,59 @@ public class ResultView extends ViewPart implements IResultReporter{
 	@Override
 	public boolean isCancelled() {
 		return this.cancelled;
+	}
+
+	@Override
+	public void report(AerospikeException arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(ResultSet arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(Key arg0, Record arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(ResultSet arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(Key arg0, Record arg1, boolean arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(Map<String, String>[] arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String[] arg0, String... arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String[] arg0, boolean arg1, String... arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setViewFormat(ViewFormat arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
