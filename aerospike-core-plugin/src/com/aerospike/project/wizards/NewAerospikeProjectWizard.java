@@ -37,17 +37,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IAccessRule;
-import org.eclipse.jdt.core.IClasspathAttribute;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
-import org.eclipse.jdt.launching.environments.IExecutionEnvironmentsManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -127,28 +116,28 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					project.setPersistentProperty(CoreActivator.PORT_PROPERTY, port);
 					project.setPersistentProperty(CoreActivator.UDF_DIRECTORY, null);
 					project.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, null);
-					//make a java project
-					IJavaProject javaProject = JavaCore.create(project);
-					// create the classpath entries
-					List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-					IExecutionEnvironmentsManager executionEnvironmentsManager = JavaRuntime.getExecutionEnvironmentsManager();
-					IExecutionEnvironment[] executionEnvironments = executionEnvironmentsManager.getExecutionEnvironments();
-					for (IExecutionEnvironment iExecutionEnvironment : executionEnvironments) {
-					    // We will look for JavaSE-1.6 as the JRE container to add to our classpath
-					    if ("JavaSE-1.6".equals(iExecutionEnvironment.getId())) {
-					        entries.add(JavaCore.newContainerEntry(JavaRuntime.newJREContainerPath(iExecutionEnvironment)));
-					        break;
-					    } else if ("JavaSE-1.5".equals(iExecutionEnvironment.getId())) {
-					        entries.add(JavaCore.newContainerEntry(JavaRuntime.newJREContainerPath(iExecutionEnvironment)));
-					        break;
-					    }
-					}
-					IClasspathEntry mavenEntry = JavaCore.newContainerEntry(new Path("org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"), 
-							new IAccessRule[0], new IClasspathAttribute[] {
-								JavaCore.newClasspathAttribute("org.eclipse.jst.component.dependency", "/WEB-INF/lib") 
-								}, false);
-					entries.add(mavenEntry);
-					javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
+//					//make a java project
+//					IJavaProject javaProject = JavaCore.create(project);
+//					// create the classpath entries
+//					List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+//					IExecutionEnvironmentsManager executionEnvironmentsManager = JavaRuntime.getExecutionEnvironmentsManager();
+//					IExecutionEnvironment[] executionEnvironments = executionEnvironmentsManager.getExecutionEnvironments();
+//					for (IExecutionEnvironment iExecutionEnvironment : executionEnvironments) {
+//					    // We will look for JavaSE-1.6 as the JRE container to add to our classpath
+//					    if ("JavaSE-1.6".equals(iExecutionEnvironment.getId())) {
+//					        entries.add(JavaCore.newContainerEntry(JavaRuntime.newJREContainerPath(iExecutionEnvironment)));
+//					        break;
+//					    } else if ("JavaSE-1.5".equals(iExecutionEnvironment.getId())) {
+//					        entries.add(JavaCore.newContainerEntry(JavaRuntime.newJREContainerPath(iExecutionEnvironment)));
+//					        break;
+//					    }
+//					}
+//					IClasspathEntry mavenEntry = JavaCore.newContainerEntry(new Path("org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"), 
+//							new IAccessRule[0], new IClasspathAttribute[] {
+//								JavaCore.newClasspathAttribute("org.eclipse.jst.component.dependency", "/WEB-INF/lib") 
+//								}, false);
+//					entries.add(mavenEntry);
+//					javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
 					// create source folders
 					IFolder srcMainJava = project.getFolder("src/main/java");
 					createFolder(srcMainJava);
@@ -166,20 +155,20 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					IFolder srcAql = project.getFolder("aql");
 					createFolder(srcAql);
 					//
-					IPackageFragmentRoot mainJava = javaProject.getPackageFragmentRoot(srcMainJava);
-					IPackageFragmentRoot mainResource = javaProject.getPackageFragmentRoot(srcMainResource);
-					IPackageFragmentRoot testJava = javaProject.getPackageFragmentRoot(srcTestJava);
-					IPackageFragmentRoot testResource = javaProject.getPackageFragmentRoot(srcTestResource);
-					IPackageFragmentRoot mainGenerated = javaProject.getPackageFragmentRoot(srcGenerated);
-					IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-					IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 5];
-					System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-					newEntries[oldEntries.length] = JavaCore.newSourceEntry(mainJava.getPath());
-					newEntries[oldEntries.length +1] = JavaCore.newSourceEntry(mainResource.getPath());
-					newEntries[oldEntries.length +2] = JavaCore.newSourceEntry(testJava.getPath());
-					newEntries[oldEntries.length +3] = JavaCore.newSourceEntry(testResource.getPath());
-					newEntries[oldEntries.length +4] = JavaCore.newSourceEntry(mainGenerated.getPath());
-					javaProject.setRawClasspath(newEntries, monitor);
+//					IPackageFragmentRoot mainJava = javaProject.getPackageFragmentRoot(srcMainJava);
+//					IPackageFragmentRoot mainResource = javaProject.getPackageFragmentRoot(srcMainResource);
+//					IPackageFragmentRoot testJava = javaProject.getPackageFragmentRoot(srcTestJava);
+//					IPackageFragmentRoot testResource = javaProject.getPackageFragmentRoot(srcTestResource);
+//					IPackageFragmentRoot mainGenerated = javaProject.getPackageFragmentRoot(srcGenerated);
+//					IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+//					IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 5];
+//					System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+//					newEntries[oldEntries.length] = JavaCore.newSourceEntry(mainJava.getPath());
+//					newEntries[oldEntries.length +1] = JavaCore.newSourceEntry(mainResource.getPath());
+//					newEntries[oldEntries.length +2] = JavaCore.newSourceEntry(testJava.getPath());
+//					newEntries[oldEntries.length +3] = JavaCore.newSourceEntry(testResource.getPath());
+//					newEntries[oldEntries.length +4] = JavaCore.newSourceEntry(mainGenerated.getPath());
+//					javaProject.setRawClasspath(newEntries, monitor);
 					// create the pom.xml
 					ST template = projectSTG.getInstanceOf("pom");
 					template.add("name", projectName);
@@ -205,24 +194,28 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 					// create package
 					// create JUnit
 					if (generateJUnit){
-						IPackageFragment pack = javaProject.getPackageFragmentRoot(srcTestJava)
-								.createPackageFragment(packageString, false, null);
+//						IPackageFragment pack = javaProject.getPackageFragmentRoot(srcTestJava)
+//								.createPackageFragment(packageString, false, null);
 						template = projectSTG.getInstanceOf("junit");
 						template.add("name", mainClass + "Test");
 						template.add("package", packageString);
 						template.add("classUnderTest", mainClass);
-						pack.createCompilationUnit(mainClass + "Test" + ".java", template.render(), false, monitor);
+//						pack.createCompilationUnit(mainClass + "Test" + ".java", template.render(), false, monitor);
+						final IFile junitMain = createFile(project, srcTestJava.getFolder(packageString), mainClass + "Test.java", monitor, template);
 					}
-					// create main class
-					IPackageFragment pack = javaProject.getPackageFragmentRoot(srcMainJava)
-							.createPackageFragment(packageString, false, null);
+				// create main class
+//					IPackageFragment pack = javaProject.getPackageFragmentRoot(srcMainJava)
+//							.createPackageFragment(packageString, false, null);
+					
 					template = projectSTG.getInstanceOf("mainClass");
 					template.add("name", mainClass);
 					template.add("package", packageString);
 					template.add("author", author);
 					template.add("seedNode", seedNode);
 					template.add("port", port);
-					final ICompilationUnit cu = pack.createCompilationUnit(mainClass+".java", template.render(), false, monitor);
+//					final ICompilationUnit cu = pack.createCompilationUnit(mainClass+".java", template.render(), false, monitor);
+					final IFile javaMain = createFile(project, srcMainJava.getFolder(packageString), mainClass+".java", monitor, template);
+
 					// open editor on main class
 					monitor.setTaskName("Opening file for editing...");
 					getShell().getDisplay().asyncExec(new Runnable() {
@@ -230,7 +223,7 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 							IWorkbenchPage page =
 									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 							try {
-								IEditorPart editor = IDE.openEditor(page, (IFile) cu.getResource(), true);
+								IEditorPart editor = IDE.openEditor(page, javaMain, true);
 							} catch (PartInitException e) {
 							}
 						}
@@ -312,12 +305,12 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 		project.create(progressMonitor);
 		project.open(progressMonitor);
 		IProjectDescription description = project.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID, "org.eclipse.m2e.core.maven2Nature", AerospikeNature.NATURE_ID });
+		description.setNatureIds(new String[] {  AerospikeNature.NATURE_ID });
 		project.setDescription(description, null);
 
 		return project;
 	}
-	private void createFile(IProject project, IFolder folder,
+	private IFile createFile(IProject project, IFolder folder,
 			String fileName,
 			IProgressMonitor monitor, ST template) throws CoreException{
 		monitor.beginTask("Creating " + fileName, 2);
@@ -337,6 +330,7 @@ public class NewAerospikeProjectWizard extends Wizard implements INewWizard {
 			stream.close();
 		} catch (IOException e) {
 		}
+		return file;
 
 	}
 	/**

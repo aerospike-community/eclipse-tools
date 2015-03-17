@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Aerospike Core Plugin
 Bundle-SymbolicName: aerospike-core-plugin;singleton:=true
-Bundle-Version: 3.0.22
+Bundle-Version: 3.1.0
 Bundle-Activator: com.aerospike.core.CoreActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -13,16 +13,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.forms,
  org.eclipse.e4.core.commands,
- org.eclipse.ui.ide,
- org.eclipse.jdt.core;bundle-version="3.10.0",
- org.eclipse.m2e.core;bundle-version="1.5.0",
- org.eclipse.jdt.launching;bundle-version="3.7.101"
+ org.eclipse.ui.ide
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Aerospike Inc.
 Bundle-ClassPath: .,
  swing2swt.jar,
- aql2-1.0.0-full.jar
+ aql2-2.0.0-full.jar
 Export-Package: .,
  com.aerospike.aql,
  com.aerospike.aql.grammar,
@@ -31,6 +28,7 @@ Export-Package: .,
  com.aerospike.aql.plugin.editors,
  com.aerospike.aql.plugin.views,
  com.aerospike.client,
+ com.aerospike.client.admin,
  com.aerospike.client.async,
  com.aerospike.client.cluster,
  com.aerospike.client.command,
