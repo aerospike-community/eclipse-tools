@@ -25,11 +25,19 @@
       </category>
       <wizard
             category="aerospike-category"
-            class="com.aerospike.project.wizards.NewAerospikeProjectWizard"
+            class="com.aerospike.project.wizards.NewAerospikeProjectWizardJava"
             icon="icons/aerospike.logo.png"
             project="true"
-            id="com.aerospike.project.wizards.NewAerospikeProjectWizard"
-            name="New Aerospike Java Project">
+            id="com.aerospike.project.wizards.NewAerospikeProjectWizardJava"
+            name="New Java Project">
+      </wizard>
+      <wizard
+            category="aerospike-category"
+            class="com.aerospike.project.wizards.NewAerospikeProjectWizardGo"
+            icon="icons/aerospike.logo.png"
+            project="true"
+            id="com.aerospike.project.wizards.NewAerospikeProjectWizardGo"
+            name="New Go Project">
       </wizard>
    </extension>
 
@@ -175,10 +183,10 @@ Aerospike Nature
 <!--	   	<viewerContribution
 			id="com.aerospike.aql.action.contribution.popup.editor" targetID="#TextEditorContext">
 			<action
-				id="com.aerospike.aql.plugin.actions.GenerateSnipet" label="Insert AQL"
+				id="com.aerospike.aql.plugin.actions.Snipet" label="Insert AQL"
 				icon="icons/aerospike.logo.png"
 				menubarPath="additions" 
-				class="com.aerospike.aql.plugin.actions.GenerateSnipet">
+				class="com.aerospike.aql.plugin.actions.Snipet">
 			</action> 
 		</viewerContribution>-->
    </extension>
@@ -388,13 +396,13 @@ Popups
                enablesFor="1"
                id="com.aerospike.aql.plugin.actions.GenerateSource.java.popup">
          </action>
-<!-- future
+
          <action
-               label="Genarate &amp;C"
+               label="Genarate &amp;Go"
                class="com.aerospike.aql.plugin.actions.GenerateSource"
                menubarPath="Aerospike.menu1/group1"
                enablesFor="1"
-               id="com.aerospike.aql.plugin.actions.GenerateSource.c.popup">
+               id="com.aerospike.aql.plugin.actions.GenerateSource.go.popup">
          </action>
          <action
                label="Genarate &amp;C#"
@@ -403,7 +411,7 @@ Popups
                enablesFor="1"
                id="com.aerospike.aql.plugin.actions.GenerateSource.csharp.popup">
          </action>
--->
+
       </objectContribution>
    </extension>
 <!-- 
@@ -415,12 +423,19 @@ Results view
             name="Aerospike"
             id="aerospike-category">
       </category>
+<!--
       <view
             name="Query Results"
             icon="icons/small/query.png"
             category="aerospike-category"
             class="com.aerospike.aql.plugin.views.ResultView"
             id="com.aerospike.aql.plugin.views.ResultView">
+      </view>
+-->
+      <view
+            class="com.aerospike.aql.plugin.views.RecordView"
+            id="com.aerospike.aql.plugin.views.RevordView"
+            name="Record View">
       </view>
    </extension>
 <!-- 

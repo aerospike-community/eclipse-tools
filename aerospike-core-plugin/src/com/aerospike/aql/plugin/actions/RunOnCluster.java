@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -42,6 +42,8 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsoleView;
 
 import com.aerospike.aql.AQL;
+import com.aerospike.aql.IResultReporter.ViewFormat;
+import com.aerospike.aql.plugin.views.RecordView;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.model.AsCluster;
@@ -88,6 +90,7 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 					IWorkbenchPage page = win.getActivePage();
 					IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
 					view.display(results.getConsole());
+					//TODO final RecordView recordView = (RecordView) page.showView(RecordView.ID);
 					
 					
 					final File aqlFile = sqlFile.getRawLocation().makeAbsolute().toFile();
@@ -98,7 +101,8 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
 							results.report("Ecexuting AQL file: " + sqlFile.getName());
-							AQL aql = new AQL(client, timeOut);
+							AQL aql = new AQL(client, timeOut, ViewFormat.TABLE);
+							//TODO aql.setResultsReporter(recordView);
 							aql.setResultsReporter(results);
 							aql.setErrorReporter(results);
 							//aql.execute(aqlFile, results, results);

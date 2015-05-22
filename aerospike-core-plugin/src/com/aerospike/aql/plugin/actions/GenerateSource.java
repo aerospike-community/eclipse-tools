@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -90,15 +90,12 @@ public class GenerateSource implements IWorkbenchWindowActionDelegate {
 						if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.java.popup")){
 							language = Language.JAVA;
 							extension = ".java";
-						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.c.popup")){
-							language = Language.C;
-							extension = ".c";
-						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.csharp.popup")){
-							language = Language.CSHARP;
-							extension = ".csharp";
 						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.go.popup")){
 							language = Language.GO;
 							extension = ".go";
+						} else if (actionID.equals("com.aerospike.aql.plugin.actions.GenerateSource.csharp.popup")){
+							language = Language.CSHARP;
+							extension = ".csharp";
 						} else {
 							return;
 						}

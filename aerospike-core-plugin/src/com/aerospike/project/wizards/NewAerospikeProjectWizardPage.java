@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -37,14 +37,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 
+import com.aerospike.aql.AQLGenerator.Language;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.preferences.PreferenceConstants;
 
-/**
- * The "New" wizard page allows setting the container for the new file as well
- * as the file name. The page will only accept file name without the extension
- * OR with the extension that matches the expected one (mpe).
- */
 
 public class NewAerospikeProjectWizardPage extends WizardPage {
 	private Text projectNameText;
@@ -71,8 +67,10 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	private Label lblPackage;
 	private Text packageText;
 	private Button btnMainCheckButton;
-	private Composite composite;
+	private Composite genElemetsComposit;
 	private Button btnJunitCheckButton;
+
+	private Language lang;
 	
 
 	/**
@@ -83,7 +81,7 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	public NewAerospikeProjectWizardPage(ISelection selection) {
 		super("newAerospikeExamplePage");
 		setTitle("New Aerospike project");
-		setDescription("This wizard creates a new Aerospike project. This project can be used as a start for an Aerospike application in Java");
+		setDescription("This wizard creates a new Aerospike project. This project can be used as a start for an Aerospike application");
 		this.selection = selection;
 		this.store = CoreActivator.getDefault().getPreferenceStore();
 	}
@@ -133,6 +131,7 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		
 		versionText = new Text(container, SWT.BORDER);
 		versionText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		versionText.setText("1.0.0");
 		new Label(container, SWT.NONE);
 		
 		lblPackage = new Label(container, SWT.NONE);
@@ -160,13 +159,13 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
 		
-		composite = new Composite(container, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		genElemetsComposit = new Composite(container, SWT.NONE);
+		genElemetsComposit.setLayout(new GridLayout(2, false));
 		
-		btnMainCheckButton = new Button(composite, SWT.CHECK);
+		btnMainCheckButton = new Button(genElemetsComposit, SWT.CHECK);
 		btnMainCheckButton.setText("Main method");
 		
-		btnJunitCheckButton = new Button(composite, SWT.CHECK);
+		btnJunitCheckButton = new Button(genElemetsComposit, SWT.CHECK);
 		btnJunitCheckButton.setText("Junit Test");
 		new Label(container, SWT.NONE);
 		
@@ -221,6 +220,28 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 		gd_portText.widthHint = 95;
 		portText.setLayoutData(gd_portText);
 		new Label(container, SWT.NONE);
+		
+		
+		switch (lang){
+		case JAVA:
+			this.genElemetsComposit.setVisible(true);
+			this.lblArtifactId.setVisible(true);
+			this.artifactIdText.setVisible(true);
+			this.lblPackage.setText("Package:");
+			this.lblMainClass.setText("Main class:");
+			break;
+		case GO:
+			this.genElemetsComposit.setVisible(false);
+			this.lblArtifactId.setVisible(false);
+			this.artifactIdText.setVisible(false);
+			this.lblPackage.setText("Package:");
+			this.lblMainClass.setText("Module:");
+			break;
+		default:
+			break;
+
+		}
+
 	}
 
 	/**
@@ -322,6 +343,10 @@ public class NewAerospikeProjectWizardPage extends WizardPage {
 	}
 	public boolean getGenerateMain(){
 		return btnMainCheckButton.getSelection();
+	}
+
+	public void setLanguage(Language lang) {
+		this.lang = lang;
 	}
 
 }

@@ -1,0 +1,99 @@
+group projectGroup;
+
+delimiters "%", "%"
+
+
+readme(name)::=<<
+#%name%
+
+##Problem
+
+##Solution
+yada yada yada
+
+The source code for this solution is available on GitHub, and the README.md 
+http://github.com/some place. 
+
+
+##Discussion
+
+>>
+
+ignore()::=<<
+/bin
+.project
+.DS_Store
+/target
+
+>>
+
+module(name, author, email, version, package, seedNode, port)::=<<
+/* 
+ * Copyright 2012-2015 Aerospike, Inc.
+ *
+ * Portions may be licensed to Aerospike, Inc. under one or more contributor
+ * license agreements.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package %package%
+
+import (
+	"bufio"
+	"flag"
+	"fmt"
+	. "github.com/aerospike/aerospike-client-go"
+	"strings"
+)
+
+const APP_VERSION = "%version%"
+
+// The flag package provides a default help printer via -h switch
+var versionFlag *bool = flag.Bool("v", false, "Print the version number.")
+
+// Aerospike client
+var client AerospikeClient
+
+func panicOnError(err error) {
+	if err != nil {
+		fmt.Printf("Aerospike error: \%d", err)
+		panic(err)
+	}
+}
+
+/*
+Module Name:	%name%
+Author: 	%author%
+eMail:		%email%
+*/
+
+func main() {
+	var c string
+	flag.Parse() // Scan the arguments list
+
+	if *versionFlag {
+		fmt.Println("Version:", APP_VERSION)
+	}
+	fmt.Println("INFO: Connecting to Aerospike cluster...")
+	// Establish connection to Aerospike cluster
+	client, err := NewClient("%seedNode%", %port%)
+	panicOnError(err)
+	defer client.Close()
+
+	if !client.IsConnected() {
+		fmt.Println("ERROR: Connection to Aerospike cluster failed! Please check the server settings and try again!")
+	} else {
+		fmt.Println("INFO: Connection to Aerospike cluster succeeded!")
+
+}
+
+>>
+
