@@ -90,7 +90,7 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 					IWorkbenchPage page = win.getActivePage();
 					IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
 					view.display(results.getConsole());
-					//TODO final RecordView recordView = (RecordView) page.showView(RecordView.ID);
+					final RecordView recordView = (RecordView) page.showView(RecordView.ID);
 					
 					
 					final File aqlFile = sqlFile.getRawLocation().makeAbsolute().toFile();
@@ -102,8 +102,8 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 						protected IStatus run(IProgressMonitor monitor) {
 							results.report("Ecexuting AQL file: " + sqlFile.getName());
 							AQL aql = new AQL(client, timeOut, ViewFormat.TABLE);
-							//TODO aql.setResultsReporter(recordView);
-							aql.setResultsReporter(results);
+							aql.setResultsReporter(recordView);
+							//aql.setResultsReporter(results);
 							aql.setErrorReporter(results);
 							//aql.execute(aqlFile, results, results);
 							try {

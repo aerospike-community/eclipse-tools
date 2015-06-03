@@ -19,7 +19,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Aerospike Inc.
 Bundle-ClassPath: .,
  swing2swt.jar,
- aql2-2.0.0-full.jar
+ aql2-2.0.1-full.jar
 Export-Package: .,
  com.aerospike.aql,
  com.aerospike.aql.grammar,

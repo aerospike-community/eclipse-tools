@@ -28,11 +28,13 @@ import com.aerospike.core.model.AsNameSpace;
 import com.aerospike.core.model.AsNode;
 import com.aerospike.core.model.AsSet;
 import com.aerospike.core.model.Function;
+import com.aerospike.core.model.Index;
+import com.aerospike.core.model.IndexFolder;
+import com.aerospike.core.model.Module;
+import com.aerospike.core.model.ModuleFolder;
 import com.aerospike.core.model.NameValuePair;
 import com.aerospike.core.model.NodeFolder;
 import com.aerospike.core.model.NsFolder;
-import com.aerospike.core.model.ModuleFolder;
-import com.aerospike.core.model.Module;
 
 public class ClusterLabelProvider extends LabelProvider implements ILabelProvider, IDescriptionProvider{
 
@@ -58,6 +60,10 @@ public class ClusterLabelProvider extends LabelProvider implements ILabelProvide
 			return CoreActivator.getImage("icons/small/statistics.png");
 		} else if (element instanceof AsSet){
 			return CoreActivator.getImage("icons/small/set.png");
+		} else if (element instanceof IndexFolder){
+			return CoreActivator.getImage("icons/index.png");
+		} else if (element instanceof Index){
+			return CoreActivator.getImage("icons/index.png");
 		} else {
 		return null;
 		}
