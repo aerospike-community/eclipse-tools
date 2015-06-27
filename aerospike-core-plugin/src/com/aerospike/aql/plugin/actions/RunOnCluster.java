@@ -83,13 +83,11 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 						CoreActivator.showError("Aerospike client is not connected");
 						return;
 					}
-					final ResultsConsoleView results = new ResultsConsoleView();
 					// find the Aerospike console and display it
 					IWorkbench wb = PlatformUI.getWorkbench();
 					IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 					IWorkbenchPage page = win.getActivePage();
 					IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
-					view.display(results.getConsole());
 					final RecordView recordView = (RecordView) page.showView(RecordView.ID);
 					
 					
@@ -100,18 +98,18 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
-							results.report("Ecexuting AQL file: " + sqlFile.getName());
+							recordView.report("Ecexuting AQL file: " + sqlFile.getName());
 							AQL aql = new AQL(client, timeOut, ViewFormat.TABLE);
 							aql.setResultsReporter(recordView);
 							//aql.setResultsReporter(results);
-							aql.setErrorReporter(results);
+							aql.setErrorReporter(recordView);
 							//aql.execute(aqlFile, results, results);
 							try {
 								aql.execute(aqlFile);
 							} catch (IOException e) {
 								CoreActivator.showError(e, COULD_NOT_EXECUTE_SQL_FILE + sqlFile.getName());
 							}
-							results.report(sqlFile.getName() + " completed");
+							recordView.report(sqlFile.getName() + " completed");
 							return Status.OK_STATUS;
 						}
 					};
