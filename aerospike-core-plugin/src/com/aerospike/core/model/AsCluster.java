@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -29,6 +29,7 @@ public class AsCluster implements IAsEntity{
 	NodeFolder nodes;
 	NsFolder 	namespaces;
 	ModuleFolder packages;
+	IndexFolder indexes;
 	
 	private Viewer viewer;
 	public AsCluster(IProject project){
@@ -36,6 +37,7 @@ public class AsCluster implements IAsEntity{
 		this.namespaces = new NsFolder(this);
 		this.nodes = new NodeFolder(this);
 		this.packages = new ModuleFolder(this);
+		this.indexes = new IndexFolder(this);
 		try {
 			project.setSessionProperty(CoreActivator.CLUSTER, this);
 		} catch (CoreException e) {
@@ -50,6 +52,7 @@ public class AsCluster implements IAsEntity{
 		Object[] kids = new Object[]{
 				this.namespaces,
 				this.packages,
+				this.indexes,
 				this.nodes};
 		return kids;
 	}
@@ -76,6 +79,9 @@ public class AsCluster implements IAsEntity{
 	}
 	public ModuleFolder getPackages() {
 		return packages;
+	}
+	public IndexFolder getIndexes() {
+		return indexes;
 	}
 	@Override
 	public Object getParent() {

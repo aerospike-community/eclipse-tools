@@ -16,16 +16,22 @@
  */
 package com.aerospike.core.views;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import com.aerospike.aql.grammar.IErrorReporter;
-import com.aerospike.aql.grammar.IResultReporter;
+import com.aerospike.aql.IResultReporter;
 import com.aerospike.client.AerospikeException;
+import com.aerospike.client.Key;
 import com.aerospike.client.Log;
 import com.aerospike.client.Log.Level;
 import com.aerospike.client.Record;
 import com.aerospike.client.query.RecordSet;
+import com.aerospike.client.query.ResultSet;
 import com.aerospike.core.CoreActivator;
 
 public class ResultsConsoleView implements Log.Callback, IResultReporter, IErrorReporter {
@@ -33,10 +39,12 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	MessageConsole console;
 	MessageConsoleStream out;
 	int errors = 0;
+	List<String> errorList = null;
 
 	public ResultsConsoleView() {
 		console = CoreActivator.findAerospikeConsole();
 		out = console.newMessageStream();
+		errorList = new ArrayList<String>();
 		
 	}
 
@@ -74,6 +82,7 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 				Record record = recordSet.getRecord();
 				report(record);
 				count++;
+				if (this.cancelled) break;
 			}
 		} catch (AerospikeException e) {
 			e.printStackTrace();
@@ -101,20 +110,23 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	}
 
 	@Override
-	public void report(String message, boolean arg1) {
+	public void report(String message, boolean clear) {
+		if (clear) clear();
 		this.report(message);
 		
 	}
 
 	@Override
-	public void report(Record record, boolean arg1) {
+	public void report(Record record, boolean clear) {
+		if (clear) clear();
 		this.report(record);
 		
 	}
 
 	@Override
-	public void report(RecordSet arg0, boolean arg1) {
-		this.report(arg0, arg1);
+	public void report(RecordSet recordSet, boolean clear) {
+		if (clear) clear();
+		this.report(recordSet);
 		
 	}
 
@@ -185,10 +197,112 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 		return this.cancelled;
 	}
 
+
 	@Override
-	public int getErrors() {
+	public void report(ResultSet resultSet) {
 		// TODO Auto-generated method stub
-		return 0;
+		
+	}
+
+	@Override
+	public void report(Key key, Record record) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void report(ResultSet resultSet, boolean clear) {
+		if (clear) clear();
+		report(resultSet);
+		
+	}
+
+	@Override
+	public void report(Key key, Record record, boolean clear) {
+		if (clear) clear();
+		report(key, record);
+		
+	}
+
+
+	@Override
+	public void reportInfo(String[] infoStrings, String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(String[] infoStrings, boolean clear, String... seperators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setViewFormat(ViewFormat viewFormat) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void scanCallback(Key arg0, Record arg1) throws AerospikeException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getErrorCount() {
+		return this.errors;
+	}
+
+	@Override
+	public List<String> getErrorList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void reportError(int line, String message) {
+		this.report(String.format("Error on Line: %d, %s", line, message));
+		this.errors++;
+		
+	}
+
+	@Override
+	public void reportError(int line, AerospikeException e) {
+		this.report(String.format("Error on Line: %d, %s", line, e.getMessage()));
+		this.errors++;
+		
+	}
+
+	@Override
+	public ViewFormat getViewFormat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void report(boolean clear, String message) {
+		if (clear) clear();
+		report(message);
+		
+	}
+
+	@Override
+	public void reportInfo(Map<String, Object>[] infoMaps) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reportInfo(Map<String, Object> infoMap) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

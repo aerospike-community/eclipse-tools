@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -16,7 +16,7 @@
  */
 package com.aerospike.aql.plugin.views;
 
-import com.aerospike.aql.grammar.IResultReporter;
+import com.aerospike.aql.IResultReporter;
 import com.aerospike.core.views.ResultsConsoleView;
 
 public class AQLResult extends ResultsConsoleView implements IResultReporter {

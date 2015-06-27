@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -18,6 +18,7 @@ package com.aerospike.aql.plugin.builder;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -42,6 +43,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.aerospike.aql.AQL;
 import com.aerospike.aql.grammar.IErrorReporter;
 import com.aerospike.aql.plugin.editors.AQLDocumentProvider;
+import com.aerospike.client.AerospikeException;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.views.ResultsConsoleView;
 
@@ -122,17 +124,6 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 			
 		}
 
-//		public void error(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_ERROR);
-//		}
-//
-//		public void fatalError(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_ERROR);
-//		}
-//
-//		public void warning(AerospikeException exception) {
-//			addMarker(exception, IMarker.SEVERITY_WARNING);
-//		}
 
 		@Override
 		public void reportError(int line, int charStart, int charEnd, String message) {
@@ -145,9 +136,34 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 			}
 		}
 
+
 		@Override
-		public int getErrors() {
+		public int getErrorCount() {
 			return errors;
+		}
+
+		@Override
+		public List<String> getErrorList() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void reportError(int line, String message) {
+			try {
+				addMarker(this.file, message, 
+						line, 0, 0, IMarker.SEVERITY_ERROR);
+				errors++;
+			} catch (BadLocationException e) {
+				CoreActivator.log(Status.ERROR, "Error adding marker to " + file.getName(), e);
+			}
+			
+		}
+
+		@Override
+		public void reportError(int arg0, AerospikeException arg1) {
+			// TODO Auto-generated method stub
+			
 		}
 
 	}
@@ -196,8 +212,8 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 	private void processAQL(IFile sqlFile, AQLErrorHandler reporter, boolean remove) {
 		int errors = 0;
 		try {
-			AQLErrorHandler errorHandler = new AQLErrorHandler(sqlFile);
-			final ResultsConsoleView results = new ResultsConsoleView();
+			//AQLErrorHandler errorHandler = new AQLErrorHandler(sqlFile);
+			//final ResultsConsoleView results = new ResultsConsoleView();
 			// find the Aerospike console and display it
 //			IWorkbench wb = PlatformUI.getWorkbench();
 //			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
@@ -206,7 +222,8 @@ public class AQLBuilder extends IncrementalProjectBuilder {
 //			view.display(results.getConsole());
 			AQL aql = new AQL();
 			File sourceFile = new File(sqlFile.getRawLocation().toOSString());
-			aql.compile(sourceFile, reporter, results);
+			aql.setErrorReporter(reporter);
+			aql.compile(sourceFile);
 		} catch (NumberFormatException e) {
 			CoreActivator.showError(e, "Could not process AQL file: " + sqlFile.getName());
 		} catch (IOException e) {

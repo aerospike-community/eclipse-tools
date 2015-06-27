@@ -2,7 +2,7 @@
 <feature
       id="com.aerospike.feature"
       label="Aerospike Developers Toolkit"
-      version="3.0.21"
+      version="3.1.2"
       provider-name="Aerospike Inc.">
 
    <description url="http://www.example.com/description">
@@ -23,6 +23,7 @@ The toolkit currently includes:
 -- Namespaces
 -- Nodes
 -- Modules
+-- INdexes
    </description>
 
    <copyright>
@@ -55,7 +56,7 @@ limitations under the License.
          id="aerospike-core-plugin"
          download-size="0"
          install-size="0"
-         version="3.0.21"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>

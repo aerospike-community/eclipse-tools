@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.aerospike.aql.AQL;
 import com.aerospike.core.CoreActivator;
 
 public class AQLKeyWords {
@@ -68,35 +69,36 @@ public class AQLKeyWords {
 
 	public static String[] getKeywords() {
 		if (keyWordList == null){
-			Pattern pattern = Pattern.compile("'(.+)'");
-
-			URL url;
-			try {
-				url = new URL("platform:/plugin/" + CoreActivator.PLUGIN_ID + "/AQLast.tokens");
-				URLConnection conn = url.openConnection();
-				InputStream inputStream = conn.getInputStream();
-				BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-				String inputLine;
-
-				boolean keep = false;
-				while ((inputLine = in.readLine()) != null) {
-					if (inputLine.startsWith("'aggregate'")) {
-						keep = true;
-						keyWordList = new ArrayList<String>();
-					}
-					if (!keep) continue;
-					Matcher matcher = pattern.matcher(inputLine);
-					if (matcher.find()){
-						keyWordList.add(matcher.group(1));
-					}
-					//System.out.println(inputLine);
-				}
-				in.close();
-
-			} catch (IOException e) {
-				e.printStackTrace();
-				return keywords;
-			}
+			keyWordList = AQL.getKeyWords();
+//			Pattern pattern = Pattern.compile("'(.+)'");
+//
+//			URL url;
+//			try {
+//				url = new URL("platform:/plugin/" + CoreActivator.PLUGIN_ID + "/AQLast.tokens");
+//				URLConnection conn = url.openConnection();
+//				InputStream inputStream = conn.getInputStream();
+//				BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+//				String inputLine;
+//
+//				boolean keep = false;
+//				while ((inputLine = in.readLine()) != null) {
+//					if (inputLine.startsWith("'aggregate'")) {
+//						keep = true;
+//						keyWordList = new ArrayList<String>();
+//					}
+//					if (!keep) continue;
+//					Matcher matcher = pattern.matcher(inputLine);
+//					if (matcher.find()){
+//						keyWordList.add(matcher.group(1));
+//					}
+//					//System.out.println(inputLine);
+//				}
+//				in.close();
+//
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//				return keywords;
+//			}
 		}
 		return keyWordList.toArray(new String[keyWordList.size()]);
 	}

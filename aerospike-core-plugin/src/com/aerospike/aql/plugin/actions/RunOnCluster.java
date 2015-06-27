@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012-2014 Aerospike, Inc.
+ * Copyright 2012-2015 Aerospike, Inc.
  *
  * Portions may be licensed to Aerospike, Inc. under one or more contributor
  * license agreements.
@@ -17,6 +17,7 @@
 package com.aerospike.aql.plugin.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,8 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.IConsoleView;
 
 import com.aerospike.aql.AQL;
+import com.aerospike.aql.IResultReporter.ViewFormat;
+import com.aerospike.aql.plugin.views.RecordView;
 import com.aerospike.client.AerospikeClient;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.model.AsCluster;
@@ -71,6 +74,7 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 				final List<String> errorList = new ArrayList<String>();
 				try {
 					final AerospikeClient client = CoreActivator.getClient(sqlFile.getProject());
+					final int timeOut = CoreActivator.getConnectionTimeout(sqlFile.getProject());
 					if (client == null){
 						CoreActivator.showError("Aerospike client is null");
 						return;
@@ -79,13 +83,12 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 						CoreActivator.showError("Aerospike client is not connected");
 						return;
 					}
-					final ResultsConsoleView results = new ResultsConsoleView();
 					// find the Aerospike console and display it
 					IWorkbench wb = PlatformUI.getWorkbench();
 					IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
 					IWorkbenchPage page = win.getActivePage();
 					IConsoleView view = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW);
-					view.display(results.getConsole());
+					final RecordView recordView = (RecordView) page.showView(RecordView.ID);
 					
 					
 					final File aqlFile = sqlFile.getRawLocation().makeAbsolute().toFile();
@@ -95,10 +98,18 @@ public class RunOnCluster implements IWorkbenchWindowActionDelegate {
 
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
-							results.report("Ecexuting AQL file: " + sqlFile.getName());
-							AQL aql = new AQL(client);
-							aql.execute(aqlFile, results, results);
-							results.report(sqlFile.getName() + " completed");
+							recordView.report("Ecexuting AQL file: " + sqlFile.getName());
+							AQL aql = new AQL(client, timeOut, ViewFormat.TABLE);
+							aql.setResultsReporter(recordView);
+							//aql.setResultsReporter(results);
+							aql.setErrorReporter(recordView);
+							//aql.execute(aqlFile, results, results);
+							try {
+								aql.execute(aqlFile);
+							} catch (IOException e) {
+								CoreActivator.showError(e, COULD_NOT_EXECUTE_SQL_FILE + sqlFile.getName());
+							}
+							recordView.report(sqlFile.getName() + " completed");
 							return Status.OK_STATUS;
 						}
 					};
