@@ -27,5 +27,7 @@ public class PreferenceConstants {
 	public static final String SEED_NODE = "seedNodePreference";
 	public static final String AQL_PATH = "aqlPathPreference";
 	public static final String CLUSTER_CONNECTION_TIMEOUT = "connectionTimeout";
+	public static final String AUTO_REFRESH = "clusterAutoRefresh";
+	public static final String REFRESH_PERIOD = "clusterRefreshPeriod";
 	
 }

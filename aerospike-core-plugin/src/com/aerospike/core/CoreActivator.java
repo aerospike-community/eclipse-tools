@@ -24,6 +24,12 @@ import java.util.Map;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.QualifiedName;
@@ -45,6 +51,8 @@ import com.aerospike.client.Host;
 import com.aerospike.client.policy.ClientPolicy;
 import com.aerospike.client.policy.InfoPolicy;
 import com.aerospike.core.model.AsCluster;
+import com.aerospike.core.model.ClusterRefreshJob;
+import com.aerospike.core.nature.AerospikeNature;
 import com.aerospike.core.preferences.PreferenceConstants;
 
 
@@ -53,7 +61,7 @@ import com.aerospike.core.preferences.PreferenceConstants;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class CoreActivator extends AbstractUIPlugin {
+public class CoreActivator extends AbstractUIPlugin implements IResourceChangeListener{
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "aerospike-core-plugin"; //$NON-NLS-1$
@@ -72,6 +80,8 @@ public class CoreActivator extends AbstractUIPlugin {
 	private static final QualifiedName INFO_POLICY = new QualifiedName("Aerospike", "InfoPolicy");
 	public static final QualifiedName EDITED_FROM_NODE = new QualifiedName("Aerospike", "EditedFromNode");
 	public static final QualifiedName CLUSTER = new QualifiedName("Aerospike", "AsCluster");
+	public static final QualifiedName AUTO_REFRESH = new QualifiedName("Aerospike", "AutoRefreshCluster");
+	public static final QualifiedName REFRESH_PERIOD = new QualifiedName("Aerospike", "RefreshPeriod");
 
 	// The shared instance
 	private static CoreActivator plugin;
@@ -236,7 +246,7 @@ public class CoreActivator extends AbstractUIPlugin {
 			showError(e, "Cannot get Aerospike client");
 		} catch (AerospikeException e) {
 			CoreActivator.clearClient(project);
-			showError(e, "Cannot get Aerospike client");
+			//showError(e, "Cannot get Aerospike client");
 		}
 		return client;
 
@@ -352,5 +362,38 @@ public class CoreActivator extends AbstractUIPlugin {
 			showError(e, "Cannot locate UDF folder");
 		}
 		return null;
+	}
+
+	@Override
+	public void resourceChanged(final IResourceChangeEvent event) {
+	    if (event == null || event.getDelta() == null) {
+	        return;
+	    }
+
+		if (event.getResource() instanceof IProject){
+			IProject project = (IProject) event.getResource();
+			try {
+		        event.getDelta().accept(new IResourceDeltaVisitor() {
+		            public boolean visit(final IResourceDelta delta) throws CoreException {
+		                IResource resource = delta.getResource();
+		                if (((resource.getType() & IResource.PROJECT) != 0)
+		                        && resource.getProject().isOpen()
+		                        && delta.getKind() == IResourceDelta.CHANGED
+		                        && ((delta.getFlags() & IResourceDelta.OPEN) != 0)) {
+
+		                    IProject project = (IProject)resource;
+			 				if (project.hasNature(AerospikeNature.NATURE_ID)){
+								ClusterRefreshJob refreshJob = new ClusterRefreshJob(project);
+								refreshJob.schedule(5);
+			 				}
+		                }
+		                return true;
+		            }
+		        });
+			} catch (CoreException e) {
+				showError(e, "Error registering project listener");
+			}
+		}
+		
 	}
 }

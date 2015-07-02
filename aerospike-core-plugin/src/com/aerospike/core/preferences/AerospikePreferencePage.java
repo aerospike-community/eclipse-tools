@@ -34,6 +34,8 @@ public class AerospikePreferencePage
 	private StringFieldEditor genDirectoryEditor;
 	private StringFieldEditor aqlDirectoryEditor;
 	private IntegerFieldEditor timeoutEditor;
+	private IntegerFieldEditor refreshPeriodEditor;
+	private BooleanFieldEditor refreshFlagEditor;
 
 	public AerospikePreferencePage() {
 		super(GRID);
@@ -70,7 +72,12 @@ public class AerospikePreferencePage
 				"&Generation Directory:", getFieldEditorParent());
 		genDirectoryEditor.setPreferenceStore(store);
 		addField(genDirectoryEditor);
-
+		refreshFlagEditor = new BooleanFieldEditor(PreferenceConstants.AUTO_REFRESH, "Auto &Refresh Cluster", BooleanFieldEditor.SEPARATE_LABEL, getFieldEditorParent());
+		refreshFlagEditor.setPreferenceStore(store);
+		addField(refreshFlagEditor);
+		refreshPeriodEditor = new IntegerFieldEditor(PreferenceConstants.REFRESH_PERIOD, "Refresh &Period:", getFieldEditorParent());
+		refreshPeriodEditor.setPreferenceStore(store);
+		addField(refreshPeriodEditor);
 	}
 
 	/* (non-Javadoc)

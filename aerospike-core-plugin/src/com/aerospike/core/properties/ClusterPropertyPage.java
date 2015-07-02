@@ -20,6 +20,7 @@ import org.apache.log4j.Level;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -35,9 +36,9 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.aerospike.client.AerospikeClient;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.preferences.PreferenceConstants;
+import org.eclipse.swt.widgets.Button;
 /**
  * This page edits the Cluster properties attached to this lua resource
  * @author peter
@@ -53,6 +54,9 @@ public class ClusterPropertyPage extends PropertyPage{
 	private IntegerFieldEditor portEditor;
 	private IPreferenceStore store;
 	private IntegerFieldEditor timeoutEditor;
+	private BooleanFieldEditor autoRefresh;
+	private IntegerFieldEditor refreshPeriod;
+	private Button autoRefreshCluster;
 	public ClusterPropertyPage() {
 		setImageDescriptor(ResourceManager.getPluginImageDescriptor("aerospike-core-plugin", "icons/aerospike.logo.png"));
 		setTitle("Aerospike Properties");
@@ -71,52 +75,60 @@ public class ClusterPropertyPage extends PropertyPage{
 		data.grabExcessHorizontalSpace = true;
 		composite.setLayoutData(data);
 
-		Label lblNewLabel = new Label(composite, SWT.NONE);
-		lblNewLabel.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/Cluster.png"));
-
+		//Label lblNewLabel = new Label(composite, SWT.NONE);
+		//lblNewLabel.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/Cluster.png"));
 		Label lblCluster = new Label(composite, SWT.NONE);
 		lblCluster.setFont(SWTResourceManager.getFont("Lucida Grande", 13, SWT.BOLD));
 		lblCluster.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
 		lblCluster.setText("Cluster");
 
 		new Label(composite, SWT.NONE);
-
+		new Label(composite, SWT.NONE);
+		
 		seedNodeEditor = new StringFieldEditor(PreferenceConstants.SEED_NODE, "&Seed Node:", composite);
 		new Label(composite, SWT.NONE);
 
 		portEditor = new IntegerFieldEditor(PreferenceConstants.PORT, "&Port:", composite);
 		new Label(composite, SWT.NONE);
 		
-		timeoutEditor = new IntegerFieldEditor(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT, "Connection &Timeput:", composite);
+		timeoutEditor = new IntegerFieldEditor(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT, "Connection &Timeout:", composite);
 		new Label(composite, SWT.NONE);
+		
+		Label lblAutoRefreshCluster = new Label(composite, SWT.NONE);
+		lblAutoRefreshCluster.setText("Auto refresh cluster");
+		autoRefreshCluster = new Button(composite, SWT.CHECK);
+		new Label(composite, SWT.NONE);
+		refreshPeriod = new IntegerFieldEditor(PreferenceConstants.REFRESH_PERIOD, "Auto refest period", composite);
+		
+		
 		
 		Label lblNewLabel_1 = new Label(composite, SWT.NONE);
 		lblNewLabel_1.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
-		lblNewLabel_1.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/UDF.png"));
+		//lblNewLabel_1.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/UDF.png"));
 
 		Label lblUserDefinedFunctions = new Label(composite, SWT.NONE);
 		lblUserDefinedFunctions.setFont(SWTResourceManager.getFont("Lucida Grande", 13, SWT.BOLD));
 		lblUserDefinedFunctions.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
 		lblUserDefinedFunctions.setText("User Defined Functions");
-
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
+
+		//new Label(composite, SWT.NONE);
 		udfDirectoryEditor = new DirectoryFieldEditor(PreferenceConstants.UDF_PATH, 
 				"&UDF Directory:", composite);
 
-		Label label = new Label(composite, SWT.NONE);
-		label.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/Query.png"));
-
+		//label.setImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/Query.png"));
 		Label lblAerospikeQueryLanguage = new Label(composite, SWT.NONE);
 		lblAerospikeQueryLanguage.setFont(SWTResourceManager.getFont("Lucida Grande", 13, SWT.BOLD));
 		lblAerospikeQueryLanguage.setLayoutData(new GridData(SWT.LEFT, SWT.BOTTOM, false, false, 1, 1));
 		lblAerospikeQueryLanguage.setText("Aerospike Query Language");
 
 		new Label(composite, SWT.NONE);
+		new Label(composite, SWT.NONE);
 		genDirectoryEditor = new DirectoryFieldEditor(PreferenceConstants.GENERATION_PATH, 
 				"&Generation Directory:", composite);
-		new Label(composite, SWT.NONE);
-
-
+		
+		
 		try {
 			IProject project = ((IProject) getElement());
 			if (project != null){
@@ -140,6 +152,19 @@ public class ClusterPropertyPage extends PropertyPage{
 					genDirectoryEditor.setStringValue(aqlOutputString);
 				else
 					genDirectoryEditor.setStringValue(store.getString(PreferenceConstants.GENERATION_PATH));
+				
+				String autoRefreshString = project.getPersistentProperty(CoreActivator.AUTO_REFRESH);
+				if (autoRefreshString != null)
+					autoRefreshCluster.setSelection(Boolean.valueOf(autoRefreshString));
+				else
+					autoRefreshCluster.setSelection(store.getBoolean(PreferenceConstants.AUTO_REFRESH));
+				
+				String refreshPeriodString = project.getPersistentProperty(CoreActivator.REFRESH_PERIOD);
+				if (refreshPeriodString != null)
+					refreshPeriod.setStringValue(refreshPeriodString);
+				else
+					refreshPeriod.setStringValue(Integer.toString(store.getInt(PreferenceConstants.REFRESH_PERIOD)));
+				
 			}
 		} catch (CoreException e) {
 			CoreActivator.log(Level.ERROR_INT, "failure creating Properties page", e);
@@ -166,6 +191,10 @@ public class ClusterPropertyPage extends PropertyPage{
 		udfDirectoryEditor.setStringValue(store.getString(PreferenceConstants.UDF_PATH));
 
 		genDirectoryEditor.setStringValue(store.getString(PreferenceConstants.GENERATION_PATH));
+		
+		autoRefreshCluster.setSelection(store.getBoolean(PreferenceConstants.AUTO_REFRESH));
+		
+		refreshPeriod.setStringValue(Integer.toString(store.getInt(PreferenceConstants.REFRESH_PERIOD)));
 
 	}
 
@@ -197,12 +226,19 @@ public class ClusterPropertyPage extends PropertyPage{
 					resource.setPersistentProperty(CoreActivator.UDF_DIRECTORY, udfDirectoryString);
 				else 
 					resource.setPersistentProperty(CoreActivator.UDF_DIRECTORY, null);
+				
 				String aqlOutputString = genDirectoryEditor.getStringValue();
 				if (aqlOutputString != null && !aqlOutputString.isEmpty())
 					resource.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, aqlOutputString);
 				else 
 					resource.setPersistentProperty(CoreActivator.AQL_GENERATION_DIRECTORY, null);
 				
+				boolean autoRefresh = autoRefreshCluster.getSelection();
+				resource.setPersistentProperty(CoreActivator.AUTO_REFRESH, Boolean.toString(autoRefresh));
+
+				int refreshPeriodValue = refreshPeriod.getIntValue();
+				resource.setPersistentProperty(CoreActivator.REFRESH_PERIOD, Integer.toString(refreshPeriodValue));
+					
 				// assume the cluster values have changed and disconnect the client
 				CoreActivator.clearClient((IProject) resource);
 				

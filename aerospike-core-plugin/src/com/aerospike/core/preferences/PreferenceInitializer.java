@@ -45,6 +45,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 				"src/generated");
 		store.setDefault(PreferenceConstants.AQL_PATH,
 				"aql");
+		store.setDefault(PreferenceConstants.AUTO_REFRESH,
+				true);
+		store.setDefault(PreferenceConstants.REFRESH_PERIOD,
+				30);
 	}
 
 }

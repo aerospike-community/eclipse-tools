@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,24 +35,32 @@ import com.aerospike.client.Info;
 import com.aerospike.client.cluster.Node;
 import com.aerospike.client.policy.InfoPolicy;
 import com.aerospike.core.CoreActivator;
+import com.aerospike.core.preferences.PreferenceConstants;
 
 public class ClusterRefreshJob extends Job{
 	AsCluster cluster;
 	IViewPart viewPart;
 	private Viewer viewer;
+	IProject project;
 	
 	public ClusterRefreshJob(IProject project){
 		this(CoreActivator.getCluster(project));
+		this.project = project;
 	}
 	public ClusterRefreshJob(AsCluster cluster) {
-		super(cluster.getProject().getName() + " cluster refresh");
+		super("Cluster refresh");
 		this.cluster = cluster;
 		this.viewer = cluster.getViewer();
+		this.project = cluster.getProject();
+		super.setName("Cluster refresh for " + project.getName());
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask("Refreshing Aerospike cluster information", 30);
+		String jobName = "Refreshing Aerospike cluster for " + project.getName();
+		monitor.beginTask(jobName, 30);
+		
+		System.out.println("****** " + jobName);
 
 		String seedNode = cluster.getSeedHost();
 		int port = cluster.getPort();
@@ -61,10 +70,10 @@ public class ClusterRefreshJob extends Job{
 			// refresh nodes
 			if (monitor.isCanceled())
 				return Status.CANCEL_STATUS;
-			monitor.subTask("Fetching nodes");
-			AerospikeClient client = CoreActivator.getClient(cluster.getProject());
+			AerospikeClient client  = CoreActivator.getClient(cluster.getProject());
 			if (client == null)
-				return Status.CANCEL_STATUS;
+					return Status.CANCEL_STATUS;
+			monitor.subTask("Fetching nodes");
 			Node[] nodes = client.getNodes();
 			for (Node node : nodes){
 				AsNode newNode = this.cluster.addNode(node);
@@ -144,10 +153,10 @@ public class ClusterRefreshJob extends Job{
 			
 
 
-		} catch (AerospikeException e) {
+		} catch (InterruptedException e) {
 			CoreActivator.showError(e, "Could not refresh cluster");
 			return Status.CANCEL_STATUS;
-		} catch (InterruptedException e) {
+		} catch (AerospikeException e) {
 			CoreActivator.showError(e, "Could not refresh cluster");
 			return Status.CANCEL_STATUS;
 		}
@@ -171,6 +180,21 @@ public class ClusterRefreshJob extends Job{
 		//        }
 		job.setUser(true);
 		job.schedule();
+		
+		try {
+			String autoRefreshString = project.getPersistentProperty(CoreActivator.AUTO_REFRESH);
+			boolean autoRefresh = Boolean.parseBoolean((autoRefreshString==null)?"false":autoRefreshString);
+			if (autoRefresh){				
+				String refreshPeriodString = project.getPersistentProperty(CoreActivator.REFRESH_PERIOD);
+				long period = 30000l;
+				if (refreshPeriodString != null)
+					period = 1000 * Long.parseLong(refreshPeriodString);
+
+				schedule(period);
+			}
+		} catch (CoreException e) {
+			CoreActivator.showError(e, "Error scheduling cluster refresh");
+		}
 		return Status.OK_STATUS;
 	}
 
