@@ -121,7 +121,7 @@ The Cluster Explorer lets you easily view and edit Aerospike properties pertaini
 
 To view the Cluster Explorer, select `Window` >> `Show View` >> `Project Explorer` and expand your project. You should see `Cluster` -- right-click on it and select `Properties` to view and edit 
 
-**Note**: Due to Eclipse limitations, Cluster Explorer will not be visible in Package Explorer.
+**Note**: Due to Eclipse limitations, Cluster Explorer will not be visible in the Java Package Explorer.
 
 <img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
  
