@@ -62,13 +62,14 @@ public class StartUp implements IStartup {
 	private void runClusterRefresh(IProject project){
 		try {
 			if (project.isOpen() && project.hasNature(AerospikeNature.NATURE_ID)){
-				System.out.println("@@@@ " + project.getName());
+				//System.out.println("@@@@ " + project.getName());
 				AsCluster cluster = CoreActivator.getCluster(project);
 				if (cluster == null){
 					cluster = new AsCluster(project);
-					ClusterRefreshJob job = new ClusterRefreshJob(cluster);
-					job.schedule(1000);
+					project.setSessionProperty(CoreActivator.CLUSTER_PROPERTY, cluster);
 				}
+				ClusterRefreshJob job = new ClusterRefreshJob(cluster);
+				job.schedule(1000);
 			}
 		} catch (CoreException e) {
 			CoreActivator.showError(e, "Cluster refresh error");
