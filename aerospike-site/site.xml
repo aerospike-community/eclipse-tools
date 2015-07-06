@@ -3,7 +3,7 @@
    <description name="Aerospike" url="https://github.com/aerospike/eclipse-tools/raw/master/aerospike-site">
       This site contains feature and plugin versions for Aerospike
    </description>
-   <feature url="features/com.aerospike.feature_3.1.2.jar" id="com.aerospike.feature" version="3.1.2">
+   <feature url="features/com.aerospike.feature_3.1.4.jar" id="com.aerospike.feature" version="3.1.4">
       <category name="Aerospike"/>
    </feature>
    <category-def name="Aerospike" label="Aerospike"/>
