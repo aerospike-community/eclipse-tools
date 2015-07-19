@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="swing2swt.jar"/>
-	<classpathentry kind="lib" path="aql2-2.0.2-full.jar"/>
+	<classpathentry kind="lib" path="aql2-2.0.3-full.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/aql-java"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

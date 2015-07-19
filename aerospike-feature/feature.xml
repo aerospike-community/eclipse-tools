@@ -2,7 +2,7 @@
 <feature
       id="com.aerospike.feature"
       label="Aerospike Developers Toolkit"
-      version="3.1.4"
+      version="3.1.5"
       provider-name="Aerospike Inc.">
 
    <description url="http://www.example.com/description">
@@ -23,15 +23,15 @@ The toolkit currently includes:
 -- Namespaces
 -- Nodes
 -- Modules
--- INdexes
+-- Indexes
    </description>
 
    <copyright>
-      Copyright 2012-2014 by Aerospike Inc.
+      Copyright 2012-2015 by Aerospike Inc.
    </copyright>
 
    <license url="">
-      Copyright 2012-2014 by Aerospike Inc.
+      Copyright 2012-2015 by Aerospike Inc.
 
 Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.

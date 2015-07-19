@@ -17,14 +17,20 @@
 package com.aerospike.core.views;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import com.aerospike.aql.grammar.IErrorReporter;
 import com.aerospike.aql.IResultReporter;
+import com.aerospike.aql.grammar.IErrorReporter;
 import com.aerospike.client.AerospikeException;
 import com.aerospike.client.Key;
 import com.aerospike.client.Log;
@@ -40,38 +46,50 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 	MessageConsoleStream out;
 	int errors = 0;
 	List<String> errorList = null;
+	public final Color errorColor; 
+	public final Color infoColor; 
+	public final Color warningColor; 
+	public final Color debugColor; 
 
 	public ResultsConsoleView() {
 		console = CoreActivator.findAerospikeConsole();
 		out = console.newMessageStream();
 		errorList = new ArrayList<String>();
-		
+		Display display = Display.getCurrent();
+		errorColor = display.getSystemColor(SWT.COLOR_RED);
+		infoColor = display.getSystemColor(SWT.COLOR_BLACK);
+		warningColor = display.getSystemColor(SWT.COLOR_BLUE);
+		debugColor = display.getSystemColor(SWT.COLOR_DARK_GREEN);
 	}
 
 	public void report(String message) {
-		out.println(message);
+		report(Log.Level.INFO, message);
 		
 	}
 	public void report(Level level, String message) {
 		switch (level){
 		case DEBUG:
-			report("DEBUG: " + message);
+			//out.setColor(debugColor);
+			out.println(message);
 			break;
 		case ERROR:
-			report("ERROR: " + message);
+			//out.setColor(errorColor);
+			out.println(message);
 			break;
 		case WARN:
-			report("WARN: " + message);
+			//out.setColor(warningColor);
+			out.println(message);
 			break;
 		case INFO:
-			report("INFO: " + message);
+			//out.setColor(infoColor);
+			out.println(message);
 			break;
 		}
 		
 	}
 
 	public void report(Record record) {
-		out.println(record.toString());
+		report(Log.Level.INFO, record.toString());
 	}
 
 	public void report(RecordSet recordSet) {
@@ -138,7 +156,7 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 
 	@Override
 	public void reportError(int line, int offset, int length, String message) {
-		this.report(String.format("Error on Line: %d at %d, %s", line, offset, message));
+		this.report(Log.Level.ERROR, String.format("Error on Line: %d at %d, %s", line, offset, message));
 		this.errors++;
 	}
 
@@ -200,7 +218,41 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 
 	@Override
 	public void report(ResultSet resultSet) {
-		// TODO Auto-generated method stub
+		try {
+			int count = 0;
+			while (resultSet.next()) {
+				Object element = resultSet.getObject();
+				String jsonString = formatJson(element);
+				report(jsonString);
+				count ++;
+			}
+			if (count == 0) {
+				report("No results returned.");			
+			} else {
+				report(String.format("%d objects returned", count));
+			}
+		} catch (AerospikeException e) {
+			e.printStackTrace();
+		} finally {
+			if (resultSet != null) {
+				resultSet.close();
+			}
+
+		}
+		
+	}
+
+	private String formatJson(Object json){
+		if (json instanceof List){
+			JSONArray jArray = new JSONArray();
+			jArray.put((Collection) json);
+			return jArray.toString(4);
+		} else if (json instanceof Map){
+			JSONObject jObject = new JSONObject((Map) json);
+			return jObject.toString(4);
+		} else {
+			return null;
+		}
 		
 	}
 
@@ -249,7 +301,7 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 		
 	}
 
-	@Override
+	@Deprecated
 	public void scanCallback(Key arg0, Record arg1) throws AerospikeException {
 		// TODO Auto-generated method stub
 		
@@ -268,14 +320,14 @@ public class ResultsConsoleView implements Log.Callback, IResultReporter, IError
 
 	@Override
 	public void reportError(int line, String message) {
-		this.report(String.format("Error on Line: %d, %s", line, message));
+		this.report(Log.Level.ERROR, String.format("Error on Line: %d, %s", line, message));
 		this.errors++;
 		
 	}
 
 	@Override
 	public void reportError(int line, AerospikeException e) {
-		this.report(String.format("Error on Line: %d, %s", line, e.getMessage()));
+		this.report(Log.Level.ERROR, String.format("Error on Line: %d, %s", line, e.getMessage()));
 		this.errors++;
 		
 	}

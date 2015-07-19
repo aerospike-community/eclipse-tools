@@ -16,7 +16,6 @@
  */
 package com.aerospike.aql.plugin.views;
 
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import org.eclipse.core.databinding.SetBinding;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -96,6 +95,8 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 	protected UIRefresh uiRefresh;
 	protected Object lock = new Object();
 
+	protected MutexRule uiMutex;
+
 	public RecordView() {
 		setTitleImage(ResourceManager.getPluginImage("aerospike-core-plugin", "icons/aerospike.logo.png"));
 		consoleView = new ResultsConsoleView();
@@ -111,7 +112,9 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 			CoreActivator.showError(e, e.getMessage());
 		}
 		this.recordBuffer = new ArrayBlockingQueue<KeyRecord>(TABLE_BUFFER_SIZE);
+		uiMutex = new MutexRule();
 		uiRefresh = new UIRefresh(); 
+		uiRefresh.setRule(uiMutex);
 		uiRefresh.schedule(TABLE_REFRESH_PERIOD);
 
 	}
@@ -247,7 +250,7 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 		table.setFocus();
 	}
 
-	@Override
+	@Deprecated
 	public void scanCallback(final Key key, final Record record) throws AerospikeException {
 		report(key, record);
 	}
@@ -341,7 +344,7 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 	}
 
 	protected void addRecord(KeyRecord keyRecord){
-			recordBuffer.offer(keyRecord);
+		recordBuffer.offer(keyRecord);
 	}
 
 	protected void addColumnsForRecord(KeyRecord keyRecord){
@@ -494,31 +497,40 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 					result = "";
 				break;
 			case 3:
-				result = Integer.toString(kr.record.generation);
+				if (kr != null && kr.record != null)
+					result = Integer.toString(kr.record.generation);
+				else
+					result = "";
 				break;
 			case 4:
-				switch (kr.record.expiration){
-				case -1: //Forever
-					result = "forever";
-					break;
-				case 0:
-					result = "default";
-					break;
-				default:
-					long ts = kr.record.expiration + AS_EPOCH;
-					Date date = new Date(ts);
-					result = dateFormat.format(date);
-					if (col != null)
-						col.pack();
-					break;
-				}
+				if (kr != null && kr.record != null){
+					switch (kr.record.expiration){
+					case -1: //Forever
+						result = "forever";
+						break;
+					case 0:
+						result = "default";
+						break;
+					default:
+						long ts = kr.record.expiration + AS_EPOCH;
+						Date date = new Date(ts);
+						result = dateFormat.format(date);
+						if (col != null)
+							col.pack();
+						break;
+					}
+				} else
+					result = "";
 				break;
 			default:
 				if (col != null){
 					String name = col.getText();
+					if (kr != null && kr.record != null){
 					Object value = kr.record.getValue(name);
 					if (value != null)
 						result =  value.toString();
+					} else
+						result = "";
 					col.pack();
 				} 
 			}
@@ -539,15 +551,15 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 	}
 
 	protected class UIRefresh extends UIJob {
-		
+
 		private boolean clear;
 
 		public UIRefresh() {
 			super("Record view refresh");
 			super.setPriority(DECORATE);
 		}
-		
-		
+
+
 		public boolean isClear() {
 			return clear;
 		}
@@ -562,31 +574,32 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 		@Override
 		public IStatus runInUIThread(IProgressMonitor progress) {
 			if (!recordBuffer.isEmpty()){
-					if (tableViewer != null && tableViewer.getControl() != null && !tableViewer.getControl().isDisposed()) {
-						if (clear){
-							recordContent.clear();
-							int count = table.getColumnCount();
-							if (count > 5){
-								for (int x = 5; x < count; x++){
-									table.remove(x);
-								}
-								columnMap.clear();
+				if (tableViewer != null && tableViewer.getControl() != null && !tableViewer.getControl().isDisposed()) {
+					if (clear){
+						recordContent.clear();
+						int count = table.getColumnCount();
+						TableColumn[] columns = table.getColumns() ;
+						if (count > 5){
+							for (int x = count-1; x >= 5; x--){
+								columns[x].dispose();
 							}
+							columnMap.clear();
 						}
-						
-						for (;!recordBuffer.isEmpty();){
-							KeyRecord keyRec;
-							try {
-								keyRec = recordBuffer.take();
-								addColumnsForRecord(keyRec);
-								recordContent.add(keyRec);
-							} catch (InterruptedException e) {
-								CoreActivator.showError(e, "Error refreshing record view");
-							}
-						}
-						tableViewer.refresh();
 					}
+
+					for (;!recordBuffer.isEmpty();){
+						KeyRecord keyRec;
+						try {
+							keyRec = recordBuffer.take();
+							addColumnsForRecord(keyRec);
+							recordContent.add(keyRec);
+						} catch (InterruptedException e) {
+							CoreActivator.showError(e, "Error refreshing record view");
+						}
+					}
+					tableViewer.refresh();
 				}
+			}
 			schedule(TABLE_REFRESH_PERIOD);
 			return Status.OK_STATUS;
 		}
@@ -614,6 +627,15 @@ public class RecordView extends ViewPart implements IResultReporter, IErrorRepor
 	@Override
 	public List<String> getErrorList(){
 		return getErrorList();
+	}
+
+	class MutexRule implements ISchedulingRule {
+		public boolean isConflicting(ISchedulingRule rule) {
+			return rule == this;
+		}
+		public boolean contains(ISchedulingRule rule) {
+			return rule == this;
+		}
 	}
 
 }

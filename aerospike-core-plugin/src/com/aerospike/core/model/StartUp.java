@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.ui.IStartup;
 
 import com.aerospike.core.CoreActivator;
@@ -72,7 +73,7 @@ public class StartUp implements IStartup {
 				job.schedule(1000);
 			}
 		} catch (CoreException e) {
-			CoreActivator.showError(e, "Cluster refresh error");
+			CoreActivator.log(IStatus.ERROR, "Cluster refresh error", e);
 		}
 		
 	}

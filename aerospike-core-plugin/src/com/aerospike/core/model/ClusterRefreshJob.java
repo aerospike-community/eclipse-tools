@@ -60,7 +60,7 @@ public class ClusterRefreshJob extends Job{
 		String jobName = "Refreshing Aerospike cluster for " + project.getName();
 		monitor.beginTask(jobName, 30);
 		
-		System.out.println("****** " + jobName);
+		//System.out.println("****** " + jobName);
 
 		String seedNode = cluster.getSeedHost();
 		int port = cluster.getPort();
@@ -157,7 +157,7 @@ public class ClusterRefreshJob extends Job{
 			CoreActivator.showError(e, "Could not refresh cluster");
 			return Status.CANCEL_STATUS;
 		} catch (AerospikeException e) {
-			CoreActivator.showError(e, "Could not refresh cluster");
+			CoreActivator.log(IStatus.ERROR, "Could not refresh cluster", e);
 			return Status.CANCEL_STATUS;
 		}
 
@@ -193,7 +193,7 @@ public class ClusterRefreshJob extends Job{
 				schedule(period);
 			}
 		} catch (CoreException e) {
-			CoreActivator.showError(e, "Error scheduling cluster refresh");
+			CoreActivator.log(IStatus.ERROR, "Error scheduling cluster refresh", e);
 		}
 		return Status.OK_STATUS;
 	}
