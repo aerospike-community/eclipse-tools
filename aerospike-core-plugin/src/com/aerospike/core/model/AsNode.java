@@ -34,6 +34,7 @@ public class AsNode implements IAsEntity{
 	int		port;
 	boolean online = false;
 	protected transient Map<String, NameValuePair> stats = null;
+	protected transient HashMap<String, NameValuePair> throughput;
 	private Map<String, AsNameSpace> nameSpaces = new HashMap<String, AsNameSpace>();
 	private Object parent;
 	private String name;
@@ -68,14 +69,16 @@ public class AsNode implements IAsEntity{
 
 	@Override
 	public Object[] getChildren() {
-		Object[] kids = new Object[this.nameSpaces.values().size() + 6];
+		Object[] kids = new Object[this.nameSpaces.values().size() + 8];
 		kids[0] = new NameValuePair(this, "Node ID", getNodeID());
 		kids[1] = new NameValuePair(this, "Build", getBuild());
 		kids[2] = new NameValuePair(this, "Cluster Size", getClusterSize());
 		kids[3] = new NameValuePair(this, "Free Memory", getFreeMemory());
 		kids[4] = new NameValuePair(this, "Free Disk", getFreeDisk());
 		kids[5] = new NameValuePair(this, "Migrations", getMigration());
-		int index = 6;
+		kids[6] = new NameValuePair(this, "Reads/sec", getMigration());
+		kids[7] = new NameValuePair(this, "Writes/sec", getMigration());
+		int index = 8;
 		for (Object kid : this.nameSpaces.values()){
 			kids[index] = kid;
 			index++;
@@ -125,6 +128,8 @@ public class AsNode implements IAsEntity{
 		setVersion(info.get("version"));
 		setClusterGeneration(info.get("cluster-generation"));
 	}
+	
+	
 
 	public void setClusterGeneration(String clusterGeneration) {
 		this.clusterGeneration = clusterGeneration;
@@ -191,6 +196,29 @@ public class AsNode implements IAsEntity{
 			}
 		}
 	}
+	
+	public void setLatency(String throughputInfo) {
+// reads:17:23:33-GMT,ops/sec;17:23:43,0.0;writes_master:17:23:33-GMT,ops/sec;17:23:43,0.0;proxy:17:23:33-GMT,ops/sec;17:23:43,0.0;writes_reply:17:23:33-GMT,ops/sec;17:23:43,0.0;udf:17:23:33-GMT,ops/sec;17:23:43,0.0;query:17:23:33-GMT,ops/sec;17:23:43,0.0;
+		
+		if (!throughputInfo.isEmpty()){
+			String[] parts = throughputInfo.split(";");
+			if (throughput == null){
+				throughput = new HashMap<String, NameValuePair>();
+			} 
+			for (int x = 0; x < parts.length; x += 2 ){
+				String type = parts[x];
+				String key = type.substring(0, type.indexOf(':'));
+				double value = Double.parseDouble(parts[x+1].substring(parts[x+1].indexOf(',')+1));
+				NameValuePair stat = throughput.get(key);
+				if (stat == null){
+					stat = new NameValuePair(this, key, value);
+				}
+				stat.value = value;
+				throughput.put(key, stat);
+			}
+		}
+	}
+
 	public List<NameValuePair> getStats(){
 		List<NameValuePair> result = new ArrayList<NameValuePair>();
 		Set<String> keys = this.stats.keySet();
@@ -303,6 +331,17 @@ public class AsNode implements IAsEntity{
 		this.online = online;
 	}
 
+	public double getReadThroughput(){
+		if (this.throughput == null)
+			return 0.0;
+		return (Double) this.throughput.get("reads").value;
+	}
+
+	public double getWriteThroughput(){
+		if (this.throughput == null)
+			return 0.0;
+		return (Double) this.throughput.get("writes_master").value;
+	}
 
 
 

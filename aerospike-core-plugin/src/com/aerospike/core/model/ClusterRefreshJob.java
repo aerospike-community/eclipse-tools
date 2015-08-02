@@ -79,6 +79,8 @@ public class ClusterRefreshJob extends Job{
 				AsNode newNode = this.cluster.addNode(node);
 				HashMap<String, String> info = (HashMap<String, String>) Info.request(infoPolicy, node);
 				newNode.setDetails(info);
+				String throughputInfo = Info.request(infoPolicy, node, "throughput:");
+				newNode.setLatency(throughputInfo);
 				if (monitor.isCanceled())
 					return Status.CANCEL_STATUS;
 			}
@@ -102,6 +104,9 @@ public class ClusterRefreshJob extends Job{
 								return Status.CANCEL_STATUS;
 							AsNameSpace nodeNamespace = node.fetchNameSpace(nameSpace);
 							AsNameSpace clusterNameSpace = this.cluster.namespaces.fetchNameSpace(nameSpace);
+							String nameSpaceString = Info.request(nodeAddress, nodePort, "namespace/"+nameSpace);
+							nodeNamespace.setNamespaceInfo(nameSpaceString);
+							clusterNameSpace.mergeNamespaceInfo(nameSpaceString);
 							String setsString = Info.request(nodeAddress, nodePort, "sets/"+nameSpace);
 							if (!setsString.isEmpty()){
 								String[] sets = setsString.split(";");

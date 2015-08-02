@@ -17,17 +17,12 @@
 package com.aerospike.core.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.swt.widgets.Shell;
-
 import com.aerospike.client.AerospikeClient;
-import com.aerospike.client.AerospikeException;
 import com.aerospike.core.CoreActivator;
 
 public class Utils {
@@ -76,5 +71,10 @@ public class Utils {
 		return (AsCluster) topEntity;
 	}
 	
+	public static <T> T[] concat(T[] first, T[] second) {
+		  T[] result = Arrays.copyOf(first, first.length + second.length);
+		  System.arraycopy(second, 0, result, first.length, second.length);
+		  return result;
+		}
 	
 }

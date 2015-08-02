@@ -71,6 +71,10 @@ public class ClusterLabelProvider extends LabelProvider implements ILabelProvide
 
 	@Override
 	public String getText(Object element) {
+		if (element instanceof AsNode){
+			AsNode node = (AsNode)element;
+			return String.format("%s r:%.2f w:%.2f", node.getName(), node.getReadThroughput(), node.getWriteThroughput());
+		}
 		if (element instanceof NameValuePair){
 			NameValuePair nvp = (NameValuePair)element;
 			return nvp.getName() + " = " + nvp.getValue();
