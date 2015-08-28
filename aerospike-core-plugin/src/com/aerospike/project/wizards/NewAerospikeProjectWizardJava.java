@@ -67,7 +67,7 @@ public class NewAerospikeProjectWizardJava extends NewAerospikeProjectWizard {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					//Create the project
+					//Create the project      
 					IProject project = createProject(projectName, monitor, "org.eclipse.jdt.core.javanature", "org.eclipse.m2e.core.maven2Nature");
 					project.setPersistentProperty(CoreActivator.SEED_NODE_PROPERTY, seedNode);
 					project.setPersistentProperty(CoreActivator.PORT_PROPERTY, port);

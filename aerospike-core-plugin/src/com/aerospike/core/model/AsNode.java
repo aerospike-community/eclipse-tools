@@ -30,8 +30,7 @@ public class AsNode implements IAsEntity{
 	String 	nodeID;
 	String 	build;
 	String	version;
-	String  address;
-	int		port;
+	transient Node node;
 	boolean online = false;
 	protected transient Map<String, NameValuePair> stats = null;
 	protected transient HashMap<String, NameValuePair> throughput;
@@ -40,19 +39,18 @@ public class AsNode implements IAsEntity{
 	private String name;
 	private String clusterGeneration;
 
-	public AsNode(Object parent, String name) {
-		this.parent = parent;
-		this.name = name;
-		String[] parts = this.name.split(":");
-		address = parts[0];
-		port = Integer.parseInt(parts[1]);
-	}
+//	public AsNode(Object parent, String name) {
+//		this.parent = parent;
+//		this.name = name;
+//		String[] parts = this.name.split(":");
+//		address = parts[0];
+//		port = Integer.parseInt(parts[1]);
+//	}
 
 	public AsNode(Object parent, Node node) {
 		this.parent = parent;
 		this.name = node.getHost().toString();
-		address = node.getHost().name;
-		port = node.getHost().port;
+		this.node = node;
 	}
 
 	@Override
@@ -102,7 +100,7 @@ public class AsNode implements IAsEntity{
 	public boolean equals(Object obj) {
 		if (obj instanceof AsNode){
 			AsNode target = (AsNode) obj;
-			return (target.address.equals(this.address) && target.port == this.port);
+			return (target.getAddress().equals(this.getAddress()) && target.getPort() == this.getPort());
 		} else {
 			return false;
 		}
@@ -114,11 +112,15 @@ public class AsNode implements IAsEntity{
 	}
 
 	public String getAddress() {
-		return address;
+		return node.getHost().name;
 	}
 
 	public int getPort() {
-		return port;
+		return node.getHost().port;
+	}
+	
+	public Node getNode(){
+		return this.node;
 	}
 	
 	public void setDetails(HashMap<String, String> info){

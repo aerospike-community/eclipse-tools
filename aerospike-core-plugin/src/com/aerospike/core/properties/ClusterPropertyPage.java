@@ -29,16 +29,17 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.preferences.PreferenceConstants;
-import org.eclipse.swt.widgets.Button;
 /**
  * This page edits the Cluster properties attached to this lua resource
  * @author peter
@@ -57,6 +58,8 @@ public class ClusterPropertyPage extends PropertyPage{
 	private BooleanFieldEditor autoRefresh;
 	private IntegerFieldEditor refreshPeriod;
 	private Button autoRefreshCluster;
+	private Text userEditor;
+	private Text passwordEditor;
 	public ClusterPropertyPage() {
 		setImageDescriptor(ResourceManager.getPluginImageDescriptor("aerospike-core-plugin", "icons/aerospike.logo.png"));
 		setTitle("Aerospike Properties");
@@ -127,7 +130,17 @@ public class ClusterPropertyPage extends PropertyPage{
 		new Label(composite, SWT.NONE);
 		genDirectoryEditor = new DirectoryFieldEditor(PreferenceConstants.GENERATION_PATH, 
 				"&Generation Directory:", composite);
-		
+
+		Label userLabel = new Label(composite, SWT.NONE);
+		userLabel.setText("User ID:");
+		userEditor = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		userEditor.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		new Label(composite, SWT.NONE);
+		Label passwordLabel = new Label(composite, SWT.NONE);
+		passwordLabel.setText("Password:");
+		passwordEditor = new Text(composite, SWT.PASSWORD | SWT.BORDER);
+		passwordEditor.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		new Label(composite, SWT.NONE);
 		
 		try {
 			IProject project = ((IProject) getElement());
@@ -165,6 +178,12 @@ public class ClusterPropertyPage extends PropertyPage{
 				else
 					refreshPeriod.setStringValue(Integer.toString(store.getInt(PreferenceConstants.REFRESH_PERIOD)));
 				
+				// security 
+				String user = CoreActivator.getUser(project);
+				if (user != null) userEditor.setText(user);
+				String password = CoreActivator.getPassword(project);
+				if (password != null) passwordEditor.setText(password);
+				
 			}
 		} catch (CoreException e) {
 			CoreActivator.log(Level.ERROR_INT, "failure creating Properties page", e);
@@ -195,6 +214,10 @@ public class ClusterPropertyPage extends PropertyPage{
 		autoRefreshCluster.setSelection(store.getBoolean(PreferenceConstants.AUTO_REFRESH));
 		
 		refreshPeriod.setStringValue(Integer.toString(store.getInt(PreferenceConstants.REFRESH_PERIOD)));
+		
+		userEditor.setText("");
+		passwordEditor.setText("");
+
 
 	}
 
@@ -239,9 +262,24 @@ public class ClusterPropertyPage extends PropertyPage{
 				int refreshPeriodValue = refreshPeriod.getIntValue();
 				resource.setPersistentProperty(CoreActivator.REFRESH_PERIOD, Integer.toString(refreshPeriodValue));
 					
+			
+				String user = userEditor.getText();
+				if (user != null && !user.isEmpty())
+					resource.setPersistentProperty(CoreActivator.USER_PROPERTY, user);
+				else 
+					resource.setPersistentProperty(CoreActivator.USER_PROPERTY, null);
+
+				String password = passwordEditor.getText();
+				if (password != null && !user.isEmpty())
+					resource.setPersistentProperty(CoreActivator.PASSWORD_PROPERTY, password);
+				else 
+					resource.setPersistentProperty(CoreActivator.PASSWORD_PROPERTY, null);
+
+				
 				// assume the cluster values have changed and disconnect the client
 				CoreActivator.clearClient((IProject) resource);
 				
+
 			}
 		} catch (CoreException e) {
 			CoreActivator.showError(e, "Error saving persistent properties");

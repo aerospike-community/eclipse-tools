@@ -87,6 +87,9 @@ public class CoreActivator extends AbstractUIPlugin implements IResourceChangeLi
 	public static final QualifiedName AUTO_REFRESH = new QualifiedName("Aerospike", "AutoRefreshCluster");
 	public static final QualifiedName REFRESH_PERIOD = new QualifiedName("Aerospike", "RefreshPeriod");
 
+	public static final QualifiedName USER_PROPERTY = new QualifiedName("Aerospike", "User");
+	public static final QualifiedName PASSWORD_PROPERTY = new QualifiedName("Aerospike", "Password");
+	
 	// The shared instance
 	private static CoreActivator plugin;
 	//	
@@ -273,7 +276,10 @@ public class CoreActivator extends AbstractUIPlugin implements IResourceChangeLi
 				policy = new ClientPolicy();
 				policy.timeout = getConnectionTimeout(project);
 				policy.failIfNotConnected = true;
+				policy.user = getUser(project);
+				policy.password = getPassword(project);
 				project.setSessionProperty(CoreActivator.CLIENT_POLICY, policy);
+				
 			}
 		} catch (CoreException e) {
 			showError(e, "Cannot get Aerospike client Policy");
@@ -305,6 +311,8 @@ public class CoreActivator extends AbstractUIPlugin implements IResourceChangeLi
 				IPreferenceStore store = getDefault().getPreferenceStore();
 				port = store.getDefaultInt(PreferenceConstants.PORT);
 				project.setPersistentProperty(CoreActivator.PORT_PROPERTY, Integer.toString(port));
+			} else {
+				port = Integer.parseInt(portString);
 			}
 		} catch (CoreException e) {
 			CoreActivator.log(Status.ERROR, "Error getting PORT_PROPERTY", e);
@@ -368,6 +376,25 @@ public class CoreActivator extends AbstractUIPlugin implements IResourceChangeLi
 		return null;
 	}
 
+	public static String getUser(IProject project) {
+		String user = null;
+		try {
+			user = project.getPersistentProperty(CoreActivator.USER_PROPERTY);
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting USER_PROPERTY", e);
+		}
+		return user;
+	}
+	public static String getPassword(IProject project) {
+		String password = null;
+		try {
+			password = project.getPersistentProperty(CoreActivator.PASSWORD_PROPERTY);
+		} catch (CoreException e) {
+			CoreActivator.log(Status.ERROR, "Error getting PASSWORD_PROPERTY", e);
+		}
+		return password;
+	}
+
 	@Override
 	public void resourceChanged(final IResourceChangeEvent event) {
 	    if (event == null || event.getDelta() == null) {
@@ -400,4 +427,5 @@ public class CoreActivator extends AbstractUIPlugin implements IResourceChangeLi
 		}
 		
 	}
+
 }

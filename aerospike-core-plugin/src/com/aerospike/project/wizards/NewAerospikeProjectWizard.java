@@ -19,8 +19,6 @@ package com.aerospike.project.wizards;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.Arrays;
 
 import org.eclipse.core.resources.ICommand;
@@ -31,20 +29,16 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -52,15 +46,12 @@ import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.osgi.framework.BundleException;
 import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupFile;
 
-import com.aerospike.aql.AQLGenerator;
 import com.aerospike.aql.AQLGenerator.Language;
 import com.aerospike.core.CoreActivator;
 import com.aerospike.core.nature.AerospikeNature;
-import com.aerospike.core.preferences.PreferenceConstants;
 
 
 public abstract class NewAerospikeProjectWizard extends Wizard implements INewWizard {
@@ -133,6 +124,7 @@ public abstract class NewAerospikeProjectWizard extends Wizard implements INewWi
 		IProject project = root.getProject(name);
 		project.create(progressMonitor);
 		project.open(progressMonitor);
+		project.refreshLocal(0, progressMonitor);
 		IProjectDescription description = project.getDescription();
 		if (projectNatures != null){
 			projectNatures = Arrays.copyOf(projectNatures, projectNatures.length + 1);
@@ -141,8 +133,7 @@ public abstract class NewAerospikeProjectWizard extends Wizard implements INewWi
 			projectNatures = new String[] {  AerospikeNature.NATURE_ID };
 		}
 		description.setNatureIds(projectNatures);
-		project.setDescription(description, null);
-
+		project.setDescription(description, progressMonitor);
 		return project;
 	}
 	

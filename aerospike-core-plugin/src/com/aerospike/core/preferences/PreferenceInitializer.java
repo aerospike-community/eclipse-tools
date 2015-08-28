@@ -36,7 +36,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.SEED_NODE,
 				"127.0.0.1");
 		store.setDefault(PreferenceConstants.CLUSTER_CONNECTION_TIMEOUT,
-				20);
+				2000);
 		store.setDefault(PreferenceConstants.PORT,
 				3000);
 		store.setDefault(PreferenceConstants.UDF_PATH,

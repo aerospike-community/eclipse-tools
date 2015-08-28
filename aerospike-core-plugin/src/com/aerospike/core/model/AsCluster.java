@@ -105,10 +105,10 @@ public class AsCluster implements IAsEntity{
 		return this.viewer;
 	}
 
-	public AsNode addNode(String nodesString) {
-		AsNode newNode = new AsNode(this.nodes,nodesString);
-		return this.nodes.fetchNode(newNode);
-	}
+//	public AsNode addNode(String nodesString) {
+//		AsNode newNode = new AsNode(this.nodes,nodesString);
+//		return this.nodes.fetchNode(newNode);
+//	}
 	public AsNode addNode(Node node) {
 		AsNode newNode = new AsNode(this.nodes, node);
 		return this.nodes.fetchNode(newNode);
