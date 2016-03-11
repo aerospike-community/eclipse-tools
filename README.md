@@ -75,6 +75,10 @@ User Defined Functions need to be registered with the cluster before they are av
 
 <img src="assets/eclipse_register_udf.png" alt="Figure 3" width="50%" height="50%"/>
 
+If you do not see the Aerospike option, you will need to convert your project to an Aerospike project. Right click on the project in Package Explorer, select `Configure` >> `Convert to Aerospike Project`
+
+<img src="assets/eclipse_convert_to_aerospike.png" alt="Convert Project" width="50%" height="50%"/>
+
 The UDF module will be registered with the cluster configured in Aerospike properties -- see Cluster Explorer.
 
 A registered module can be deregistered from the cluster explorer. 
@@ -121,6 +125,10 @@ The Cluster Explorer lets you easily view and edit Aerospike properties pertaini
 
 To view the Cluster Explorer, select `Window` >> `Show View` >> `Project Explorer` and expand your project. You should see `Cluster` -- right-click on it and select `Properties` to view and edit 
 
+If you do not see the Aerospike option, you will need to convert your project to an Aerospike project. Right click on the project in Package Explorer, select `Configure` >> `Convert to Aerospike Project`
+
+<img src="assets/eclipse_convert_to_aerospike.png" alt="Convert Project" width="50%" height="50%"/>
+
 **Note**: Due to Eclipse limitations, Cluster Explorer will not be visible in the Java Package Explorer.
 
 <img src="assets/eclipse_aerospike_properties.png" alt="Figure 1" width="50%" height="50%"/>
@@ -140,3 +148,4 @@ The Cluster Explorer adds Aerospike specific elements to the Project Explorer tr
 
 
 
+I
